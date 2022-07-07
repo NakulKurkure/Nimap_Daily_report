@@ -15,7 +15,7 @@ public class List {
 		l.add(12456);
 		l.add(12);
 		
-//		System.out.print(l);
+		System.out.print(l+"\n");
 		
 		//Traversing List
 //		Iterator itr=l.iterator();
@@ -26,10 +26,38 @@ public class List {
 //			}
 		
 		//for-each loop
-		for(int i:l)
-		{
-			System.out.println(i);
-		}
+//		for(int i:l)
+//		{
+//			System.out.println(i);
+//		}
+//		
+		
+		//add index to element
+		l.add(1,3456);
+		System.out.println(l+"\n");
+		
+		ArrayList<Integer> a=new ArrayList<>();
+		a.add(1);
+		a.add(4);
+		a.add(7);
+		
+		//Add One List to another
+		l.addAll(a);
+		System.out.print(l+"\n");
+		
+		l.set(1, 999);
+		System.out.print(l+"\n");
+		
+		l.remove(5);
+		System.out.print(l+"\n");
+		
+		
+		System.out.print(l.get(2)+"\n");
+		
+		System.out.print(l.indexOf(12345)+"\n");
+		
+	
+		
 		
 		
 	}
