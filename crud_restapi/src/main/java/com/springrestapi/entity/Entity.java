@@ -8,37 +8,56 @@ public class Entity {
 
 	@Id
 	@GeneratedValue
-	private long eid;
-	private String fname;
+	private long id;
 	private String lname;
+	private String name;
+//	private String lname;
 	private String occupation;
 	
-	public String getFname() {
-		return fname;
+	private Boolean isActive=true;
+	
+	public Entity(long id, String lname, String name, String occupation, Boolean isActive) {
+		super();
+		this.id = id;
+		this.lname = lname;
+		this.name = name;
+		this.occupation = occupation;
+		this.isActive = isActive;
 	}
-	public void setFname(String fname) {
-		this.fname = fname;
+
+	public Boolean getIsActive() {
+		return isActive;
 	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
 	public Entity() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public long getEid() {
-		return eid;
+	
+	public void setId(long id) {
+		this.id = id;
 	}
-	public void setEid(long eid) {
-		this.eid = eid;
+	public long getId() {
+		return id;
 	}
+	
+	
 	public String getLname() {
 		return lname;
 	}
-	public Entity(long eid, String fname, String lname, String occupation) {
-		super();
-		this.eid = eid;
-		this.fname = fname;
-		this.lname = lname;
-		this.occupation = occupation;
-	}
+	
 	public void setLname(String lname) {
 		this.lname = lname;
 	}
