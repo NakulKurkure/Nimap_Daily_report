@@ -2,9 +2,6 @@ package com.springrestapi.service;
 
 
 
-import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,68 +12,81 @@ import com.springrestapi.page.pagination;
 import com.springrestapi.repo.Entity_repo;
 
 @Service
+//@Transactional(readOnly = true)
 public class Entity_service {
 
 	@Autowired
 	private Entity_repo er;
-	
-	public Entity add(Entity e)
-	{
-		return er.save(e);
-	}
 
 	
+
+	public Entity add(Entity entity)
+	{
+		
+		return er.save(entity);
+	
+	}
+
+
 //	public List<Entity> get() {
-//		
+//
 //		return this.er.findAll();
-//		
+//
 //	}
 
 
-	public Entity getid(long id) {
-		
+	public Entity getid(Integer id) {
+
 		return er.findById(id).get();
 	}
 
 
 	public Entity update(Entity e) {
-		
+
 		return er.save(e);
 	}
 
 
-	public String deleteEntity(long id) {
+	public void deleteEntity(Integer id) {
+
+				
+//			Fetch the record from the db
+			Entity entity = er.getById(id);
+			
+			
+			//Update the is_active attr to false
+			entity.setIsActive(false);
+
+			//Save the record
+			this.er.save(entity);
 		
-		//Fetch the record from the db
-		Entity entity = er.findByIdAndIsActiveTrue(id);
-		
-		//Update the is_active attr to false
-		entity.setIsActive(false);
-		
-		//Save the record
-		er.save(entity);
-		
-		return "deleted Successfully...";
+		//only show for user is data deleted but actual data is not deleted form database.
+//            this.er.deleteById(id);
+
 	}
 
 
-	public Page<Entity> getProducts(String search, String pageNumber, String pageSize) {
+	public Page<?> getProducts(String search, String pageNumber, String pageSize) {
 		// TODO Auto-generated method stub
-		
-//		Pageable is an interface defined by Spring, which holds a PageRequest.
-//		/Abstract interface for pagination information
+
+//		Pageable is an Integeregererface defined by Spring, which holds a PageRequest.
+//		/Abstract Integeregererface for pagination information
 		Pageable pagable=new pagination().getPagination(pageNumber,pageSize);
-	
+
 				if((search=="")|| (search==null)|| (search.length()==0))
 				{
-					return er.findByOrderByIdAndIsActiveTrue(pagable,Entity.class);
+					return er.getAll(pagable,Entity.class);
 				}
 				else
 				{
 					return er.findByName(search,pagable,Entity.class);
 				}
-		
-		
+
+
 	}
 	
+	
+	
+
+
 }

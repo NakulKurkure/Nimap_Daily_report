@@ -1,9 +1,5 @@
 package com.springrestapi.controller;
 
-import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -19,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.springrestapi.dto.EntityDto;
 import com.springrestapi.entity.Entity;
+import com.springrestapi.exception.ResourseNotFoundException;
 import com.springrestapi.repo.Entity_repo;
 import com.springrestapi.service.Entity_service;
 
@@ -28,21 +26,20 @@ import com.springrestapi.service.Entity_service;
 @RequestMapping("/entity")
 public class Entity_controller {
 
-	@Autowired
+@Autowired
 	private Entity_service es;
-	
-	
-	@Autowired
-	private Entity_repo er;
 
-	
+@Autowired
+private Entity_repo er;
+
 	@PostMapping
 	public Entity add(@RequestBody Entity e)
 	{
-		
+
 		return this.es.add(e);
+		
 	}
-	
+
 	@GetMapping
 	//ResponseEntity represents the whole HTTP response: status code, headers, and body.
 	public ResponseEntity<?> getProducts(@RequestParam(defaultValue = "") String search,
@@ -50,9 +47,7 @@ public class Entity_controller {
 			@RequestParam(defaultValue = "5") String pageSize)
 	{
 		//ResponseEntity is meant to represent the entire HTTP response
-		System.out.print("page1");
-		Page<Entity> entity= es.getProducts(search,pageNumber,pageSize);
-		System.out.print("page2");
+		Page<?> entity= es.getProducts(search,pageNumber,pageSize);
 		if(entity.getTotalElements()!=0)
 		{
 			return new ResponseEntity<>(entity.getContent(), HttpStatus.OK);
@@ -61,27 +56,28 @@ public class Entity_controller {
 	}
 	//A page is a sublist of a list of objects. It allows gain information about the position of it in the containing entire list.
 	@GetMapping("/{id}")
-	public Entity getid(@PathVariable long id)
+	public Entity getid(@PathVariable Integer id)
 	{
-		return this.es.getid(id);
+		return this.er.findById(id).orElseThrow(() -> new ResourseNotFoundException("NOt found"));
+//				.orElseThrow(( )->new ResourseNotFoundException("Not Found related to id"+id));
 	}
-	
+
 	@PutMapping("/{id}")
-	public Entity update(@PathVariable long id,@RequestBody Entity e)
+	public Entity update(@PathVariable Integer id,@RequestBody Entity e)
 	{
 		e.setId(id);
 		return this.es.update(e);
 	}
-	
-	
-	
-	
+
+
 	@DeleteMapping("/{id}")
-	public String delete(@PathVariable long id)
+	public void delete(@PathVariable Integer id)
 	{
-		return es.deleteEntity(id);
+		
+		 es.deleteEntity(id);
 	}
-	
 
 	
+
+
 }

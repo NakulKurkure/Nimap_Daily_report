@@ -1,22 +1,31 @@
 package com.springrestapi.entity;
 
+import java.io.Serializable;
+
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 @javax.persistence.Entity
-public class Entity {
+//@Where(clause ="is_active=true")
+//@SQLDelete(sql="UPDATE ENTITY SET is_active=false WHERE id=?" )
+public class Entity  {
 
 	@Id
 	@GeneratedValue
-	private long id;
+	private Integer id;
 	private String lname;
 	private String name;
 //	private String lname;
 	private String occupation;
-	
+
+//	@Column(name = "is_active")
 	private Boolean isActive=true;
-	
-	public Entity(long id, String lname, String name, String occupation, Boolean isActive) {
+
+	public Entity(int id, String lname, String name, String occupation, Boolean isActive) {
 		super();
 		this.id = id;
 		this.lname = lname;
@@ -36,28 +45,28 @@ public class Entity {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public Entity() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	public void setId(long id) {
+
+	public void setId(int id) {
 		this.id = id;
 	}
-	public long getId() {
+	public Integer getId() {
 		return id;
 	}
-	
-	
+
+
 	public String getLname() {
 		return lname;
 	}
-	
+
 	public void setLname(String lname) {
 		this.lname = lname;
 	}
@@ -67,7 +76,11 @@ public class Entity {
 	public void setOccupation(String occupation) {
 		this.occupation = occupation;
 	}
+
+
+
 	
-	
-	
+
+
+
 }

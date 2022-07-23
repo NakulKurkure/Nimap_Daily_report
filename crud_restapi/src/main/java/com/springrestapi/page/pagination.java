@@ -13,6 +13,6 @@ public class pagination {
 
 	public Pageable getPagination(String pageNumber,String pageSize)
 	{
-		return  PageRequest.of(Integer.parseInt(pageNumber) -1, Integer.parseInt(pageSize));
+		return  PageRequest.of(Integer.parseInt(pageNumber)-1, Integer.parseInt(pageSize));
 	}
 }
