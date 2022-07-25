@@ -9,9 +9,10 @@ import javax.persistence.Id;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+//common use case here is for soft-deletes.
 @javax.persistence.Entity
-//@Where(clause ="is_active=true")
-//@SQLDelete(sql="UPDATE ENTITY SET is_active=false WHERE id=?" )
+@Where(clause ="is_active=true")
+@SQLDelete(sql="UPDATE ENTITY SET is_active=false WHERE id=?" )
 public class Entity  {
 
 	@Id

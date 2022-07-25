@@ -2,12 +2,15 @@ package com.springrestapi.service;
 
 
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.springrestapi.dto.EntityDto;
 import com.springrestapi.entity.Entity;
+import com.springrestapi.exception.ResourseNotFoundException;
 import com.springrestapi.page.pagination;
 import com.springrestapi.repo.Entity_repo;
 
@@ -16,34 +19,49 @@ import com.springrestapi.repo.Entity_repo;
 public class Entity_service {
 
 	@Autowired
-	private Entity_repo er;
+	private Entity_repo entity_repository;
 
-	
+	@Autowired
+	private ModelMapper modelmapper;
 
-	public Entity add(Entity entity)
+	public EntityDto add(EntityDto entityDto)
 	{
+		//convert dto to entity 
+		Entity entity=this.dtoToEntity(entityDto);
+		//save to database
+		Entity entity1=this.entity_repository.save(entity);
 		
-		return er.save(entity);
+		return this.entitydto(entity1);
 	
 	}
 
 
 //	public List<Entity> get() {
 //
-//		return this.er.findAll();
+//		return this.entity_repository.findAll();
 //
 //	}
 
 
-	public Entity getid(Integer id) {
+	public EntityDto getid(Integer id) {
 
-		return er.findById(id).get();
+		Entity entity= this.entity_repository.findById(id).orElseThrow(() -> new ResourseNotFoundException("NOt found"+id));
+		
+		return this.entitydto(entity);
+		
 	}
 
 
-	public Entity update(Entity e) {
+	public EntityDto update(EntityDto entitydto,Integer id) {
 
-		return er.save(e);
+		
+		//save to database
+//		Entity entity= entity_repository.save(entity);
+		Entity entity= entity_repository.findById(id).orElseThrow(()->new ResourseNotFoundException("Not Found"+id));
+		//conversion of entity to dto
+		Entity updateEntity=this.entity_repository.save(entity);
+		EntityDto entitydto1=entitydto(updateEntity);
+		return entitydto1;
 	}
 
 
@@ -51,17 +69,17 @@ public class Entity_service {
 
 				
 //			Fetch the record from the db
-			Entity entity = er.getById(id);
-			
-			
-			//Update the is_active attr to false
-			entity.setIsActive(false);
-
-			//Save the record
-			this.er.save(entity);
+//			Entity entity = entity_repository.getById(id);
+//			
+//			
+//			//Update the is_active attr to false
+//			entity.setIsActive(false);
+//
+//			//Save the record
+//			this.entity_repository.save(entity);
 		
 		//only show for user is data deleted but actual data is not deleted form database.
-//            this.er.deleteById(id);
+            this.entity_repository.deleteById(id);
 
 	}
 
@@ -75,18 +93,29 @@ public class Entity_service {
 
 				if((search=="")|| (search==null)|| (search.length()==0))
 				{
-					return er.getAll(pagable,Entity.class);
+					return entity_repository.findAll(pagable);
 				}
 				else
 				{
-					return er.findByName(search,pagable,Entity.class);
+					return entity_repository.findByName(search,pagable,Entity.class);
 				}
 
 
 	}
 	
-	
-	
+	//only this data shown for user
+	public Entity dtoToEntity(EntityDto entitydto)
+	{
+		Entity entity=this.modelmapper.map(entitydto, Entity.class);
+		return entity;
+	}
 
+	
+	public EntityDto entitydto(Entity entity)
+	{
+		//entity to represent to EntityDto (3 fis returns)
+		EntityDto entitydto=this.modelmapper.map(entity, EntityDto.class);
+		return entitydto; 
+	}
 
 }

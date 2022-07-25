@@ -1,12 +1,16 @@
 package com.springrestapi.dto;
 
-public class EntityDto {
+import java.io.Serializable;
 
+public class EntityDto implements Serializable{
+ 
+	private final long serialVersionUID=1;
+	
 	private Integer id;
 	private String lname;
 	private String name;
 
-//	private String occupation;
+	private String occupation;
 	public Integer getId() {
 		return id;
 	}
@@ -29,18 +33,20 @@ public class EntityDto {
 	public void setName(String name) {
 		this.name = name;
 	}
-//	public String getOccupation() {
-//		return occupation;
-//	}
-//	public void setOccupation(String occupation) {
-//		this.occupation = occupation;
-//	}
+	
 	public EntityDto(Integer id, String lname, String name, String occupation) {
 		super();
 		this.id = id;
 		this.lname = lname;
 		this.name = name;
-//		this.occupation = occupation;
+		this.occupation = occupation;
+		
+	}
+	public String getOccupation() {
+		return occupation;
+	}
+	public void setOccupation(String occupation) {
+		this.occupation = occupation;
 	}
 
 	

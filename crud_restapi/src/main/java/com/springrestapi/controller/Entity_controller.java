@@ -27,16 +27,17 @@ import com.springrestapi.service.Entity_service;
 public class Entity_controller {
 
 @Autowired
-	private Entity_service es;
+	private Entity_service entity_service;
 
 @Autowired
-private Entity_repo er;
+private Entity_repo entity_repository;
 
 	@PostMapping
-	public Entity add(@RequestBody Entity e)
+	public EntityDto add(@RequestBody EntityDto entityDto)
 	{
+		EntityDto entitydto=this.entity_service.add(entityDto);
 
-		return this.es.add(e);
+		return this.entity_service.add(entitydto);
 		
 	}
 
@@ -47,26 +48,29 @@ private Entity_repo er;
 			@RequestParam(defaultValue = "5") String pageSize)
 	{
 		//ResponseEntity is meant to represent the entire HTTP response
-		Page<?> entity= es.getProducts(search,pageNumber,pageSize);
+		Page<?> entity= entity_service.getProducts(search,pageNumber,pageSize);
 		if(entity.getTotalElements()!=0)
 		{
 			return new ResponseEntity<>(entity.getContent(), HttpStatus.OK);
 		}
 		return new ResponseEntity<>("fail",HttpStatus.BAD_REQUEST);
 	}
+	
 	//A page is a sublist of a list of objects. It allows gain information about the position of it in the containing entire list.
 	@GetMapping("/{id}")
-	public Entity getid(@PathVariable Integer id)
+	public EntityDto getid(@PathVariable Integer id)
 	{
-		return this.er.findById(id).orElseThrow(() -> new ResourseNotFoundException("NOt found"));
-//				.orElseThrow(( )->new ResourseNotFoundException("Not Found related to id"+id));
+		return this.entity_service.getid(id);
+		//this.entity_repository.findById(id).orElseThrow(() -> new ResourseNotFoundException("NOt found"+id));
 	}
 
 	@PutMapping("/{id}")
-	public Entity update(@PathVariable Integer id,@RequestBody Entity e)
+	public EntityDto update(@PathVariable Integer id,@RequestBody EntityDto e)
 	{
 		e.setId(id);
-		return this.es.update(e);
+		EntityDto entity= this.entity_service.update(e,id);
+		return entity;
+				
 	}
 
 
@@ -74,7 +78,7 @@ private Entity_repo er;
 	public void delete(@PathVariable Integer id)
 	{
 		
-		 es.deleteEntity(id);
+		entity_service.deleteEntity(id);
 	}
 
 	
