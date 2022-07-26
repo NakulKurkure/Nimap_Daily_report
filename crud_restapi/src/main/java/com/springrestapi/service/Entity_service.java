@@ -6,10 +6,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.springrestapi.dto.EntityDto;
 import com.springrestapi.entity.Entity;
+import com.springrestapi.errordto.SuccessResponseDto;
 import com.springrestapi.exception.ResourseNotFoundException;
 import com.springrestapi.page.pagination;
 import com.springrestapi.repo.Entity_repo;
@@ -43,6 +46,15 @@ public class Entity_service {
 //	}
 
 
+//	public EntityDto getid(Integer id) {
+//
+//		Entity entity= this.entity_repository.findById(id).orElseThrow(() -> new ResourseNotFoundException("NOt found"+id));
+//		
+//		return this.entitydto(entity);
+//		
+//	}
+//	
+	
 	public EntityDto getid(Integer id) {
 
 		Entity entity= this.entity_repository.findById(id).orElseThrow(() -> new ResourseNotFoundException("NOt found"+id));
@@ -50,15 +62,28 @@ public class Entity_service {
 		return this.entitydto(entity);
 		
 	}
-
-
-	public EntityDto update(EntityDto entitydto,Integer id) {
+	
+	
+//	public EntityDto update(EntityDto entitydto,Integer id) {
+//
+//		
+//		//save to database
+////		Entity entity= entity_repository.save(entity);
+//		Entity entity= entity_repository.findById(id).orElseThrow(()->new ResourseNotFoundException("Not Found"+id));
+//		//conversion of entity to dto
+//		Entity updateEntity=this.entity_repository.save(entity);
+//		EntityDto entitydto1=entitydto(updateEntity);
+//		return entitydto1;
+//	}
+	
+public EntityDto update(EntityDto entitydto,Integer id) {
 
 		
 		//save to database
 //		Entity entity= entity_repository.save(entity);
 		Entity entity= entity_repository.findById(id).orElseThrow(()->new ResourseNotFoundException("Not Found"+id));
 		//conversion of entity to dto
+		
 		Entity updateEntity=this.entity_repository.save(entity);
 		EntityDto entitydto1=entitydto(updateEntity);
 		return entitydto1;
@@ -79,7 +104,8 @@ public class Entity_service {
 //			this.entity_repository.save(entity);
 		
 		//only show for user is data deleted but actual data is not deleted form database.
-            this.entity_repository.deleteById(id);
+//      this.entity_repository.findById(id).orElseThrow(()->new ResourseNotFoundException("Not found"));
+		this.entity_repository.deleteById(id);
 
 	}
 
@@ -97,7 +123,7 @@ public class Entity_service {
 				}
 				else
 				{
-					return entity_repository.findByName(search,pagable,Entity.class);
+					return entity_repository.findByName(search,pagable,EntityDto.class);
 				}
 
 
@@ -111,6 +137,7 @@ public class Entity_service {
 	}
 
 	
+
 	public EntityDto entitydto(Entity entity)
 	{
 		//entity to represent to EntityDto (3 fis returns)

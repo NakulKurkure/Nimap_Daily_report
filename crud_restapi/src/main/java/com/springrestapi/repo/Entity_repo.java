@@ -21,9 +21,13 @@ public interface Entity_repo extends JpaRepository<Entity, Integer> {
 //
 //	 page is a sublist of a list of objects. It allows gain information about the position of it in the containingentire list.
 //	 Type Parameters:<T>
-	Page<Entity> findByName(String search, Pageable pagable, Class<Entity> entity);
+	Page<EntityDto> findByName(String search, Pageable pagable, Class<EntityDto> entitydto);
 
-	Entity save(EntityDto entitydto);
+//	void deleteById(Entity entity);
+
+//	Entity save(EntityDto entitydto);
+
+//	void deleteById(Entity entity);
 	
 //	@Query(value="SELECT * FROM ENTITY e WHERE e.is_active=true", nativeQuery = true)
 //	Page<Entity> getAll(Pageable pagable, Class<Entity> entity);

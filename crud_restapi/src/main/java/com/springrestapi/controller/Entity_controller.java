@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.springrestapi.dto.EntityDto;
 import com.springrestapi.entity.Entity;
+import com.springrestapi.errordto.SuccessResponseDto;
 import com.springrestapi.exception.ResourseNotFoundException;
 import com.springrestapi.repo.Entity_repo;
 import com.springrestapi.service.Entity_service;
@@ -33,11 +34,12 @@ public class Entity_controller {
 private Entity_repo entity_repository;
 
 	@PostMapping
-	public EntityDto add(@RequestBody EntityDto entityDto)
+	public ResponseEntity<?> add(@RequestBody EntityDto entityDto)
 	{
 		EntityDto entitydto=this.entity_service.add(entityDto);
 
-		return this.entity_service.add(entitydto);
+		return new ResponseEntity<>(new SuccessResponseDto("success", "success", entitydto),HttpStatus.ACCEPTED);
+//		return this.entity_service.add(entitydto);
 		
 	}
 
@@ -57,19 +59,47 @@ private Entity_repo entity_repository;
 	}
 	
 	//A page is a sublist of a list of objects. It allows gain information about the position of it in the containing entire list.
+//	@GetMapping("/{id}")
+//	public EntityDto getid(@PathVariable Integer id)
+//	{
+//		
+//		return this.entity_service.getid(id);
+//		//this.entity_repository.findById(id).orElseThrow(() -> new ResourseNotFoundException("NOt found"+id));
+//	}
+	
 	@GetMapping("/{id}")
-	public EntityDto getid(@PathVariable Integer id)
+	public ResponseEntity<?> getByid(@PathVariable Integer id)
 	{
-		return this.entity_service.getid(id);
-		//this.entity_repository.findById(id).orElseThrow(() -> new ResourseNotFoundException("NOt found"+id));
+//	 this.entity_service.getid(id);
+		return new ResponseEntity<>(new SuccessResponseDto("Success","success",entity_service.getid(id)),HttpStatus.OK);
+//		return new ResponseEntity<>(entiy,HttpStatus.CREATED);
+		
+		
+//		return this.entity_repository.findById(id).orElseThrow(() -> new ResourseNotFoundException("NOt found"+id));
 	}
-
+	
+	
+	
+//	@PutMapping("/{id}")
+//	public EntityDto update(@PathVariable Integer id,@RequestBody EntityDto e)
+//	{
+//		e.setId(id);
+////		EntityDto entity= this.entity_service.update(e,id);
+//		
+//		return entity;
+//				
+//	}
+	
 	@PutMapping("/{id}")
-	public EntityDto update(@PathVariable Integer id,@RequestBody EntityDto e)
+	public ResponseEntity<?> update(@RequestBody EntityDto e,@PathVariable Integer id)
 	{
-		e.setId(id);
-		EntityDto entity= this.entity_service.update(e,id);
-		return entity;
+		
+		EntityDto entitydto=entity_service.update(e, id);
+		
+		return new ResponseEntity<>(new SuccessResponseDto("S","ok", entitydto),HttpStatus.ACCEPTED);
+//		this ResponseEntity<>(new SuccessResponseDto("success","success",entity_service.update(e,id)));
+		
+//		return entity;
 				
 	}
 
@@ -78,7 +108,7 @@ private Entity_repo entity_repository;
 	public void delete(@PathVariable Integer id)
 	{
 		
-		entity_service.deleteEntity(id);
+		 entity_service.deleteEntity(id);
 	}
 
 	
