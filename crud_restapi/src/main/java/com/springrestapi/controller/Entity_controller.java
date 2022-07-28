@@ -107,8 +107,8 @@ private Entity_repo entity_repository;
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable Integer id)
 	{
+		this.entity_service.deleteEntity(id);
 		
-		 entity_service.deleteEntity(id);
 	}
 
 	

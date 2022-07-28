@@ -1,6 +1,7 @@
 package com.springrestapi.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -8,6 +9,8 @@ import javax.persistence.Id;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 //common use case here is for soft-deletes.
 @javax.persistence.Entity
@@ -18,15 +21,8 @@ public class Entity  {
 	@Id
 	@GeneratedValue
 	private Integer id;
-	private String lname;
-	private String name;
-//	private String lname;
-	private String occupation;
-
-//	@Column(name = "is_active")
-	private Boolean isActive=true;
-
-	public Entity(int id, String lname, String name, String occupation, Boolean isActive) {
+	
+	public Entity(Integer id, String lname, String name, String occupation, Boolean isActive) {
 		super();
 		this.id = id;
 		this.lname = lname;
@@ -34,6 +30,28 @@ public class Entity  {
 		this.occupation = occupation;
 		this.isActive = isActive;
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	private String lname;
+	private String name;
+//	private String lname;
+//	private String password;
+	private String occupation;
+
+//	@Column(username = "is_active")
+	private Boolean isActive=true;
+
+	
 
 	public Boolean getIsActive() {
 		return isActive;
@@ -43,14 +61,7 @@ public class Entity  {
 		this.isActive = isActive;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getName() {
-		return name;
-	}
-
+	
 	public Entity() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -78,6 +89,7 @@ public class Entity  {
 		this.occupation = occupation;
 	}
 
+	
 
 
 	

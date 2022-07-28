@@ -123,7 +123,7 @@ public EntityDto update(EntityDto entitydto,Integer id) {
 				}
 				else
 				{
-					return entity_repository.findByName(search,pagable,EntityDto.class);
+					return entity_repository.findByName(search,pagable,Entity.class);
 				}
 
 
