@@ -1,22 +1,53 @@
 package com.springrestapi.entity;
 
+import java.util.Collection;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-@Entity
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+import org.springframework.lang.NonNull;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+//import org.springframework.security.core.GrantedAuthority;
+//import org.springframework.security.core.userdetails.UserDetails;
 
-public class User {
+@Entity
+@Where(clause ="is_active=true")
+@SQLDelete(sql="UPDATE USERS SET is_active=false WHERE id=?" )
+@Table(name="users")
+public class User implements UserDetails{
 
 	@Id
 	@GeneratedValue
 	private int id;
 	private String email;
+	@NonNull
 	private String userName;
+
 	private String password;
-	
+	private Boolean isActive=true;
+
+	public User(int id, String email, String userName, String password, Boolean isActive) {
+		super();
+		this.id = id;
+		this.email = email;
+		this.userName = userName;
+		this.password = password;
+		this.isActive = isActive;
+	}
+
+	public Boolean getIsActive() {
+		return isActive;
+	}
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -55,6 +86,7 @@ public class User {
 		this.email = email;
 	}
 
+	@Override
 	public String getPassword() {
 		return password;
 	}
@@ -62,5 +94,42 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+//
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return this.getEmail();
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
 
 }

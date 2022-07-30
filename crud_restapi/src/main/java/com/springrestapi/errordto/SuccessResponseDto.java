@@ -1,13 +1,11 @@
 package com.springrestapi.errordto;
 
-import com.springrestapi.dto.EntityDto;
-
 public class SuccessResponseDto {
 
 	private String message;
 	private String key;
 	private Object data;
-	
+
 	public SuccessResponseDto(String message, String key, Object data) {
 		super();
 		this.message = message;
@@ -23,11 +21,11 @@ public class SuccessResponseDto {
 		this.key = key;
 	}
 
-	
 
-	
 
-	
+
+
+
 
 	public String getMessage() {
 		return message;

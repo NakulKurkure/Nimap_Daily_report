@@ -3,9 +3,9 @@ package com.springrestapi.dto;
 import java.io.Serializable;
 
 public class EntityDto implements Serializable{
- 
+
 	private final long serialVersionUID=1;
-	
+
 	private Integer id;
 	private String lname;
 	private String name;
@@ -33,14 +33,14 @@ public class EntityDto implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public EntityDto(Integer id, String lname, String name, String occupation) {
 		super();
 		this.id = id;
 		this.lname = lname;
 		this.name = name;
 		this.occupation = occupation;
-		
+
 	}
 	public String getOccupation() {
 		return occupation;
@@ -49,5 +49,5 @@ public class EntityDto implements Serializable{
 		this.occupation = occupation;
 	}
 
-	
+
 }

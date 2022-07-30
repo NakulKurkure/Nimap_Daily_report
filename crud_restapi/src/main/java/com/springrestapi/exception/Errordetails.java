@@ -1,6 +1,5 @@
 package com.springrestapi.exception;
 
-import java.sql.Time;
 import java.util.Date;
 
 public class Errordetails {
@@ -9,7 +8,7 @@ public class Errordetails {
 	private String message;
 	private String details;
 
-	
+
 	public Date getTimestamp() {
 		return timestamp;
 	}

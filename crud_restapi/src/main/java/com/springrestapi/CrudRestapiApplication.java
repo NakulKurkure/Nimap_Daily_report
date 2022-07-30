@@ -4,25 +4,28 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
+//import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
-import org.springframework.boot.autoconfigure.SpringBootApplication ;
 
-@SpringBootApplication
-public class CrudRestapiApplication {
+import com.springrestapi.entity.User;
 
-//	@Autowired
-//	private PasswordEncoder passwordEncoder;
-////	
+@SpringBootApplication(exclude = SecurityAutoConfiguration.class)
+public class CrudRestapiApplication implements CommandLineRunner{
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+
+	
+
 	public static void main(String[] args) {
 		SpringApplication.run(CrudRestapiApplication.class, args);
 	}
 
-	
+
 	@Bean
 	public ModelMapper modelmapper()
 	{
@@ -30,10 +33,30 @@ public class CrudRestapiApplication {
 	}
 
 
-////	@Override
-//	@Bean
-//	public void run(String... args) throws Exception {
-//	
-//		System.out.print(this.passwordEncoder.encode("xyz"));
+
+
+
+//For Test in commandLineRunner method overrides the method run..
+	//so we just print on console so we encode it..
+
+
+//password :-Nakul is Encrypt in form $2a$10$M2IlyheCjD9HJ2nhFGRfeeyeFPqCU6x0F253XVU4F0w.IUV7pwNX2
+
+@Override
+	public void run(String... args) throws Exception {
+
+	System.out.println(this.passwordEncoder.encode("nakul"));
+//		this.passwordEncoder.encode();
+	
+	
+	}
+	
+//	public User add(User user)
+//	{
+//		String encode=this.passwordEncoder.encode(user.getPassword());
+//		user.setPassword(encode);
+//		return this.add(user);
 //	}
+
+
 }

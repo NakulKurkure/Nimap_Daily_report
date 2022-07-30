@@ -1,16 +1,11 @@
 package com.springrestapi.repo;
 
-import java.util.Optional;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 //import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Repository;
 
-import com.springrestapi.dto.EntityDto;
 //import com.springrestapi.dto.EntityDto;
 import com.springrestapi.entity.Entity;
 
@@ -29,26 +24,5 @@ public interface Entity_repo extends JpaRepository<Entity, Integer> {
 //	@Query(value="SELECT * FROM ENTITY e WHERE e.name:=n", nativeQuery = true)
 //	Optional<Entity> findByUserName(String name);
 
-//	Optional<Entity> findByUserName(String username);
 
-//	void deleteById(Integer id);
-
-//	void deleteById(Entity entity);
-
-//	Entity save(EntityDto entitydto);
-
-//	void deleteById(Entity entity);
-	
-//	@Query(value="SELECT * FROM ENTITY e WHERE e.is_active=true", nativeQuery = true)
-//	Page<Entity> getAll(Pageable pagable, Class<Entity> entity);
-	
-//	@Query(value="SELECT * FROM ENTITY e WHERE e.is_active=true AND e.id=:id", nativeQuery = true)
-//	Entity getById(@Param("id") Integer id);
-
-//	Page<?> getAllOrderById(Pageable pagable, Class<Entity> class1);
-//	@Query(value="SELECT * FROM ENTITY e WHERE e.name=:name AND e.lname=:lname AND e.Occupation=:Occupation AND e.id=:id", nativeQuery = true)
-//	 Entity dtoToEntity(EntityDto entitydto);
-//
-//	@Query(value="SELECT * FROM ENTITY e WHERE e.name=:name, e.lname=:lname, e.Occupation=:Occupation AND e.id=:id", nativeQuery = true)
-//	 EntityDto entitydto(Entity entity);
 }
