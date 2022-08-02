@@ -2,6 +2,7 @@ package com.springrestapi.entity;
 
 import java.util.Collection;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -12,6 +13,8 @@ import org.hibernate.annotations.Where;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 //import org.springframework.security.core.GrantedAuthority;
 //import org.springframework.security.core.userdetails.UserDetails;
 
@@ -25,9 +28,12 @@ public class User implements UserDetails{
 	@GeneratedValue
 	private int id;
 	private String email;
+	
+	@Column(name="username")
 	@NonNull
-	private String userName;
+	private String username;
 
+	@JsonIgnore
 	private String password;
 	private Boolean isActive=true;
 
@@ -35,7 +41,7 @@ public class User implements UserDetails{
 		super();
 		this.id = id;
 		this.email = email;
-		this.userName = userName;
+		this.username = userName;
 		this.password = password;
 		this.isActive = isActive;
 	}
@@ -56,16 +62,16 @@ public class User implements UserDetails{
 		super();
 		this.id = id;
 		this.email = email;
-		this.userName = userName;
+		this.username = userName;
 		this.password = password;
 	}
 
 	public String getUserName() {
-		return userName;
+		return username;
 	}
 
 	public void setUserName(String userName) {
-		this.userName = userName;
+		this.username = userName;
 	}
 
 	public void setId(int id) {

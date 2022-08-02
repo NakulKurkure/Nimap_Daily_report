@@ -1,25 +1,34 @@
 package com.springrestapi.security;
 //package com.springrestapi.config;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.springframework.beans.factory.annotation.Value;
 //import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
+import com.springrestapi.entity.User;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 //
+//@Service
 @Component
-public class JwtTokenUtil {
-
+public class JwtTokenUtil implements Serializable{
+	private static final long serialVersionUID = -2550185165626007488L;
 
 	public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
 
+	public static final long JWT_TOKEN_VALIDITY_FORGOT_PASS = 5 * 60;
+
+//	@Value("NimapSBAssignment")
 	private String secret="Authorization";
 
 
@@ -65,12 +74,19 @@ public class JwtTokenUtil {
 	// }
 
 	// generate token for user
-	public String generateToken(UserDetails userDetails) {
+	public String generateToken(User userDetails) {
 
 		Map<String, Object> claims = new HashMap<>();
-		return doGenerateToken(claims, userDetails.toString());
+		return doGenerateToken(claims, userDetails.getUsername());
 
 	}
+	
+//	public String generateToken(String username) {
+//
+//		Map<String, Object> claims = new HashMap<>();
+//		return doGenerateToken(claims, username);
+//
+//	}
 
 
 
@@ -90,7 +106,8 @@ public class JwtTokenUtil {
 	// validate token
 	public Boolean validateToken(String token, UserDetails userDetails) {
 
-		return !isTokenExpired(token);
+		final String username=getUserNameFromToken(token);
+		return (username.equals(userDetails.getUsername()))&!isTokenExpired(token);
 
 		// throw new ResourceNotFoundException("Timeout for this request");
 	}

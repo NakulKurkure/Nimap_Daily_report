@@ -22,11 +22,12 @@ import io.jsonwebtoken.MalformedJwtException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter{
 //
 	@Autowired
-	private com.springrestapi.security.JwtTokenUtil jwtTokenUtil;
+	private JwtTokenUtil jwtTokenUtil;
 
 	@Autowired
 	private UserDetailService userDetailService;
 
+	
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -39,7 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		//Token
 //		//Bearer 2343333jdhd
 //
-		System.out.print(requestToken+"nakkk");
+		
 //
 //	//In  token :- fetch Username
 		String username=null;
@@ -92,7 +93,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 			//Authentication Object
 				/////////////////////////////////////////
 
-			UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken=new UsernamePasswordAuthenticationToken(token,userDetails);
+			UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken=new UsernamePasswordAuthenticationToken(userDetails,token,null);
 			//Detail Set
 			usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 			//Set Authentication

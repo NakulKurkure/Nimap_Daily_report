@@ -1,21 +1,25 @@
 package com.springrestapi.payload;
 
 
+
 public class JwtAuthRequest {
 
+
 	//Consider Email as a Username
-	private String userName;
+	private String username;
 	private String password;
+	
+	
 	public String getUsername() {
-		return userName;
+		return username;
 	}
 	public JwtAuthRequest(String username, String password) {
 		super();
-		this.userName = username;
+		this.username = username;
 		this.password = password;
 	}
 	public void setUsername(String username) {
-		this.userName = username;
+		this.username = username;
 	}
 	public String getPassword() {
 		return password;

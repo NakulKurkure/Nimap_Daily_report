@@ -22,12 +22,7 @@ import com.springrestapi.repo.UserRepo;
 @Service
 public class UserService {
 
-	public UserService(UserRepo entity_repository, PasswordEncoder passwordEncoder, ModelMapper modelmapper) {
-		super();
-		this.entity_repository = entity_repository;
-		this.passwordEncoder = new BCryptPasswordEncoder();
-		this.modelmapper = modelmapper;
-	}
+	
 
 
 
