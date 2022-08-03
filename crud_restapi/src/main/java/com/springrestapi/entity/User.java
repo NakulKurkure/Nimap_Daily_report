@@ -1,7 +1,5 @@
 package com.springrestapi.entity;
 
-import java.util.Collection;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,32 +8,25 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-import org.springframework.lang.NonNull;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-//import org.springframework.security.core.GrantedAuthority;
-//import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
-@Where(clause ="is_active=true")
-@SQLDelete(sql="UPDATE USERS SET is_active=false WHERE id=?" )
-@Table(name="users")
-public class User implements UserDetails{
+@Where(clause = "is_active=true")
+//
+@SQLDelete(sql = "UPDATE USERS SET is_active=false WHERE id=?")
+@Table(name = "users")
+public class User {
 
 	@Id
 	@GeneratedValue
 	private int id;
 	private String email;
-	
-	@Column(name="username")
-	@NonNull
+
+	@Column(name = "username")
+
 	private String username;
 
-	@JsonIgnore
 	private String password;
-	private Boolean isActive=true;
+	private Boolean isActive = true;
 
 	public User(int id, String email, String userName, String password, Boolean isActive) {
 		super();
@@ -78,7 +69,6 @@ public class User implements UserDetails{
 		this.id = id;
 	}
 
-
 	public User() {
 		super();
 //		 TODO Auto-generated constructor stub
@@ -92,7 +82,14 @@ public class User implements UserDetails{
 		this.email = email;
 	}
 
-	@Override
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 	public String getPassword() {
 		return password;
 	}
@@ -100,42 +97,5 @@ public class User implements UserDetails{
 	public void setPassword(String password) {
 		this.password = password;
 	}
-//
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getUsername() {
-		// TODO Auto-generated method stub
-		return this.getEmail();
-	}
-
-	@Override
-	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
 
 }

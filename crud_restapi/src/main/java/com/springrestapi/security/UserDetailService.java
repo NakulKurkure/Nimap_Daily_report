@@ -2,6 +2,8 @@ package com.springrestapi.security;
 
 
 
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,7 +18,7 @@ import com.springrestapi.repo.UserRepo;
 //Authentication starts from UserDetailService
 public class UserDetailService implements UserDetailsService{
 
-
+	@Autowired
 	private UserRepo userRepo;
 	
 	@Autowired
@@ -27,9 +29,9 @@ public class UserDetailService implements UserDetailsService{
 	
 
 		//loading user from database by Username
-		User user=this.userRepo.findByUsername(username);
+		User user=userRepo.findByUsername(username);
     
-        return user;
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), new ArrayList<>());
 
 }
 

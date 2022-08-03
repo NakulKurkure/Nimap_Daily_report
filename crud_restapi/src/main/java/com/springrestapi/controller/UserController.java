@@ -23,7 +23,7 @@ import com.springrestapi.repo.UserRepo;
 import com.springrestapi.service.UserService;
 
 @RestController
-@RequestMapping("/regi")
+@RequestMapping("/user")
 public class UserController {
 
 
@@ -34,15 +34,6 @@ private UserService userService;
 
 
 
-		@PostMapping
-		public ResponseEntity<?> add(@RequestBody UserDto entityDto)
-		{
-			UserDto entitydto=this.userService.add(entityDto);
-
-			return new ResponseEntity<>(new SuccessResponseDto("success", "success", entitydto),HttpStatus.ACCEPTED);
-//			return this.entity_service.add(entitydto);
-
-		}
 
 		@GetMapping
 		//ResponseEntity represents the whole HTTP response: status code, headers, and body.

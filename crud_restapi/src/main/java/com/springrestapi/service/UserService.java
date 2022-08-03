@@ -22,10 +22,6 @@ import com.springrestapi.repo.UserRepo;
 @Service
 public class UserService {
 
-	
-
-
-
 	@Autowired
 	private UserRepo entity_repository;
 
@@ -38,7 +34,7 @@ public class UserService {
 	public UserDto add(UserDto entityDto)
 	{
 		//convert dto to User
-		User user=this.dtoToUser(entityDto);
+		User user= this.dtoToUser(entityDto);
 		//save to database
 		String password=passwordEncoder.encode(user.getPassword());
 		user.setPassword(password);
@@ -48,6 +44,7 @@ public class UserService {
 		return this.userDto(entity1);
 
 	}
+
 
 	public UserDto getid(Integer id) {
 
@@ -65,7 +62,10 @@ public class UserService {
 		User user= entity_repository.findById(id).orElseThrow(()->new ResourseNotFoundException("Not Found"+id));
 		//conversion of User to dto
 		user.setEmail(userdto.getEmail());
-		user.setPassword(userdto.getPassword());
+		
+		String password=passwordEncoder.encode(userdto.getPassword());
+		user.setPassword(password);
+
 		user.setUserName(userdto.getUserName());
 
 		User updateUser=this.entity_repository.save(user);

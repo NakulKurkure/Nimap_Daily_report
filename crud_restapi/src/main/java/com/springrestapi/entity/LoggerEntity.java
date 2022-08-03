@@ -9,12 +9,16 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
 //import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 @Entity
 @Table(name="logger")
+//@SQLDelete(sql = "UPDATE logger  SET is_active=false WHERE token=?")
 public class LoggerEntity implements Serializable{
 
 	@Id
@@ -24,17 +28,32 @@ public class LoggerEntity implements Serializable{
 	@Column(name = "token", length = 512)
 	private String token;
 
+	private Boolean isActive=true;
+
 	
-	
-public LoggerEntity(int id, String token, User userId, Date createdAt, Date expireAt) {
+
+
+public LoggerEntity(int id, String token, Boolean isActive, User userId, Date createdAt, Date expireAt) {
 		super();
 		this.id = id;
 		this.token = token;
+		this.isActive = isActive;
 		this.userId = userId;
-		CreatedAt = createdAt;
+		this.CreatedAt = createdAt;
 		this.expireAt = expireAt;
 	}
 
+
+
+public Boolean getIsActive() {
+		return isActive;
+	}
+
+
+
+	public void setIsActive(Boolean isActive) {
+		this.isActive = isActive;
+	}
 
 
 public String getToken() {
@@ -47,27 +66,21 @@ public String getToken() {
 		this.token = token;
 	}
 
-	//	@JoinColumn(name="user_id")
+	
 	@OneToOne(fetch = FetchType.LAZY)
 	private User userId;
 	
+	@CreationTimestamp
 	private Date CreatedAt;
 	
+	
+
 	private Date expireAt;
 	
 	public LoggerEntity() {
 		super();
 			}
 
-	
-
-	public LoggerEntity(int id, User userId, Date createdAt, Date expireAt) {
-		super();
-		this.id = id;
-		this.userId = userId;
-		CreatedAt = createdAt;
-		this.expireAt = expireAt;
-	}
 
 
 

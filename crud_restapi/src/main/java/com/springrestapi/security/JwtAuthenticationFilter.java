@@ -82,8 +82,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		//Is value in token or not check/////////////////////in whatever api heats then always check
 		if(username!=null && SecurityContextHolder.getContext().getAuthentication()==null)
 		{
+			
+		
 			UserDetails userDetails=this.userDetailService.loadUserByUsername(username);
-
+System.out.print(userDetails);
 			
 			//validate
 			if(this.jwtTokenUtil.validateToken(token, userDetails))

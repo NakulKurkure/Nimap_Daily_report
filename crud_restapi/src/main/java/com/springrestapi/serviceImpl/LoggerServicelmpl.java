@@ -1,5 +1,9 @@
 package com.springrestapi.serviceImpl;
 
+
+
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -8,7 +12,7 @@ import com.springrestapi.dto.LoggerDto;
 import com.springrestapi.entity.LoggerEntity;
 import com.springrestapi.entity.User;
 import com.springrestapi.repo.LoggerRepo;
-import com.springrestapi.repo.UserRepo;
+
 import com.springrestapi.service.LoggerServiceInterface;
 
 
@@ -30,6 +34,17 @@ public class LoggerServicelmpl implements LoggerServiceInterface{
 
 		
 	
+	}
+
+
+	@Transactional
+	@Override
+	public void logout(String token) {
+		// TODO Auto-generated method stub
+		
+		String userToken=token.substring(7);
+		this.loggerRepo.removeByToken(userToken);
+		
 	}
 
 }

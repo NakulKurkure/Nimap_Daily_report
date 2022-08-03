@@ -50,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 //				// dont authenticate this particular request
 		.authorizeHttpRequests()
 		//Url Public  (/auth/login)
-		.antMatchers("/auth/login","/regi")
+		.antMatchers("/auth/login","/auth/register")
 		
 		.permitAll()
 		
