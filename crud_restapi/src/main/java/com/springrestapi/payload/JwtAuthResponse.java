@@ -1,17 +1,13 @@
 package com.springrestapi.payload;
 
-import java.io.Serializable;
 
-public class JwtAuthResponse{
-
+public class JwtAuthResponse {
 
 	private String token;
 
 	public String getToken() {
 		return token;
 	}
-
-	
 
 	public void setToken(String token) {
 		this.token = token;

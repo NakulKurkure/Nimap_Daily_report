@@ -1,15 +1,11 @@
 package com.springrestapi.payload;
 
 
-
 public class JwtAuthRequest {
-
 
 	//Consider Email as a Username
 	private String username;
 	private String password;
-	
-	
 	public String getUsername() {
 		return username;
 	}

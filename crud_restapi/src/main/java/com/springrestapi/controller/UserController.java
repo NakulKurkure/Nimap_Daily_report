@@ -30,10 +30,20 @@ public class UserController {
 @Autowired
 private UserService userService;
 
+@Autowired
+private UserRepo UsersRepo;
 
 
 
+		@PostMapping
+		public ResponseEntity<?> add(@RequestBody UserDto entityDto)
+		{
+			UserDto entitydto=this.userService.add(entityDto);
 
+			return new ResponseEntity<>(new SuccessResponseDto("success", "success", entitydto),HttpStatus.ACCEPTED);
+//			return this.entity_service.add(entitydto);
+
+		}
 
 		@GetMapping
 		//ResponseEntity represents the whole HTTP response: status code, headers, and body.

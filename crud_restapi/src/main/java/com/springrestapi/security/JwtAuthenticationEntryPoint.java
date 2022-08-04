@@ -11,8 +11,6 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 //
 @Component
-// @Component indicates that a class might be a candidate for creating a bean.
-//@Component is an annotation that allows Spring to automatically detect our custom beans.
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint{
 //
 	@Override

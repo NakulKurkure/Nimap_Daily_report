@@ -4,8 +4,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 //import com.springrestapi.dto.EntityDto;
@@ -26,25 +24,19 @@ public class UserService {
 	private UserRepo entity_repository;
 
 	@Autowired
-	private PasswordEncoder passwordEncoder;
-	
-	@Autowired
 	private ModelMapper modelmapper;
 
 	public UserDto add(UserDto entityDto)
 	{
 		//convert dto to User
-		User user= this.dtoToUser(entityDto);
+		User user=this.dtoToUser(entityDto);
 		//save to database
-		String password=passwordEncoder.encode(user.getPassword());
-		user.setPassword(password);
-
+		System.out.print(user.getPassword());
 		User entity1=this.entity_repository.save(user);
 
 		return this.userDto(entity1);
 
 	}
-
 
 	public UserDto getid(Integer id) {
 
@@ -62,10 +54,7 @@ public class UserService {
 		User user= entity_repository.findById(id).orElseThrow(()->new ResourseNotFoundException("Not Found"+id));
 		//conversion of User to dto
 		user.setEmail(userdto.getEmail());
-		
-		String password=passwordEncoder.encode(userdto.getPassword());
-		user.setPassword(password);
-
+		user.setPassword(userdto.getPassword());
 		user.setUserName(userdto.getUserName());
 
 		User updateUser=this.entity_repository.save(user);
