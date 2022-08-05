@@ -1,37 +1,52 @@
 package com.springrestapi.entity;
 
-public class UserRoleId {
+import java.io.Serializable;
 
-	private User user;
+import javax.persistence.ManyToOne;
+
+public class UserRoleId implements Serializable{
+
+	private static final long serialVersionUID = 1L;
+
+	@ManyToOne
+	private User users;
 	
+	@ManyToOne
+	private RoleEntity roles;
+	
+	
+	public UserRoleId(User user, RoleEntity roles) {
+		super();
+		this.users = user;
+		this.roles = roles;
+	}
+
+
+	public User getUser() {
+		return users;
+	}
+
+
+	public void setUser(User user) {
+		this.users = user;
+	}
+
+
+	public RoleEntity getRoleEntity() {
+		return roles;
+	}
+
+
+	public void setRoleEntity(RoleEntity roles) {
+		this.roles = roles;
+	}
+
+
 	public UserRoleId() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-	public RoleEntity getRoleEntity() {
-		return roleEntity;
-	}
-
-	public void setRoleEntity(RoleEntity roleEntity) {
-		this.roleEntity = roleEntity;
-	}
-
-	public UserRoleId(User user, RoleEntity roleEntity) {
-		super();
-		this.user = user;
-		this.roleEntity = roleEntity;
-	}
-
-	private RoleEntity roleEntity;
 	
 	
 	

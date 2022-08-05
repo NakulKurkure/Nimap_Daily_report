@@ -1,23 +1,43 @@
 package com.springrestapi.entity;
 
+
+
 import javax.persistence.AssociationOverride;
 import javax.persistence.AssociationOverrides;
+import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="user_role")
-@AssociationOverrides({@AssociationOverride(name="pk_user",joinColumns = @JoinColumn(name="user_id")),@AssociationOverride(name="pk_role",joinColumns = @JoinColumn(name="role_id"))})
+@AssociationOverrides({@AssociationOverride(name="pk.users",joinColumns = @JoinColumn(name="user_id")),@AssociationOverride(name="pk.roles",joinColumns = @JoinColumn(name="role_id"))})
 public class UserRoleEntity {
 
-	UserRoleId userRoleId=new UserRoleId();
+	@EmbeddedId
+	UserRoleId pk=new UserRoleId();
 	
+	public UserRoleEntity(UserRoleId pk, boolean isActive) {
+		super();
+		this.pk = pk;
+		this.isActive = isActive;
+	}
+	
+	public UserRoleId getPk() {
+		return pk;
+	}
+
+	public void setPk(UserRoleId pk) {
+		this.pk = pk;
+	}
+
 	public UserRoleEntity(boolean isActive) {
 		super();
 		this.isActive = isActive;
 	}
 
+	@Column(name="is_active")
 	private boolean isActive=true;
 
 	public boolean isActive() {

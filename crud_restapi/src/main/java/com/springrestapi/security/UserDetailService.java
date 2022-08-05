@@ -1,13 +1,17 @@
 package com.springrestapi.security;
 
+
+
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.springrestapi.entity.User;
-import com.springrestapi.exception.ResourseNotFoundException;
 import com.springrestapi.repo.UserRepo;
 
 @Service
@@ -16,20 +20,25 @@ public class UserDetailService implements UserDetailsService{
 
 	@Autowired
 	private UserRepo userRepo;
-	@Override
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	//authenticate user
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		// TODO Auto-generated method stub
+	
 
 		//loading user from database by Username
-		User user=this.userRepo.findByEmail(username).orElseThrow(()->new ResourseNotFoundException("Not Found.."+"yesss.."));
+		User user=userRepo.findByUsername(username);
+    
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), new ArrayList<>());
 
-System.out.print("yes");
-		return user;
+}
 
+	public Boolean comparePassword(String password, String hashPassword) {
+
+		return passwordEncoder.matches(password, hashPassword);
 
 	}
-
-
 
 }

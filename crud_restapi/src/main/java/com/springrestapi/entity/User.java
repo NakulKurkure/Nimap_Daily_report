@@ -1,41 +1,57 @@
 package com.springrestapi.entity;
 
-import java.util.Collection;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-import org.springframework.lang.NonNull;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-//import org.springframework.security.core.GrantedAuthority;
-//import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
-@Where(clause ="is_active=true")
-@SQLDelete(sql="UPDATE USERS SET is_active=false WHERE id=?" )
-@Table(name="users")
-public class User implements UserDetails{
+@Where(clause = "is_active=true")
+@SQLDelete(sql = "UPDATE USERS SET is_active=false WHERE id=?")
+@Table(name = "users")
+public class User {
 
 	@Id
 	@GeneratedValue
 	private int id;
+	public List<UserRoleEntity> getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(List<UserRoleEntity> userRole) {
+		this.userRole = userRole;
+	}
+
 	private String email;
-	@NonNull
-	private String userName;
+
+	@Column(name = "username")
+
+	private String username;
 
 	private String password;
-	private Boolean isActive=true;
+	private Boolean isActive = true;
+	
+	//The FetchType. LAZY tells Hibernate to only fetch the related entities from the database when you use the relationship.
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "pk.users",cascade = CascadeType.ALL)
+	private List<UserRoleEntity> userRole;
+	
 
 	public User(int id, String email, String userName, String password, Boolean isActive) {
 		super();
 		this.id = id;
 		this.email = email;
-		this.userName = userName;
+		this.username = userName;
 		this.password = password;
 		this.isActive = isActive;
 	}
@@ -52,26 +68,19 @@ public class User implements UserDetails{
 		return id;
 	}
 
-	public User(int id, String email, String userName, String password) {
-		super();
-		this.id = id;
-		this.email = email;
-		this.userName = userName;
-		this.password = password;
-	}
+	
 
 	public String getUserName() {
-		return userName;
+		return username;
 	}
 
 	public void setUserName(String userName) {
-		this.userName = userName;
+		this.username = userName;
 	}
 
 	public void setId(int id) {
 		this.id = id;
 	}
-
 
 	public User() {
 		super();
@@ -86,7 +95,14 @@ public class User implements UserDetails{
 		this.email = email;
 	}
 
-	@Override
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 	public String getPassword() {
 		return password;
 	}
@@ -94,42 +110,5 @@ public class User implements UserDetails{
 	public void setPassword(String password) {
 		this.password = password;
 	}
-//
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getUsername() {
-		// TODO Auto-generated method stub
-		return this.email;
-	}
-
-	@Override
-	public boolean isAccountNonExpired() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public boolean isAccountNonLocked() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public boolean isCredentialsNonExpired() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
 
 }

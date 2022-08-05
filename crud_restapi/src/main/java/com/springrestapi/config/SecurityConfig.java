@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+//import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -19,8 +20,8 @@ import com.springrestapi.security.JwtAuthenticationEntryPoint;
 import com.springrestapi.security.JwtAuthenticationFilter;
 import com.springrestapi.security.UserDetailService;
 
-
 //Basic Authentication  first call UserDeatailService
+//@Configuration annotation which indicates that the class has @Bean definition methods
 @Configuration
 @EnableWebSecurity
 
@@ -37,8 +38,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	private JwtAuthenticationFilter jwtAuthenticationFilter;
 
 
-
-
 	@Override
 	//Basic Authentication Configure
 	protected void configure(HttpSecurity http) throws Exception {
@@ -51,11 +50,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 //				// dont authenticate this particular request
 		.authorizeHttpRequests()
 		//Url Public  (/auth/login)
-		.antMatchers("/auth/login")
+		.antMatchers("/auth/login","/auth/register")
+		
 		.permitAll()
+		
 		.anyRequest()
 		.authenticated()
 		.and()
+		
 		.exceptionHandling()
 		//jwtAuthenticationEntryPoint set
 		.authenticationEntryPoint(this.jwtAuthenticationEntryPoint)
@@ -75,12 +77,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	}
 
 	@Override
+	
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		// TODO Auto-generated method stub
+		
 		auth.userDetailsService(this.userDetailService).passwordEncoder(passwordEncoder());
 
-	}
+	} 
 
+	
 	//password stored backend form BCryptPasswordEncoder
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -88,14 +92,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	}
 
 
-	//Bean Declare for LOgin For Authenticate Password
+	//Bean Declare for Login For Authenticate Password
 	//Get Bean
-	@Bean
+	
 	@Override
+	@Bean
 	public AuthenticationManager authenticationManagerBean() throws Exception {
 
 		return super.authenticationManagerBean();
 	}
 
 
+	
 }
