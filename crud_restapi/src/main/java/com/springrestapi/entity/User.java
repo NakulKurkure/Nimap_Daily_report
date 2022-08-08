@@ -43,19 +43,21 @@ public class User {
 	private String password;
 	private Boolean isActive = true;
 	
+	public User(int id, String email, String username, String password, Boolean isActive,
+			List<UserRoleEntity> userRole) {
+		super();
+		this.id = id;
+		this.email = email;
+		this.username = username;
+		this.password = password;
+		this.isActive = isActive;
+		this.userRole = userRole;
+	}
+
 	//The FetchType. LAZY tells Hibernate to only fetch the related entities from the database when you use the relationship.
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "pk.users",cascade = CascadeType.ALL)
 	private List<UserRoleEntity> userRole;
 	
-
-	public User(int id, String email, String userName, String password, Boolean isActive) {
-		super();
-		this.id = id;
-		this.email = email;
-		this.username = userName;
-		this.password = password;
-		this.isActive = isActive;
-	}
 
 	public Boolean getIsActive() {
 		return isActive;

@@ -2,13 +2,10 @@ package com.springrestapi.payload;
 
 public class UserRoleRequest {
 
+	
 	private int userId;
 	
 	private int roleId;
-	public UserRoleRequest() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 
 	public UserRoleRequest(int userId, int roleId) {
 		super();
@@ -32,6 +29,10 @@ public class UserRoleRequest {
 		this.roleId = roleId;
 	}
 
-	
+	public UserRoleRequest() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	
 }

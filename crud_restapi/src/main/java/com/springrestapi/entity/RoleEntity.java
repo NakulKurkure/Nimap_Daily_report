@@ -32,6 +32,7 @@ public class RoleEntity implements Serializable{
 	@GeneratedValue
 	private int id;
 	
+	
 	@CreationTimestamp
 	private Date created_At;
 	
@@ -42,7 +43,7 @@ public class RoleEntity implements Serializable{
 		this.created_At = created_At;
 		this.Updated_At = updated_At;
 		this.roleName = roleName;
-		this.userRole = userRole;
+//		this.userRole = userRole;
 		this.isActive = isActive;
 	}
 

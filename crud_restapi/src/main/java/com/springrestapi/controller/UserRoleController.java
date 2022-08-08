@@ -10,56 +10,71 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.app.exceptionsHandling.ResourceNotFoundException;
 import com.springrestapi.entity.RoleEntity;
 import com.springrestapi.entity.User;
-import com.springrestapi.entity.UserRoleEntity;
-import com.springrestapi.entity.UserRoleId;
 import com.springrestapi.errordto.SuccessResponseDto;
-import com.springrestapi.exception.Errordetails;
 import com.springrestapi.payload.UserRoleRequest;
 import com.springrestapi.repo.RoleRepo;
 import com.springrestapi.repo.UserRepo;
 import com.springrestapi.service.UserRoleServiceInterface;
 
 @RestController
-@RequestMapping("/assign")
+@RequestMapping("/assignrole")
 public class UserRoleController {
-
-	private UserRepo userRepo;
-	private UserRoleId userRoleId;
 
 	@Autowired
 	private UserRoleServiceInterface userRoleServiceInterface;
 
-	private RoleRepo roleRepo;
-	private RoleEntity roleEntity;
-	@Autowired
-	private UserRoleEntity userRoleEntity;
-	
-	@PostMapping("/role")
-	public ResponseEntity<?> assignRole(@RequestBody UserRoleRequest userRoleRequest )
+	@PostMapping
+	public ResponseEntity<?> add(@RequestBody UserRoleRequest userRoleRequest)
 	{
-	
-		try
-		{
-			
-			Optional<User> user=userRepo.findById(userRoleRequest.getUserId());
-			
-//			System.out.print(user);
-			Optional<RoleEntity> roleEntity=roleRepo.findById(userRoleRequest.getRoleId());			
-//			System.out.print(roleEntity);
-			return this.userRoleServiceInterface.assignRole(user,roleEntity);
+//		try
+//		{
+//			
+//		
+//		Optional<User> user=userRepo.findById(userRoleRequest.getUserId());
+//		
+//		Optional<RoleEntity> roleEntity=roleRepo.findById(userRoleRequest.getRoleId());
+//		
+//		this.userRoleServiceInterface.add(user,roleEntity);
+//		}catch(Exception e)
+//		{
+//			System.out.print("Invalid UserId and RoleId.....");
+//		}
+//		
 		
-		}catch(Exception e)
-		{
-			System.out.println("Invalid UserId and RoleId");
-			
-		}
+		userRoleServiceInterface.add(userRoleRequest);
+		
 		
 		return new ResponseEntity<>(new SuccessResponseDto("Success", "Success", userRoleRequest),HttpStatus.ACCEPTED);
-		
-		
 	}
+	
+	
+	
+	
+//	@Autowired
+//	private UserRoleServiceInterface userRoleServiceInterface;
+//	
+//	@PostMapping
+//	public UserRoleEntity add(@RequestBody UserRoleEntity userRoleEntity) {
+//		
+//		
+//		return this.userRoleServiceInterface.add(userRoleEntity);
+//		
+//	}
+//	
+//	public UserRoleEntity update(@RequestBody UserRoleEntity userRoleEntity,@PathVariable int id)
+//	{
+//		userRoleEntity.setUserId(id);
+//	}
+//	
+//	
+//	@DeleteMapping("/{id}")
+//	public void delete(@PathVariable int id)
+//	{
+//		this.userRoleServiceInterface.delete(id);
+//	}
+//	
+//	
 	
 }
