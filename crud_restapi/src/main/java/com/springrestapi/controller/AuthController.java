@@ -84,6 +84,7 @@ public class AuthController {
 			
 			System.out.println("ssss  " +request.getUsername());
 			User user=userRepo.findByUsername(request.getUsername());
+			System.out.println("HEHHEHE  " +user);
 			System.out.println("sppppp  " +request.getUsername());
 			System.out.println("HEHHEHE  " +user);
 			//convert password to hash
@@ -94,7 +95,7 @@ public class AuthController {
 				//get Token
 				String token=jwtTokenUtil.generateToken(user);
 
-				
+//				System.out.print(token);
 //			//take LoggerDto and set Token
 				LoggerDto logger = new LoggerDto();
 				logger.setToken(token);

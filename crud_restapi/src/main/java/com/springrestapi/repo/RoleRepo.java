@@ -1,5 +1,7 @@
 package com.springrestapi.repo;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,5 +15,6 @@ public interface RoleRepo extends JpaRepository<RoleEntity, Integer>{
 	RoleEntity save(RoleEntity roleEntity);
 
 	Page<?> findByRoleName(String search, Pageable pageable, Class<RoleEntity> class1);
+
 
 }

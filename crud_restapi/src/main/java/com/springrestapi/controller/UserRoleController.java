@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,55 +27,23 @@ public class UserRoleController {
 	private UserRoleServiceInterface userRoleServiceInterface;
 
 	@PostMapping
-	public ResponseEntity<?> add(@RequestBody UserRoleRequest userRoleRequest)
+	public ResponseEntity<?> add( @RequestBody UserRoleRequest userRoleRequest)
 	{
-//		try
-//		{
-//			
-//		
-//		Optional<User> user=userRepo.findById(userRoleRequest.getUserId());
-//		
-//		Optional<RoleEntity> roleEntity=roleRepo.findById(userRoleRequest.getRoleId());
-//		
-//		this.userRoleServiceInterface.add(user,roleEntity);
-//		}catch(Exception e)
-//		{
-//			System.out.print("Invalid UserId and RoleId.....");
-//		}
-//		
+		try
+		{
+			
 		
 		userRoleServiceInterface.add(userRoleRequest);
 		
-		
 		return new ResponseEntity<>(new SuccessResponseDto("Success", "Success", userRoleRequest),HttpStatus.ACCEPTED);
+		}catch(Exception e)
+		{
+			System.out.print("Invalid "+e);
+		}
+		return new ResponseEntity<>("failed",HttpStatus.BAD_REQUEST);
+		
+		
 	}
 	
-	
-	
-	
-//	@Autowired
-//	private UserRoleServiceInterface userRoleServiceInterface;
-//	
-//	@PostMapping
-//	public UserRoleEntity add(@RequestBody UserRoleEntity userRoleEntity) {
-//		
-//		
-//		return this.userRoleServiceInterface.add(userRoleEntity);
-//		
-//	}
-//	
-//	public UserRoleEntity update(@RequestBody UserRoleEntity userRoleEntity,@PathVariable int id)
-//	{
-//		userRoleEntity.setUserId(id);
-//	}
-//	
-//	
-//	@DeleteMapping("/{id}")
-//	public void delete(@PathVariable int id)
-//	{
-//		this.userRoleServiceInterface.delete(id);
-//	}
-//	
-//	
 	
 }
