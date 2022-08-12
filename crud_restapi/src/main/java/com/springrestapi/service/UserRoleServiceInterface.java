@@ -1,6 +1,9 @@
 package com.springrestapi.service;
 
 
+import java.util.List;
+
+import com.springrestapi.entity.UserRoleEntity;
 import com.springrestapi.payload.UserRoleRequest;
 
 public interface UserRoleServiceInterface{
@@ -10,6 +13,10 @@ public interface UserRoleServiceInterface{
 //	void add(Optional<User> user, Optional<RoleEntity> roleEntity);
 
 	void add(UserRoleRequest userRoleRequest);
+
+	void editRole(UserRoleRequest userRoleRequest);
+
+ Iterable<UserRoleEntity> getAll();
 
 
 

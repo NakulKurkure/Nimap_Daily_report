@@ -1,15 +1,24 @@
 package com.springrestapi.entity;
 
-import java.io.Serializable;
-import java.util.Optional;
+//import java.io.Serializable;
+//import java.util.Optional;
 
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 
-@Embeddable
-public class UserRoleId implements Serializable{
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
-	
+
+//import com.fasterxml.jackson.annotation.JsonBackReference;
+//import com.fasterxml.jackson.annotation.JsonIgnore;
+//import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+//import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@Embeddable
+//@JsonIgnoreProperties
+//@SuppressWarnings("serial")
+public class UserRoleId implements java.io.Serializable{
+
 
 	public User getUsers() {
 		return users;
@@ -21,13 +30,16 @@ public class UserRoleId implements Serializable{
 		this.roles = roleEntityId;
 	}
 
+
 	public void setUsers(User users) {
 		this.users = users;
 	}
 
+
 	public RoleEntity getRoles() {
 		return roles;
 	}
+
 
 	public void setRoles(RoleEntity roles) {
 		this.roles = roles;
@@ -36,6 +48,8 @@ public class UserRoleId implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@ManyToOne
+//	@JsonIgnore
+@JsonBackReference
 	private User users;
 	
 	public UserRoleId() {
@@ -44,11 +58,10 @@ public class UserRoleId implements Serializable{
 	}
 
 	@ManyToOne
-	private RoleEntity roles;
-	
-	
+//@JsonIgnore
 
-	
+	@JsonBackReference
+	private RoleEntity roles;
 	
 	
 }

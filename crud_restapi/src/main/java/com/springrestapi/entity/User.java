@@ -17,6 +17,8 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Where(clause = "is_active=true")
 @SQLDelete(sql = "UPDATE USERS SET is_active=false WHERE id=?")
@@ -26,6 +28,7 @@ public class User {
 	@Id
 	@GeneratedValue
 	private int id;
+	
 	public List<UserRoleEntity> getUserRole() {
 		return userRole;
 	}
@@ -40,6 +43,7 @@ public class User {
 
 	private String username;
 
+//	@JsonProperty(value = "user_password")
 	private String password;
 	private Boolean isActive = true;
 	
@@ -56,6 +60,7 @@ public class User {
 
 	//The FetchType. LAZY tells Hibernate to only fetch the related entities from the database when you use the relationship.
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "pk.users",cascade = CascadeType.ALL)
+@JsonManagedReference	
 	private List<UserRoleEntity> userRole;
 	
 

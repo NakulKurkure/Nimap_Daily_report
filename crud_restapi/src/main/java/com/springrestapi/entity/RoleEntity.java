@@ -16,6 +16,8 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Where(clause = "is_active=true")
 @SQLDelete(sql="UPDATE ROLES SET is_active=false WHERE id=?")
@@ -77,7 +79,6 @@ public class RoleEntity implements Serializable{
 		this.roleName = roleName;
 	}
 
-
 	public List<UserRoleEntity> getUserRole() {
 		return userRole;
 	}
@@ -96,6 +97,7 @@ public class RoleEntity implements Serializable{
 	
 	
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "pk.roles",cascade = CascadeType.ALL)
+	@JsonManagedReference
 	private List<UserRoleEntity> userRole;
 	
 	public RoleEntity() {
