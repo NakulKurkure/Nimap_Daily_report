@@ -16,7 +16,9 @@ public interface UserRoleServiceInterface{
 
 	void editRole(UserRoleRequest userRoleRequest);
 
- Iterable<UserRoleEntity> getAll();
+ List<UserRoleEntity> getAll();
+
+void delete(UserRoleRequest userRoleRequest);
 
 
 

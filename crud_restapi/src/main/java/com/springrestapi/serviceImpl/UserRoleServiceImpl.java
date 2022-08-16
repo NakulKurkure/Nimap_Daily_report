@@ -3,6 +3,7 @@ package com.springrestapi.serviceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -97,13 +98,33 @@ public class UserRoleServiceImpl implements UserRoleServiceInterface{
 
 
 	@Override
-	public Iterable<UserRoleEntity> getAll() {
+	public List<UserRoleEntity> getAll() {
 	
-		Iterable<UserRoleEntity> role= this.userRoleRepo.findAll();
+		List<UserRoleEntity> role= this.userRoleRepo.findAll();
 		return role;
 	
 		
 		}
+
+
+	@Override
+	public void delete(UserRoleRequest userRoleRequest) {
+		
+//		ArrayList<UserRoleEntity> userRoles=new ArrayList<>();
+		Optional<User> userId=this.userRepo.findById(userRoleRequest.getUserId());
+		Optional<RoleEntity> roleEntityId=this.roleRepo.findById(userRoleRequest.getRoleId());
+		
+//		UserRoleEntity userRoleEntity=new UserRoleEntity();
+//		UserRoleId userRoleId=new UserRoleId(userId, roleEntityId);
+//		userRoleEntity.setPk(userRoleId);
+//		userRoles.add(userRoleEntity);
+//		userRoleRepo.delete(userRoleEntity);
+		userRoleRepo.deleteUserRole(userRoleRequest.getUserId(), userRoleRequest.getRoleId());
+		
+//		this.userRoleRepo.delete(userRoleRequest);
+		
+		
+	}
 	
 
 }
