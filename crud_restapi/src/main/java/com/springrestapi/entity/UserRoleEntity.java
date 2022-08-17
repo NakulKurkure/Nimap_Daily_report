@@ -13,13 +13,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
 
 
 @Entity
+//Where clause to add to the element Entity or target entity of a collection.
 @Where(clause = "is_active=true")
+// @SQLDelete annotation to override the delete command.
+@SQLDelete(sql="UPDATE user_role u SET is_active=false WHERE u.role_id=? AND u.user_id=?")
 @Table(name="user_role")
 
 //Overridden mapping for used @AssociationOverrides
@@ -28,9 +32,7 @@ import org.hibernate.annotations.Where;
 
 public class UserRoleEntity implements Serializable{
 
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = 1L;
 	
 	@CreationTimestamp
@@ -40,22 +42,22 @@ public class UserRoleEntity implements Serializable{
 	private Date Updated_At;
 
 	@Column(name="is_active")
-	private boolean is_Active=true;
+	private boolean isActive=true;
 	
 	//Composite primary key :-Combination of two or more columns to form of primary key.
 	@EmbeddedId
 	//@JsonManagedReference
 	private UserRoleId pk=new UserRoleId();
 
-	public UserRoleEntity(Date created_At, Date updated_At, boolean is_Active, UserRoleId pk) {
+	public UserRoleEntity(Date created_At, Date updated_At, boolean isActive, UserRoleId pk) {
 		super();
 		this.created_At = created_At;
 		Updated_At = updated_At;
-		this.is_Active = is_Active;
+		this.isActive = isActive;
 		this.pk = pk;
 	}
 
-
+	@CreationTimestamp
 	public Date getCreated_At() {
 		return created_At;
 	}
@@ -65,7 +67,7 @@ public class UserRoleEntity implements Serializable{
 		this.created_At = created_At;
 	}
 
-
+	@UpdateTimestamp
 	public Date getUpdated_At() {
 		return Updated_At;
 	}
@@ -76,13 +78,13 @@ public class UserRoleEntity implements Serializable{
 	}
 
 
-	public boolean isIs_Active() {
-		return is_Active;
+	public boolean isIsActive() {
+		return isActive;
 	}
 
 
-	public void setIs_Active(boolean is_Active) {
-		this.is_Active = is_Active;
+	public void setIs_Active(boolean isActive) {
+		this.isActive = isActive;
 	}
 
 

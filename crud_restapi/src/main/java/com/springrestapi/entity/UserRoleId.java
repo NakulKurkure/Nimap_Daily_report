@@ -16,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 //import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Embeddable
+//@Embeddable-whichever class fields we can whichever in other table class we can embedded. 
 //@Embeddable annotation to declare that a class will be embedded by other entities.
 //@JsonIgnoreProperties
 //@SuppressWarnings("serial")

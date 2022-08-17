@@ -8,29 +8,17 @@ import com.springrestapi.payload.UserRoleRequest;
 
 public interface UserRoleServiceInterface{
 
-//	void add(UserRoleRequest userRoleRequest);
 
-//	void add(Optional<User> user, Optional<RoleEntity> roleEntity);
 
 	void add(UserRoleRequest userRoleRequest);
 
-	void editRole(UserRoleRequest userRoleRequest);
+	void editUserRole(UserRoleRequest userRoleRequest);
 
  List<UserRoleEntity> getAll();
 
-void delete(UserRoleRequest userRoleRequest);
+void deleteUserRoles(UserRoleRequest userRoleRequest);
 
 
-
-//	void add(Optional<User> user, Optional<RoleEntity> roleEntity);
-
-//	void add(Optional<User> user, Optional<RoleEntity> roleEntity);
-
-//	ResponseEntity<?> assignRole(Optional<User> user, Optional<RoleEntity> roleEntity);
-
-//	UserRoleEntity add(UserRoleEntity userRoleEntity);
-//
-//	void delete(int id);
 
 	
 	

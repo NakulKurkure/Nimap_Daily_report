@@ -60,38 +60,41 @@ public class UserRoleController {
 			
 	}
 	 
-	@PutMapping("/{id}")//20   //userId-17  roleId - 15
-	public ResponseEntity<?> editRole(@RequestBody UserRoleRequest userRoleRequest,@PathVariable int id)//20
+	@PutMapping("/ab")  //userId-17  roleId - 15
+	public ResponseEntity<?> editRole(@RequestBody UserRoleRequest userRoleRequest)
 	{
 		try
 		{
 			
-			userRoleRequest.setRoleId(id);//20
-			this.userRoleServiceInterface.editRole(userRoleRequest);
+			this.userRoleServiceInterface.editUserRole(userRoleRequest);
 			return new ResponseEntity<>(new SuccessResponseDto("Success", "Success", userRoleRequest),HttpStatus.ACCEPTED);
 		}catch(Exception e)
 		{
-			return new ResponseEntity<>("failed",HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("Not Found",HttpStatus.NOT_FOUND);
 		}
-		
+//		
 		
 		
 	}
 	
 	
-	@DeleteMapping
-	public void delete(@RequestBody UserRoleRequest userRoleRequest)
+	@DeleteMapping("/ccc")
+	public ResponseEntity<?> delete(@RequestBody UserRoleRequest userRoleRequest)
 	{
 		
-			this.userRoleServiceInterface.delete(userRoleRequest);
+		try
+		{
 			
-		
+			this.userRoleServiceInterface.deleteUserRoles(userRoleRequest);
+			return new ResponseEntity<>(HttpStatus.OK);
+		}catch(Exception e)
+		{
+			System.out.print("Not Found...");
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	
 		
 	}
-	
-	
-	
-	
 	
 	
 	
