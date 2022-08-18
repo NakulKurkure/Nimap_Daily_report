@@ -19,6 +19,7 @@ import com.springrestapi.entity.UserRoleEntity;
 @Repository
 public interface UserRoleRepo extends JpaRepository<UserRoleEntity, Integer>{
 	
+//	We use @Transactional annotation when we create/update one more entity at the same time
 	@Transactional
 	//@Modifying annotation is used to enhance the @Query annotation 
 //	so that we can execute not only SELECT queries, but also INSERT, UPDATE, DELETE queries
@@ -26,6 +27,8 @@ public interface UserRoleRepo extends JpaRepository<UserRoleEntity, Integer>{
 	//Annotation to declare finder queries directly on repository methods.
 	//Annotate to repository methods
 	//value=Defines the JPA query to be executed 
+	//Configures whether the given query is a native one. Defaults to false.
+
 	@Query(value="UPDATE user_role u SET role_id=:role_id WHERE u.user_id=:user_id",nativeQuery = true)
 	void updateUserRole(@Param ("user_id") Integer user_id,@Param ("role_id") Integer  role_id);
 	

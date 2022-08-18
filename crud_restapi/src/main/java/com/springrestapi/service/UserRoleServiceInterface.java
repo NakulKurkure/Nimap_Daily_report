@@ -9,7 +9,6 @@ import com.springrestapi.payload.UserRoleRequest;
 public interface UserRoleServiceInterface{
 
 
-
 	void add(UserRoleRequest userRoleRequest);
 
 	void editUserRole(UserRoleRequest userRoleRequest);
