@@ -95,7 +95,7 @@ System.out.print(userDetails);
 			//Authentication Object
 				/////////////////////////////////////////
 
-			UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken=new UsernamePasswordAuthenticationToken(userDetails,token,null);
+			UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken=new UsernamePasswordAuthenticationToken(userDetails,token,userDetails.getAuthorities());
 			//Detail Set
 			usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 			//Set Authentication

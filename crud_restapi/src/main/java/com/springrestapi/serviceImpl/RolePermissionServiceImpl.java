@@ -1,9 +1,10 @@
 package com.springrestapi.serviceImpl;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+//import org.springframework.http.HttpStatus;
 //import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,7 @@ import com.springrestapi.entity.RoleEntity;
 import com.springrestapi.entity.RolePermissionEntity;
 import com.springrestapi.entity.RolePermissionId;
 import com.springrestapi.errordto.ResourceNotFoundException;
-import com.springrestapi.exception.Errordetails;
+//import com.springrestapi.exception.Errordetails;
 import com.springrestapi.exception.ResourseNotFoundException;
 import com.springrestapi.payload.RolePermissionRequest;
 import com.springrestapi.repo.PermissionRepo;
@@ -48,7 +49,7 @@ public class RolePermissionServiceImpl implements RolePermissionServiceInterface
 			rolePermissionRepo.saveAll(permissions);
 			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			
 			
 			System.out.print(e);
 			e.printStackTrace();
@@ -58,6 +59,41 @@ public class RolePermissionServiceImpl implements RolePermissionServiceInterface
 		}
 		
 		
+	}
+
+	@Override
+	public List<RolePermissionEntity> getAll() {
+		
+		
+		return this.rolePermissionRepo.findAll();
+	}
+
+	@Override
+	public void updateRolePermission(RolePermissionRequest rolePermissionRequest) {
+		
+		
+			RoleEntity roleEntity=this.roleRepo.findById(rolePermissionRequest.getRoleId()).get();
+			PermissionEntity permissionEntity=this.permissionRepo.findById(rolePermissionRequest.getPermissionId()).get();
+			
+			RolePermissionEntity rolePermissionEntity=new RolePermissionEntity();
+			RolePermissionId rolePermissionId=new RolePermissionId(roleEntity,permissionEntity);
+			rolePermissionEntity.setPk(rolePermissionId);
+			this.rolePermissionRepo.updateRolePermission(roleEntity.getId(),permissionEntity.getId());
+			
+		
+	}
+
+	@Override
+	public void deleteRolePermission(RolePermissionRequest rolePermissionRequest) {
+		// TODO Auto-generated method stub
+		
+		RoleEntity roleEntity=this.roleRepo.findById(rolePermissionRequest.getRoleId()).get();
+		PermissionEntity permissionEntity=this.permissionRepo.findById(rolePermissionRequest.getPermissionId()).get();
+		
+		RolePermissionEntity rolePermissionEntity=new RolePermissionEntity();
+		RolePermissionId rolePermissionId=new RolePermissionId(roleEntity,permissionEntity);
+		rolePermissionEntity.setPk(rolePermissionId);
+		rolePermissionRepo.delete(rolePermissionEntity);
 	}
 
 }
