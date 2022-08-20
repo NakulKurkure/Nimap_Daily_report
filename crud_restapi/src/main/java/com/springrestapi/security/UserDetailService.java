@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,9 +17,11 @@ import org.springframework.stereotype.Service;
 
 import com.springrestapi.entity.User;
 import com.springrestapi.repo.UserRepo;
+import com.springrestapi.service.RolePermissionServiceInterface;
 
 @Service
 //Authentication starts from UserDetailService
+//
 public class UserDetailService implements UserDetailsService {
 
 	@Autowired
@@ -27,6 +30,10 @@ public class UserDetailService implements UserDetailsService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
+	@Autowired
+	private RolePermissionServiceInterface rolePermissionServiceInterface;
+	
+	
 	//authenticate user
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 	
@@ -34,16 +41,12 @@ public class UserDetailService implements UserDetailsService {
 		//loading user from database by Username
 		User user=userRepo.findByUsername(username);
     
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),getAuthority(user));
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),getAuthority1(user));
 
 }
 
 	
-	private Collection<? extends GrantedAuthority> getAuthority(User user) {
-		
-		return null;
-	}
-
+	
 
 	public Boolean comparePassword(String password, String hashPassword) {
 
@@ -51,9 +54,18 @@ public class UserDetailService implements UserDetailsService {
 
 	}
 	
-	private ArrayList<SimpleGrantedAuthority> getAuthority()
+	private ArrayList<SimpleGrantedAuthority> getAuthority1(User user)
 	{
-		return null;
+		
+		ArrayList<SimpleGrantedAuthority> authorities=new ArrayList<>();
+		
+		ArrayList<?> permission=rolePermissionServiceInterface.getPermissionByUserId(user.getId());
+		
+		permission.forEach(permission1->
+		{
+			authorities.add(new SimpleGrantedAuthority("ROLE_"+permission1));
+		});
+		return authorities;
 		
 	}
 	

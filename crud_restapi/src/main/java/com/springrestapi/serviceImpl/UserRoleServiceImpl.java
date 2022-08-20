@@ -118,4 +118,13 @@ public class UserRoleServiceImpl implements UserRoleServiceInterface{
 		this.userRoleRepo.delete(roleEntity);
 
 	}
+
+
+//	@Override
+//	public ArrayList<UserRoleEntity> findByPkUserId(int id) {
+//	
+//		
+//		
+//		return null;
+//	}
 }

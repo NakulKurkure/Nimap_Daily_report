@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,7 +30,8 @@ public class UserController {
 @Autowired
 private UserService userService;
 
-		@GetMapping
+		@PreAuthorize("hasRole('getProducts')")
+		@GetMapping("/check")
 		//ResponseEntity represents the whole HTTP response: status code, headers, and body.
 		public ResponseEntity<?> getProducts(@RequestParam(defaultValue = "") String search,
 				@RequestParam(defaultValue = "1") String pageNumber,

@@ -1,6 +1,7 @@
 package com.springrestapi.service;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.springrestapi.entity.UserRoleEntity;
@@ -16,6 +17,8 @@ public interface UserRoleServiceInterface{
  List<UserRoleEntity> getAll();
 
 void deleteUserRoles(UserRoleRequest userRoleRequest);
+
+//ArrayList<UserRoleEntity> findByPkUserId(int id);
 
 
 

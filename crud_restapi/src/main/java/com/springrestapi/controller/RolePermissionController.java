@@ -1,12 +1,15 @@
 package com.springrestapi.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,6 +30,7 @@ public class RolePermissionController {
 	@Autowired
 	private RolePermissionServiceInterface rolePermissionServiceInterface;
 	
+//	@PreAuthorize('hasRole("")')
 	@PostMapping
 	private ResponseEntity<?> add(@RequestBody RolePermissionRequest rolePermissionRequest)
 	{
@@ -75,4 +79,12 @@ public class RolePermissionController {
 		}
 		
 	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<?> getPermissionById(@PathVariable int id)
+	{
+		ArrayList<String>tt= this.rolePermissionServiceInterface.getPermissionByUserId(id);
+		return new ResponseEntity<>(tt,HttpStatus.OK);
+	}
+	
 }

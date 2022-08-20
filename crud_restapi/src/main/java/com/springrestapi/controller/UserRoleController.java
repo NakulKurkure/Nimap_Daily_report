@@ -1,5 +1,6 @@
 package com.springrestapi.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 //import java.util.List;
@@ -59,7 +60,8 @@ public class UserRoleController {
 		return this.userRoleServiceInterface.getAll();
 			
 	}
-	 
+
+	
 	@PutMapping("/ab")  //userId-17  roleId - 15
 	public ResponseEntity<?> editRole(@RequestBody UserRoleRequest userRoleRequest)
 	{

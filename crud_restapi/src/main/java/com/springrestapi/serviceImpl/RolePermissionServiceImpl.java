@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 //import org.springframework.http.HttpStatus;
 //import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,9 @@ import com.springrestapi.payload.RolePermissionRequest;
 import com.springrestapi.repo.PermissionRepo;
 import com.springrestapi.repo.RolePermissionRepo;
 import com.springrestapi.repo.RoleRepo;
+import com.springrestapi.repo.UserRoleRepo;
+import com.springrestapi.service.PermissionIdList;
+import com.springrestapi.service.RoleIdList;
 import com.springrestapi.service.RolePermissionServiceInterface;
 
 @Service
@@ -32,6 +36,8 @@ public class RolePermissionServiceImpl implements RolePermissionServiceInterface
 	@Autowired
 	private PermissionRepo permissionRepo;
 	
+	@Autowired
+	private UserRoleRepo userRoleRepo;
 	@Override
 	public void add(RolePermissionRequest rolePermissionRequest)  {
 	
@@ -95,5 +101,34 @@ public class RolePermissionServiceImpl implements RolePermissionServiceInterface
 		rolePermissionEntity.setPk(rolePermissionId);
 		rolePermissionRepo.delete(rolePermissionEntity);
 	}
+
+	@Override
+	public ArrayList<String> getPermissionByUserId(int id) {
+		// TODO Auto-generated method stub
+		
+		
+		ArrayList<RoleIdList>  roleIds=userRoleRepo.findByPkUsersId(id, RoleIdList.class);
+		ArrayList<Integer> roles=new ArrayList<>();
+		for(int i=0;i<roleIds.size();i++)
+		{
+			roles.add(roleIds.get(i).getPkRolesId());
+		}
+		
+		List<PermissionIdList> rolePermission=rolePermissionRepo.findPkPermissionByPkRolesIdIn(roles, PermissionIdList.class);
+		
+		
+		ArrayList<String> permission=new ArrayList<>();
+		for(PermissionIdList element:rolePermission)
+		{
+			permission.add(element.getPkPermissionActionName());
+		}
+		return permission;
+	}
+
+//	@Override
+//	public ArrayList<Permi> getPermissionByUserId(int id) {
+//		// TODO Auto-generated method stub
+//		return null;
+//	}
 
 }
