@@ -32,6 +32,7 @@ private UserService userService;
 
 		@PreAuthorize("hasRole('getProducts')")
 		@GetMapping("/check")
+//		@PreAuthorize("hasRole('getProducts')")
 		//ResponseEntity represents the whole HTTP response: status code, headers, and body.
 		public ResponseEntity<?> getProducts(@RequestParam(defaultValue = "") String search,
 				@RequestParam(defaultValue = "1") String pageNumber,
@@ -55,6 +56,7 @@ private UserService userService;
 //			//this.entity_repository.findById(id).orElseThrow(() -> new ResourseNotFoundException("NOt found"+id));
 //		}
 
+		@PreAuthorize("hasRole('getuserid')")
 		@GetMapping("/{id}")
 		public ResponseEntity<?> getByid(@PathVariable Integer id)
 		{
