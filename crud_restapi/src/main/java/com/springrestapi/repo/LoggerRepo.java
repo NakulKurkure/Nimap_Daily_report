@@ -8,6 +8,8 @@ import com.springrestapi.entity.LoggerEntity;
 @Repository
 public interface LoggerRepo extends JpaRepository<LoggerEntity, Integer>{
 
+	LoggerEntity findByToken(String token);
+	
 	void removeByToken(String token);
 
 }

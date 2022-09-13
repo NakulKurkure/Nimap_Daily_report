@@ -3,6 +3,7 @@ package com.springrestapi.controller;
 
 
 import java.util.Calendar;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,7 @@ import com.springrestapi.dto.LoggerDto;
 import com.springrestapi.dto.UserDto;
 import com.springrestapi.entity.User;
 import com.springrestapi.errordto.SuccessResponseDto;
+import com.springrestapi.exception.Errordetails;
 import com.springrestapi.payload.JwtAuthRequest;
 
 import com.springrestapi.payload.JwtAuthResponse;
@@ -59,15 +61,14 @@ public class AuthController {
 	@PostMapping("/register")
 	public ResponseEntity<?> add(@RequestBody UserDto entityDto)
 	{
-		UserDto entitydto=this.userService.add(entityDto);
-
-		return new ResponseEntity<>(new SuccessResponseDto("success", "success", entitydto),HttpStatus.ACCEPTED);
-//		return this.entity_service.add(entitydto);
-
-	}
-	
-	
-	
+		
+			UserDto entitydto=this.userService.add(entityDto);
+			
+			
+			
+			return new ResponseEntity<>(new SuccessResponseDto("success", "success", entitydto),HttpStatus.ACCEPTED);
+		
+}
 	
 	//UserName and password firstly
 	@PostMapping("/login")
@@ -138,4 +139,6 @@ public class AuthController {
 		return new ResponseEntity<>(new SuccessResponseDto("Logout Successfully", "Success", 0),HttpStatus.ACCEPTED);
 	}
 	
+	
+//	public ResponseEntity<?> updatePassword(@)
 }

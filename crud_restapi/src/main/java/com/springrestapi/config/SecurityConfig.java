@@ -16,7 +16,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 
+import com.springrestapi.interceptor.ExcecutionInterceptor;
 import com.springrestapi.security.JwtAuthenticationEntryPoint;
 import com.springrestapi.security.JwtAuthenticationFilter;
 import com.springrestapi.security.UserDetailService;
@@ -104,5 +107,4 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	}
 
 
-	
 }

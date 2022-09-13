@@ -16,7 +16,7 @@ import com.springrestapi.service.PermissionIdList;
 
 @Repository
 public interface RolePermissionRepo extends JpaRepository<RolePermissionEntity, Integer>{
-
+	
 	@Transactional
 	@Modifying(flushAutomatically = true,clearAutomatically = true)
 	@Query(value="UPDATE role_permission p SET permission_id=:permission_id WHERE p.role_id=:role_id",nativeQuery = true)

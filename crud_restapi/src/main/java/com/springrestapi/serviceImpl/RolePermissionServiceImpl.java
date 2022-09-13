@@ -108,6 +108,7 @@ public class RolePermissionServiceImpl implements RolePermissionServiceInterface
 		
 		
 		ArrayList<RoleIdList>  roleIds=userRoleRepo.findByPkUsersId(id, RoleIdList.class);
+		
 		ArrayList<Integer> roles=new ArrayList<>();
 		for(int i=0;i<roleIds.size();i++)
 		{
@@ -116,7 +117,7 @@ public class RolePermissionServiceImpl implements RolePermissionServiceInterface
 		
 		List<PermissionIdList> rolePermission=rolePermissionRepo.findPkPermissionByPkRolesIdIn(roles, PermissionIdList.class);
 		
-		
+		System.out.print("Hello ");
 		ArrayList<String> permission=new ArrayList<>();
 		for(PermissionIdList element:rolePermission)
 		{

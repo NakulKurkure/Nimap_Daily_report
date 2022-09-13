@@ -30,23 +30,23 @@ public class UserRoleServiceImpl implements UserRoleServiceInterface{
 
 	@Autowired
 	private UserRoleRepo userRoleRepo;
-
+	
 	@Autowired
 	private UserRepo userRepo;
-
+	
 	@Autowired
 	private RoleRepo roleRepo;
-
-
+	
+	
 	@Override
 	public void add(UserRoleRequest userRoleRequest) {
 		// TODO Auto-generated method stub
-
+		
 		try {
-
-
+			
+			
 			ArrayList<UserRoleEntity> userRoles = new ArrayList<>();
-
+			
 
 			User userId=this.userRepo.findById(userRoleRequest.getUserId()).orElseThrow(()->new ResourseNotFoundException("Not found"));
 

@@ -1,6 +1,8 @@
 package com.springrestapi.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +32,9 @@ public class UserController {
 @Autowired
 private UserService userService;
 
-		@PreAuthorize("hasRole('getProducts')")
+//		@PreAuthorize("hasRole('getProducts')")
 		@GetMapping("/check")
+
 //		@PreAuthorize("hasRole('getProducts')")
 		//ResponseEntity represents the whole HTTP response: status code, headers, and body.
 		public ResponseEntity<?> getProducts(@RequestParam(defaultValue = "") String search,
@@ -47,38 +50,20 @@ private UserService userService;
 			return new ResponseEntity<>("fail",HttpStatus.BAD_REQUEST);
 		}
 
-		//A page is a sublist of a list of objects. It allows gain information about the position of it in the containing entire list.
-//		@GetMapping("/{id}")
-//		public EntityDto getid(@PathVariable Integer id)
-//		{
-	//
-//			return this.entity_service.getid(id);
-//			//this.entity_repository.findById(id).orElseThrow(() -> new ResourseNotFoundException("NOt found"+id));
-//		}
 
-		@PreAuthorize("hasRole('getuserid')")
+//		@PreAuthorize("hasRole('getuserid')")
 		@GetMapping("/{id}")
+		@Cacheable(value="user",key="#id")
+		
 		public ResponseEntity<?> getByid(@PathVariable Integer id)
 		{
 //		 this.entity_service.getid(id);
 			return new ResponseEntity<>(new SuccessResponseDto("Success","success",userService.getid(id)),HttpStatus.OK);
 //			return new ResponseEntity<>(entiy,HttpStatus.CREATED);
 
-
-//			return this.entity_repository.findById(id).orElseThrow(() -> new ResourseNotFoundException("NOt found"+id));
 		}
 
 
-
-//		@PutMapping("/{id}")
-//		public EntityDto update(@PathVariable Integer id,@RequestBody EntityDto e)
-//		{
-//			e.setId(id);
-////			EntityDto entity= this.entity_service.update(e,id);
-	//
-//			return entity;
-	//
-//		}
 
 		@PutMapping("/{id}")
 		public ResponseEntity<?> update(@RequestBody UserDto e,@PathVariable Integer id)

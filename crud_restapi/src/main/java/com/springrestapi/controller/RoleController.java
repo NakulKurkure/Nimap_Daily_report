@@ -61,7 +61,7 @@ public class RoleController {
 		return new ResponseEntity<>(new SuccessResponseDto("Success","Success",roleServiceInterface.getById(id)),HttpStatus.OK);
 	}
 	
-	@PutMapping
+	@PutMapping("/{id}")
 	public ResponseEntity<?> update(@RequestBody RoleDto roleDto,@PathVariable Integer id)
 	{
 		

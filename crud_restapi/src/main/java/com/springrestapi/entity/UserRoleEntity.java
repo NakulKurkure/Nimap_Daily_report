@@ -31,7 +31,7 @@ import org.hibernate.annotations.Where;
 //@JsonIgnoreProperties
 
 public class UserRoleEntity implements Serializable{
-
+	
 	
 	private static final long serialVersionUID = 1L;
 	

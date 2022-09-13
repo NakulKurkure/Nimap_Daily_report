@@ -26,6 +26,28 @@
     <artifactId>jjwt</artifactId>
     <version>0.9.1</version>
 </dependency>
+
+<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-cache -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-cache</artifactId>
+    <version>2.7.3</version>
+</dependency>
+
+
+<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-redis -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-data-redis</artifactId>
+    <version>2.7.3</version>
+</dependency>
+
+	<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-actuator -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
+    <version>2.7.3</version>
+</dependency>
 	
 	<!-- https://mvnrepository.com/artifact/org.modelmapper/modelmapper -->
 <dependency>
@@ -33,6 +55,13 @@
     <artifactId>modelmapper</artifactId>
     <version>3.1.0</version>
 </dependency>
+<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
+<dependency>
+    <groupId>com.google.code.gson</groupId>
+    <artifactId>gson</artifactId>
+    <version>2.9.1</version>
+</dependency>
+
 	
 	<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
 <dependency>

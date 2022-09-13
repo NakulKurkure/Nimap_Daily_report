@@ -15,7 +15,7 @@ import com.springrestapi.entity.User;
 @Repository
 public interface UserRepo extends JpaRepository<User, Integer>{
 
-	Page<User> findByUserName(String search, Pageable pagable, Class<User> entitydto);
+	Page<User> findByUserName(String search, Pageable pagable, Class<User> entity);
 
 	User findByUsername(String Username);
 	

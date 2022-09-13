@@ -22,6 +22,9 @@ public class LoggerServicelmpl implements LoggerServiceInterface{
 	@Autowired
 	private LoggerRepo loggerRepo;
 	
+//	@Autowired
+	private LoggerEntity loggerEntity;
+	
 	@Override
 	public void createLogger(LoggerDto loggerDto, User user) {
 		
@@ -45,6 +48,17 @@ public class LoggerServicelmpl implements LoggerServiceInterface{
 		String userToken=token.substring(7);
 		this.loggerRepo.removeByToken(userToken);
 		
+	}
+
+
+//	@Override
+	public LoggerEntity getLoggerDetails(String token) {
+		
+		LoggerEntity loggerEntity;
+		
+		loggerEntity=loggerRepo.findByToken(token);
+		
+		return loggerEntity;
 	}
 
 }

@@ -31,7 +31,7 @@ public interface UserRoleRepo extends JpaRepository<UserRoleEntity, Integer>{
 	//Annotate to repository methods
 	//value=Defines the JPA query to be executed 
 	//Configures whether the given query is a native one. Defaults to false.
-
+	
 	@Query(value="UPDATE user_role u SET role_id=:role_id WHERE u.user_id=:user_id",nativeQuery = true)
 	void updateUserRole(@Param ("user_id") Integer user_id,@Param ("role_id") Integer  role_id);
 	

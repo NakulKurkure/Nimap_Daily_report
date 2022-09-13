@@ -46,7 +46,7 @@ public class RolePermissionController {
 		
 	}
 	
-	@GetMapping
+	@GetMapping("/get")
 	public List<RolePermissionEntity> getAll()
 	{
 		return rolePermissionServiceInterface.getAll();

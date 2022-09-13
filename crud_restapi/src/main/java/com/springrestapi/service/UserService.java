@@ -4,7 +4,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +37,7 @@ public class UserService {
 		//save to database
 		String password=passwordEncoder.encode(user.getPassword());
 		user.setPassword(password);
-
+		
 		User entity1=this.entity_repository.save(user);
 
 		return this.userDto(entity1);
@@ -81,18 +80,6 @@ public class UserService {
 	public void deleteEntity(Integer id) {
 
 
-//		Fetch the record from the db
-//		User User = entity_repository.getById(id);
-//
-//
-//		//Update the is_active attr to false
-//		User.setIsActive(false);
-//
-//		//Save the record
-//		this.entity_repository.save(User);
-
-	//only show for user is data deleted but actual data is not deleted form database.
-//  this.entity_repository.findById(id).orElseThrow(()->new ResourseNotFoundException("Not found"));
 	this.entity_repository.deleteById(id);
 
 }

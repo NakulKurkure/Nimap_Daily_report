@@ -53,7 +53,7 @@ public class UserRoleController {
 		
 	}
 	
-	@GetMapping("/aid")
+	@GetMapping
 	public List<UserRoleEntity> getAll()
 	{
 		
@@ -62,7 +62,7 @@ public class UserRoleController {
 	}
 
 	
-	@PutMapping("/ab")  //userId-17  roleId - 15
+	@PutMapping  //userId-17  roleId - 15
 	public ResponseEntity<?> editRole(@RequestBody UserRoleRequest userRoleRequest)
 	{
 		try
@@ -80,7 +80,7 @@ public class UserRoleController {
 	}
 	
 	
-	@DeleteMapping("/ccc")
+	@DeleteMapping
 	public ResponseEntity<?> delete(@RequestBody UserRoleRequest userRoleRequest)
 	{
 		
