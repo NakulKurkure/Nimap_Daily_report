@@ -62,11 +62,23 @@ public class AuthController {
 	public ResponseEntity<?> add(@RequestBody UserDto entityDto)
 	{
 		
-			UserDto entitydto=this.userService.add(entityDto);
+//			UserDto entitydto=this.userService.add(entityDto);
+			
+		User user=userRepo.findByUsername(entityDto.getUserName());
+		
+		if(user==null)
+		{
+			UserDto entitydto1=this.userService.add(entityDto);
+			return new ResponseEntity<>(new SuccessResponseDto("User Created Successfully.","Created Successfully", entitydto1),HttpStatus.OK);
+		}
+			
+		else
+		{
+			return new ResponseEntity<>(new Errordetails(new Date(), "User Alredy Exists..", "User Exist."),HttpStatus.BAD_GATEWAY);
+		}
+		
 			
 			
-			
-			return new ResponseEntity<>(new SuccessResponseDto("success", "success", entitydto),HttpStatus.ACCEPTED);
 		
 }
 	

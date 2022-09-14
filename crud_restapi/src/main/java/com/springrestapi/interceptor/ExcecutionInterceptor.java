@@ -3,6 +3,7 @@ package com.springrestapi.interceptor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 //import java.util.logging.Logger;
 
@@ -16,12 +17,14 @@ import org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration;
 //import org.slf4j.ILoggerFactory;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.springrestapi.entity.ApiLoggerEntity;
 import com.springrestapi.entity.LoggerEntity;
+import com.springrestapi.entity.MyRequestWrapper;
 import com.springrestapi.exception.Errordetails;
 import com.springrestapi.service.ApiLoggerServiceInterface;
 import com.springrestapi.service.LoggerServiceInterface;
@@ -83,6 +86,7 @@ public class ExcecutionInterceptor implements HandlerInterceptor{
 				apiLoggerEntity.setUrl(request.getRequestURI());
 				apiLoggerEntity.setHost(request.getRemoteHost());
 				apiLoggerEntity.setIpAddress(request.getRemoteAddr());
+				apiLoggerEntity.setBody(request instanceof StandardMultipartHttpServletRequest ? null : request.getReader().lines().collect(Collectors.joining(System.lineSeparator())));
 				this.apiLoggerServiceInterface.createApiLog(apiLoggerEntity);
 				return true;
 			}
@@ -91,14 +95,27 @@ public class ExcecutionInterceptor implements HandlerInterceptor{
 		}else
 		{
 			System.out.println("check 4--");
+			 MyRequestWrapper myRequestWrapper = new MyRequestWrapper(request);
 			ApiLoggerEntity apiLoggerEntity=new ApiLoggerEntity();
 			apiLoggerEntity.setToken("");
 			apiLoggerEntity.setMethod(request.getMethod());
 			apiLoggerEntity.setUrl(requestUrl);
 			apiLoggerEntity.setHost(request.getRemoteHost());
 			apiLoggerEntity.setIpAddress(request.getRemoteAddr());
-			this.apiLoggerServiceInterface.createApiLog(apiLoggerEntity);
-			return true;
+			try {
+				apiLoggerEntity.setBody(request instanceof StandardMultipartHttpServletRequest ? null :myRequestWrapper.getReader().readLine().toLowerCase());
+				this.apiLoggerServiceInterface.createApiLog(apiLoggerEntity);
+				return true;
+			}
+			catch(Exception e)
+			{
+				 
+			     throw new RuntimeException(e);
+			}
+			
+
+			
+			
 		}
 //		return true;
 		

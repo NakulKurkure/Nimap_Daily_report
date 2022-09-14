@@ -1,9 +1,12 @@
 package com.springrestapi.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.data.domain.Page;
+import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,6 +30,9 @@ import com.springrestapi.service.UserService;
 
 @RestController
 @RequestMapping("/user")
+//@EnableCaching
+//@CacheConfig(cacheNames = "logs")
+//@EnableRedisRepositories
 public class UserController {
 
 @Autowired
@@ -53,7 +59,7 @@ private UserService userService;
 
 //		@PreAuthorize("hasRole('getuserid')")
 		@GetMapping("/{id}")
-		@Cacheable(value="user",key="#id")
+//		@Cacheable(key="#id")
 		
 		public ResponseEntity<?> getByid(@PathVariable Integer id)
 		{

@@ -40,6 +40,14 @@ public class UserDetailService implements UserDetailsService {
 	private CacheOperation cacheOperation;
 	
 	
+	public UserDetailService() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+
+
+
 	//authenticate user
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -81,11 +89,13 @@ public class UserDetailService implements UserDetailsService {
 
 	}
 	
+	@SuppressWarnings("unchecked")
 	private ArrayList<SimpleGrantedAuthority> getAuthority1(User user)
 	{
 		
 		
 		ArrayList<SimpleGrantedAuthority> authorities=new ArrayList<>();
+		
 		if(!cacheOperation.isKeyExist(user.getId()+"permission", user.getId()+"permission"))
 		{
 			ArrayList<SimpleGrantedAuthority> authorities1=new ArrayList<>();
@@ -104,6 +114,34 @@ public class UserDetailService implements UserDetailsService {
 		return authorities;
 		
 	}
+//	
+//	@SuppressWarnings("unchecked")
+//	private ArrayList<SimpleGrantedAuthority> getAuthority(UserEntity userEntity){
+//		
+//    	ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();
+//
+//    	if (!cache.isKeyExist(userEntity.getId() + "permission", userEntity.getId() + "permission")) {
+//    	//if((userEntity.getId() + "permission") != null) {
+//    		System.out.println(userEntity.getId()+ "permission");
+//    		ArrayList<SimpleGrantedAuthority> authorities1=new ArrayList<>();
+//    	
+//    		ArrayList<String> permissions=roleService.getPermissionByUserId(userEntity.getId());
+//    	
+//    		permissions.forEach(permission -> {
+//
+//    			authorities1.add(new SimpleGrantedAuthority("ROLE_"+permission));
+//    	   		
+//    	});		
+//    		authorities=authorities1;  
+//    		cache.addInCache(userEntity.getId() + "permission", userEntity.getId() + "permission", authorities1);
+//    	}
+//    	else {
+//			authorities = (ArrayList<SimpleGrantedAuthority>) cache.getFromCache(userEntity.getId() + "permission", userEntity.getId() + "permission");
+//
+//		}	
+//    	return authorities;
+//   }
+//}
 	
 
 }

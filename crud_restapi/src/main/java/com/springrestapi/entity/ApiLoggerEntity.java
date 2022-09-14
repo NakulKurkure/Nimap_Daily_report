@@ -43,13 +43,12 @@ public class ApiLoggerEntity implements Serializable{
 	
 	@Column(name="host")
 	private String host;
-
-	@Column(name="ip_address")
-	private String ipAddress;
 	
+	@Column(name="body")
+	private String body;
 
-	
-	public ApiLoggerEntity(int id, String token, Date createdAt, String method, String url, String host) {
+	public ApiLoggerEntity(int id, String token, Date createdAt, String method, String url, String host, String body,
+			String ipAddress) {
 		super();
 		this.id = id;
 		this.token = token;
@@ -57,7 +56,22 @@ public class ApiLoggerEntity implements Serializable{
 		this.method = method;
 		this.url = url;
 		this.host = host;
+		this.body = body;
+		this.ipAddress = ipAddress;
 	}
+
+	public String getBody() {
+		return body;
+	}
+
+	public void setBody(String body) {
+		this.body = body;
+	}
+
+	@Column(name="ip_address")
+	private String ipAddress;
+	
+
 
 	public String getHost() {
 		return host;
