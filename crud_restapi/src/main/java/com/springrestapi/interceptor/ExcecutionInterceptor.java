@@ -24,7 +24,8 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 import com.springrestapi.entity.ApiLoggerEntity;
 import com.springrestapi.entity.LoggerEntity;
-import com.springrestapi.entity.MyRequestWrapper;
+//import com.springrestapi.entity.MyRequestWrapper;
+//import com.springrestapi.entity.MyRequestWrapper;
 import com.springrestapi.exception.Errordetails;
 import com.springrestapi.service.ApiLoggerServiceInterface;
 import com.springrestapi.service.LoggerServiceInterface;
@@ -51,7 +52,7 @@ public class ExcecutionInterceptor implements HandlerInterceptor{
 		
 		
 		ArrayList<String> url=new ArrayList<>(Arrays.asList("/auth/login","/auth/register"));
-		
+		System.out.println("url111 -- ");
 		final String requestUrl=request.getRequestURI();
 		System.out.println("url -- "+ requestUrl);
 		final String header=request.getHeader("Authorization");
@@ -80,6 +81,7 @@ public class ExcecutionInterceptor implements HandlerInterceptor{
 			{
 				
 				ApiLoggerEntity apiLoggerEntity=new ApiLoggerEntity();
+//				 MyRequestWrapper myRequestWrapper = new MyRequestWrapper(request);
 				System.out.println("check 34 "+apiLoggerEntity);
 				apiLoggerEntity.setToken(header);
 				apiLoggerEntity.setMethod(request.getMethod());
@@ -87,6 +89,7 @@ public class ExcecutionInterceptor implements HandlerInterceptor{
 				apiLoggerEntity.setHost(request.getRemoteHost());
 				apiLoggerEntity.setIpAddress(request.getRemoteAddr());
 				apiLoggerEntity.setBody(request instanceof StandardMultipartHttpServletRequest ? null : request.getReader().lines().collect(Collectors.joining(System.lineSeparator())));
+//				apiLoggerEntity.setBody(myRequestWrapper.getInputStream().toString());
 				this.apiLoggerServiceInterface.createApiLog(apiLoggerEntity);
 				return true;
 			}
@@ -95,24 +98,26 @@ public class ExcecutionInterceptor implements HandlerInterceptor{
 		}else
 		{
 			System.out.println("check 4--");
-			 MyRequestWrapper myRequestWrapper = new MyRequestWrapper(request);
+//			 MyRequestWrapper myRequestWrapper = new MyRequestWrapper(request);
 			ApiLoggerEntity apiLoggerEntity=new ApiLoggerEntity();
 			apiLoggerEntity.setToken("");
 			apiLoggerEntity.setMethod(request.getMethod());
 			apiLoggerEntity.setUrl(requestUrl);
 			apiLoggerEntity.setHost(request.getRemoteHost());
 			apiLoggerEntity.setIpAddress(request.getRemoteAddr());
-			try {
-				apiLoggerEntity.setBody(request instanceof StandardMultipartHttpServletRequest ? null :myRequestWrapper.getReader().readLine().toLowerCase());
+//			try {
+//				apiLoggerEntity.setBody(myRequestWrapper.getInputStream().toString());
+//				apiLoggerEntity.setBody(request instanceof StandardMultipartHttpServletRequest ? null : request.getInputStream().toString().lines().collect(Collectors.joining(System.lineSeparator())));
+	
 				this.apiLoggerServiceInterface.createApiLog(apiLoggerEntity);
 				return true;
-			}
-			catch(Exception e)
-			{
-				 
-			     throw new RuntimeException(e);
-			}
-			
+//			}
+//			catch(Exception e)
+//			{
+//				 
+//			     throw new RuntimeException(e);
+//			}
+//			
 
 			
 			
@@ -120,12 +125,9 @@ public class ExcecutionInterceptor implements HandlerInterceptor{
 //		return true;
 		
 		
-	
-		
 
 	}
 	
 
-	
 	
 }

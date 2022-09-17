@@ -5,15 +5,19 @@ import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.context.annotation.ComponentScan;
 
+import com.springrestapi.properties.FileStorageUploadProperty;
+
 
 @SpringBootApplication
 @ComponentScan({ "com.springrestapi.*" })
 @EnableCaching
+@EnableConfigurationProperties({FileStorageUploadProperty.class})
 public class CrudRestapiApplication {
 
 	public static void main(String[] args) {

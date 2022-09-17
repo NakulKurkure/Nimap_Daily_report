@@ -56,13 +56,16 @@ public class UserDetailService implements UserDetailsService {
 		
 		//loading user from database by Username
 
+		//if data is in database 
 		if (!cacheOperation.isKeyExist(username, username)) {
 
 			user = userRepo.findByUsername(username);
+			System.out.println("Data from Database");
 			cacheOperation.addInCache(username, username, user);
 
 		} else {
-
+			//data is in cache
+			System.out.println("Data from Cache");
 			user = (User)cacheOperation.getFromCache(username, username);
 
 		}
@@ -114,34 +117,7 @@ public class UserDetailService implements UserDetailsService {
 		return authorities;
 		
 	}
-//	
-//	@SuppressWarnings("unchecked")
-//	private ArrayList<SimpleGrantedAuthority> getAuthority(UserEntity userEntity){
-//		
-//    	ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();
-//
-//    	if (!cache.isKeyExist(userEntity.getId() + "permission", userEntity.getId() + "permission")) {
-//    	//if((userEntity.getId() + "permission") != null) {
-//    		System.out.println(userEntity.getId()+ "permission");
-//    		ArrayList<SimpleGrantedAuthority> authorities1=new ArrayList<>();
-//    	
-//    		ArrayList<String> permissions=roleService.getPermissionByUserId(userEntity.getId());
-//    	
-//    		permissions.forEach(permission -> {
-//
-//    			authorities1.add(new SimpleGrantedAuthority("ROLE_"+permission));
-//    	   		
-//    	});		
-//    		authorities=authorities1;  
-//    		cache.addInCache(userEntity.getId() + "permission", userEntity.getId() + "permission", authorities1);
-//    	}
-//    	else {
-//			authorities = (ArrayList<SimpleGrantedAuthority>) cache.getFromCache(userEntity.getId() + "permission", userEntity.getId() + "permission");
-//
-//		}	
-//    	return authorities;
-//   }
-//}
+
 	
 
 }
