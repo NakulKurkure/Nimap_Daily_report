@@ -1,5 +1,7 @@
 package com.springrestapi.Helper;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 //import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,8 +24,8 @@ public class ExcelHelper {
 	
 	
 	public static String TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-	  static String[] HEADERs = { "Id", "Fname", "Lname", "City" };
-	  static String SHEET = "Book1.xlsx";
+	  static String[] HEADERs = { "id", "fname", "lname", "city" };
+	 static String SHEET = "Book1";
 
 	  public static boolean hasExcelFormat(MultipartFile file) {
 		  System.out.println("Type11 "+file);
@@ -32,19 +34,20 @@ public class ExcelHelper {
 	    	System.out.println("Type22 "+TYPE);
 	      return false;
 	    }
-
+	    
 	    return true;
 	  }
-
+	  
 	public static List<ExcelEntity> excelToTutorials(InputStream inputStream) {
 		// TODO Auto-generated method stub
-		
+		//InputStream  is abstract class  superclass of all classes representing an input stream of bytes. 
 		
 		try {
-		      Workbook workbook = new XSSFWorkbook(inputStream);
+			//Workbook=It is also the top level object for creating new sheets/etc
+			Workbook workbook = new XSSFWorkbook(inputStream);
 		      System.out.println("Hi 2 "+workbook);
 		      Sheet sheet = workbook.getSheet(SHEET);
-		      System.out.println("hi 3"+workbook.getSheet(SHEET));
+		      System.out.println("hi 3"+sheet);
 		      Iterator<Row> rows = sheet.iterator();
 		      System.out.println("Hi 4"+rows);
 
@@ -73,6 +76,7 @@ public class ExcelHelper {
 		          switch (cellIdx) {
 		          case 0:
 		            tutorial.setId((int) currentCell.getNumericCellValue());
+		            System.out.print("Id"+cellIdx);
 		            break;
 
 		          case 1:
@@ -104,7 +108,39 @@ public class ExcelHelper {
 		      throw new RuntimeException("fail to parse Excel file: " + e.getMessage());
 		    }
 		  }
-		
+	
+	
+//	public static ByteArrayInputStream tutorialsToExcel(List<ExcelEntity> tutorials) {
+//
+//	    try (Workbook workbook = new XSSFWorkbook();
+//	    		ByteArrayOutputStream out = new ByteArrayOutputStream();) {
+//	      Sheet sheet = workbook.createSheet(SHEET);
+//
+//	      // Header
+//	      Row headerRow = sheet.createRow(0);
+//
+//	      for (int col = 0; col < HEADERs.length; col++) {
+//	        Cell cell = headerRow.createCell(col);
+//	        cell.setCellValue(HEADERs[col]);
+//	      }
+//
+//	      int rowIdx = 1;
+//	      for (ExcelEntity tutorial : tutorials) {
+//	        Row row = sheet.createRow(rowIdx++);
+//
+//	        row.createCell(0).setCellValue(tutorial.getId());
+//	        row.createCell(1).setCellValue(tutorial.getFname());
+//	        row.createCell(2).setCellValue(tutorial.getLname());
+//	        row.createCell(3).setCellValue(tutorial.getCity());
+//	      }
+//
+//	      workbook.write(out);
+//	      return new ByteArrayInputStream(out.toByteArray());
+//	    } catch (IOException e) {
+//	      throw new RuntimeException("fail to import data to Excel file: " + e.getMessage());
+//	    }
+//	  }
+//		
 	}
 	  
 	 

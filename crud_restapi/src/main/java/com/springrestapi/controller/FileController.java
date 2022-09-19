@@ -45,7 +45,6 @@ public class FileController {
 		if(file.getOriginalFilename().endsWith("pdf") && type.contains("pdf"))
 		{
 			
-		
 		try
 		{
 			
@@ -55,7 +54,6 @@ public class FileController {
 		{
 			return new ResponseEntity<>(new Errordetails(new Date(),"Invalid Folder Name", "Invalid Name"+e.getLocalizedMessage()),HttpStatus.BAD_GATEWAY);
 		}
-		
 		
 		}else
 		{

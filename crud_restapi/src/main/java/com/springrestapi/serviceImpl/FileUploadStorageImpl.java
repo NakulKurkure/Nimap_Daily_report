@@ -50,9 +50,11 @@ public class FileUploadStorageImpl implements FileStorageServiceInterface{
 		{
 			
 		System.out.println("In Path1");
+		
 		//check path
 		String fileName=StringUtils.cleanPath(file.getOriginalFilename());
 		System.out.println("In Path1"+file.getOriginalFilename());
+		System.out.println("In Path"+fileName);
 		
 		//Not start with ..
 		if(fileName.contains(".."))
@@ -62,8 +64,8 @@ public class FileUploadStorageImpl implements FileStorageServiceInterface{
 			throw new com.springrestapi.errordto.ResourceNotFoundException("Invalid Path "+fileName);
 		}
 		
-
-	
+		
+		
 		File pathAsFile = new File(this.fileLocation + "/" + type);
 
 		System.out.println("Path4"+pathAsFile+type+fileLocation);

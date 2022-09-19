@@ -1,5 +1,6 @@
 package com.springrestapi.serviceImpl;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
 
@@ -13,13 +14,13 @@ import com.springrestapi.repo.ExcelRepo;
 import com.springrestapi.service.ExcelServiceInterface;
 @Service
 public class ExcelServiceImpl implements ExcelServiceInterface{
-
-	
+		
+		
 		@Autowired
 		private ExcelRepo excelRepo;
 	
 //		@Autowired
-//		private ExcelHelper excelHelper;
+		private ExcelHelper excelHelper;
 	
 		  public void save(MultipartFile file) {
 		    try {
@@ -35,7 +36,20 @@ public class ExcelServiceImpl implements ExcelServiceInterface{
 		      throw new RuntimeException("fail to store excel data: " + e.getMessage());
 		    }
 		  }
+		  
+//		  public ByteArrayInputStream load() {
+//			    List<ExcelEntity> tutorials = excelRepo.findAll();
+//
+//			    ByteArrayInputStream in = ExcelHelper.tutorialsToExcel(tutorials);
+//			    return in;
+//			  }
 
+		@Override
+		public List<ExcelEntity> getAllTutorials() {
+			// TODO Auto-generated method stub
+			return excelRepo.findAll();
+			
+		}
 	
 
 }

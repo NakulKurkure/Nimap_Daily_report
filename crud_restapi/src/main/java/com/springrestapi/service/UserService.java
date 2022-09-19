@@ -46,8 +46,8 @@ public class UserService {
 
 
 	public UserDto getid(Integer id) {
-
 		User user= this.entity_repository.findById(id).orElseThrow(() -> new ResourseNotFoundException("NOt found"+id));
+		
 
 		return this.userDto(user);
 

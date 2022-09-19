@@ -17,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 
 import com.springrestapi.interceptor.ExcecutionInterceptor;
@@ -28,10 +29,16 @@ import com.springrestapi.security.UserDetailService;
 //@Configuration annotation which indicates that the class has @Bean definition methods
 @Configuration
 @EnableWebSecurity
+@EnableWebMvc
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 //
 
+	public static final String[] PUBLIC_URLS= {"/auth/login","/auth/register",
+			"v3/api-docs", "/v2/api-docs",
+					"/swagger-resources","swagger-ui","/webjars"};
+	
+	
 	@Autowired
 	private UserDetailService userDetailService;
 //
@@ -54,7 +61,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 //				// dont authenticate this particular request
 		.authorizeHttpRequests()
 		//Url Public  (/auth/login)
-		.antMatchers("/auth/login","/auth/register")
+		.antMatchers(PUBLIC_URLS)
+		
 		
 		.permitAll()
 		
