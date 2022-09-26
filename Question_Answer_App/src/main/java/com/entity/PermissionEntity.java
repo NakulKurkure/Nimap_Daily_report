@@ -1,17 +1,25 @@
 package com.entity;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 @Entity
+@Where(clause = "is_active=true")
+@SQLDelete(sql="UPDATE permission_entity SET is_Active=false WHERE id=?")
 public class PermissionEntity {
 
 	@Id
@@ -130,6 +138,9 @@ public class PermissionEntity {
 	@Column(name = "updated_at")
 	@UpdateTimestamp
 	private Date updatedAt;
+	
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "pk.permissions",cascade = CascadeType.ALL)
+	List<RolePermissionEntity> rolePermission;
 
 	public PermissionEntity() {
 		super();

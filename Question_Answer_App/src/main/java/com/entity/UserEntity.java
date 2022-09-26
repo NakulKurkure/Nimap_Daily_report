@@ -18,8 +18,10 @@ import javax.persistence.OneToMany;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 @Entity
+@Where(clause = "is_active=true")
 @SQLDelete(sql = "UPDATE user_entity SET is_Active=false WHERE id=?")
 public class UserEntity implements Serializable{
 

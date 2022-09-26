@@ -50,5 +50,11 @@ public class PermissionDto {
 
 	public void setActionName(String actionName) {
 		this.actionName = actionName;
+		
+	}
+
+	public PermissionDto() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 }
