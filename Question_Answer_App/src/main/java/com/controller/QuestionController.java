@@ -1,6 +1,7 @@
 package com.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dto.AuthResponseDto;
@@ -17,6 +19,7 @@ import com.dto.ErrorResponseDto;
 import com.dto.QuestionDto;
 import com.dto.SuccessDto;
 import com.entity.QuestionEntity;
+import com.serviceInterface.IQuestionListDto;
 import com.serviceInterface.QuestionServiceInterface;
 
 @RestController
@@ -86,7 +89,26 @@ public class QuestionController {
 		
 			return new ResponseEntity<>(new ErrorResponseDto("Not Found", "Not Found Question Id.."),HttpStatus.NO_CONTENT);
 		}
-		return null;
+	
 		
 	}
+	
+	@GetMapping
+	public ResponseEntity<?> getAllQuestions(@RequestParam(defaultValue = "") String search,
+			@RequestParam(defaultValue = "1") String pageNumber,
+			@RequestParam(defaultValue = "5") String pageSize
+			)
+	{
+		
+		Page<IQuestionListDto> page=questionServiceInterface.getAllQuestions(search,pageNumber,pageSize);
+		
+		if(page.getTotalElements()!=0)
+			
+		{
+			return new ResponseEntity<>(new AuthResponseDto("Success", "Success", page.getContent()),HttpStatus.OK);
+		}
+		
+		return new ResponseEntity<>(new ErrorResponseDto(" No Records Avaliable..", "Not Avaliable.."),HttpStatus.BAD_REQUEST);
+	}
+	
 }

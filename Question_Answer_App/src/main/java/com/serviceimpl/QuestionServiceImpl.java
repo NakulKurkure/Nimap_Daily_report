@@ -1,13 +1,18 @@
 package com.serviceimpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.dto.QuestionDto;
 import com.entity.QuestionEntity;
 import com.exception.ResourceNotFoundException;
 import com.repository.QuestionRepository;
+import com.serviceInterface.IQuestionListDto;
+import com.serviceInterface.IUserListDto;
 import com.serviceInterface.QuestionServiceInterface;
+import com.util.Pagination;
 
 @Service
 public class QuestionServiceImpl implements QuestionServiceInterface{
@@ -54,4 +59,28 @@ public class QuestionServiceImpl implements QuestionServiceInterface{
 		return questionDto;
 	}
 
+	@Override
+	public void deleteQuestionById(Long id) {
+		
+		questionRepository.deleteById(id);
+	}
+
+	@Override
+	public Page<IQuestionListDto> getAllQuestions(String search, String pageNumber, String pageSize) {
+
+		Pageable pagable=new Pagination().getPagination(pageNumber, pageSize);
+		if((search=="")||(search==null)||(search.length()==0))
+		{
+			return questionRepository.findByOrderById(pagable,IQuestionListDto.class);
+		}
+		else
+		{
+			return  questionRepository.findByQuestion(search,pagable,IQuestionListDto.class);
+		}
+		
+		
+	}
+
+
+	
 }

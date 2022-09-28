@@ -2,6 +2,7 @@ package com.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,7 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
@@ -22,79 +23,37 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import antlr.collections.List;
+import net.bytebuddy.dynamic.TypeResolutionStrategy.Lazy;
 
 @Entity
-@SQLDelete(sql = "UPDATE question_entity SET is_active=false where id=?")
+@SQLDelete(sql = "UPDATE answer_entity set is_active=false where id=?")
 @Where(clause = "is_active=true")
-@Table(name="question_entity")
-public class QuestionEntity implements Serializable{
-
+public class AnswerEntity implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
-	
-	public QuestionEntity() {
-		super();
-		
-	}
-
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(name="question")
-	private String question;
-	
-	@Column(name="description")
-	private String description;
-	
-	@Column(name="created_at")
-	@CreationTimestamp
-	private Date created_At;
-	
-	@Column(name="updated_at")
-	@UpdateTimestamp
-	private Date updated_At;
-	
-
-	@OneToMany(fetch = FetchType.LAZY,mappedBy = "pk.questions",cascade = CascadeType.ALL)
-	@JsonIgnore
-	java.util.List<UserQuestionEntity> userQuestions;
-	
 	public Long getId() {
 		return id;
 	}
 
-	public QuestionEntity(Long id, String question, String description, Date created_At, Date updated_At,
-			boolean is_Active) {
+	public AnswerEntity() {
 		super();
-		this.id = id;
-		this.question = question;
-		this.description = description;
-		this.created_At = created_At;
-		this.updated_At = updated_At;
-		this.is_Active = is_Active;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public String getQuestion() {
-		return question;
+	public String getAnswer() {
+		return answer;
 	}
 
-	public void setQuestion(String question) {
-		this.question = question;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
+	public void setAnswer(String answer) {
+		this.answer = answer;
 	}
 
 	public Date getCreated_At() {
@@ -122,11 +81,60 @@ public class QuestionEntity implements Serializable{
 	}
 
 
+
+	@Column(name="answer")
+	private String answer;
+	
+	@Column(name="created_at")
+	@CreationTimestamp
+	private Date created_At;
+	
+	@Column(name="updated_at")  
+	@UpdateTimestamp
+	private Date updated_At;
+	
 	@Column(name="is_active")
 	private boolean is_Active=true;
+	
+
+	public AnswerEntity(Long id, String answer, Date created_At, Date updated_At, boolean is_Active,
+			QuestionEntity question_Id, UserEntity userId) {
+		super();
+		this.id = id;
+		this.answer = answer;
+		this.created_At = created_At;
+		this.updated_At = updated_At;
+		this.is_Active = is_Active;
+		this.question_Id = question_Id;
+		this.userId = userId;
+	}
+
+
+	@OneToOne(fetch = FetchType.LAZY)
+	@JsonIgnore
+	private QuestionEntity question_Id;
+	
+	public QuestionEntity getQuestion_Id() {
+		return question_Id;
+	}
+
+	public void setQuestion_Id(QuestionEntity question_Id) {
+		this.question_Id = question_Id;
+	}
+
+	public UserEntity getUserId() {
+		return userId;
+	}
+
+	public void setUserId(UserEntity userId) {
+		this.userId = userId;
+	}
+
+
+	@OneToOne(fetch = FetchType.LAZY) 
+	@JsonIgnore
+	private UserEntity userId;
 
 	
 
-	
-	
 }

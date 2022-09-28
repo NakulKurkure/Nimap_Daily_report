@@ -33,7 +33,7 @@ public class LoggerEntity {
 
 	public LoggerEntity() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	

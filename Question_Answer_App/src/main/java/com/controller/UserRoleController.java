@@ -33,7 +33,6 @@ public class UserRoleController {
 		try
 		{
 			
-		
 		userRoleServiceInterface.addUserRole(userRoleRequestDto);
 		return new ResponseEntity<>(new SuccessResponseDto("Success", "Success", userRoleRequestDto),HttpStatus.OK);
 		}catch(Exception e)
