@@ -1,5 +1,7 @@
 package com.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.dto.AuthResponseDto;
 import com.dto.ErrorResponseDto;
+import com.dto.QuestionDataDto;
 import com.dto.QuestionDto;
 import com.dto.SuccessDto;
 import com.entity.QuestionEntity;
@@ -49,8 +52,8 @@ public class QuestionController {
 	{
 		try
 		{
-			QuestionDto questionDto=this.questionServiceInterface.getQuestion(id);
-			return new ResponseEntity<>(new AuthResponseDto("Success", "Success", questionDto),HttpStatus.ACCEPTED);
+			QuestionDataDto questionDataDto=this.questionServiceInterface.getQuestion(id);
+			return new ResponseEntity<>(new AuthResponseDto("Success", "Success", questionDataDto),HttpStatus.ACCEPTED);
 		}catch(Exception e)
 		{
 			return new ResponseEntity<>(new ErrorResponseDto(" Not Found..", "Question Id is Not Found.."),HttpStatus.NO_CONTENT);
@@ -110,5 +113,18 @@ public class QuestionController {
 		
 		return new ResponseEntity<>(new ErrorResponseDto(" No Records Avaliable..", "Not Avaliable.."),HttpStatus.BAD_REQUEST);
 	}
+	
+	
+	@GetMapping("/draft")
+	public ResponseEntity<?> getAllDraft()
+	{
+
+		List<Object> questionEntities= this.questionServiceInterface.getAllDraftQuestions();
+
+		return new ResponseEntity<>(new AuthResponseDto("Success", "Success", questionEntities),HttpStatus.OK);
+		
+		
+	}
+	
 	
 }

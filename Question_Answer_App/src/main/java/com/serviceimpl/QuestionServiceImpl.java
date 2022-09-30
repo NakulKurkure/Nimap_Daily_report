@@ -1,10 +1,14 @@
 package com.serviceimpl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.dto.QuestionDataDto;
 import com.dto.QuestionDto;
 import com.entity.QuestionEntity;
 import com.exception.ResourceNotFoundException;
@@ -12,6 +16,7 @@ import com.repository.QuestionRepository;
 import com.serviceInterface.IQuestionListDto;
 import com.serviceInterface.IUserListDto;
 import com.serviceInterface.QuestionServiceInterface;
+import com.serviceInterface.getQuestions;
 import com.util.Pagination;
 
 @Service
@@ -26,6 +31,7 @@ public class QuestionServiceImpl implements QuestionServiceInterface{
 		QuestionEntity questionEntity=new QuestionEntity();
 		questionEntity.setQuestion(questionDto.getQuestion());
 		questionEntity.setDescription(questionDto.getDescription());
+		questionEntity.setIs_draft(questionDto.isIs_draft());
 		
 		questionRepository.save(questionEntity);
 		
@@ -35,16 +41,15 @@ public class QuestionServiceImpl implements QuestionServiceInterface{
 	}
 
 	@Override
-	public QuestionDto getQuestion(Long id) {
+	public QuestionDataDto getQuestion(Long id) {
 		
 		QuestionEntity questionEntity=  questionRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Not Found Question Id.."));
 		
-		QuestionDto questionDto=new QuestionDto();
-		questionDto.setQuestion(questionEntity.getQuestion());
-		questionDto.setDescription(questionEntity.getDescription());
+		QuestionDataDto questionDataDto=new QuestionDataDto();
+		questionDataDto.setQuestion(questionEntity.getQuestion());
+		questionDataDto.setDescription(questionEntity.getDescription());
 		
-		
-		return questionDto;
+		return questionDataDto;
 	}
 
 	@Override
@@ -54,6 +59,7 @@ public class QuestionServiceImpl implements QuestionServiceInterface{
 		
 		questionEntity.setDescription(questionDto.getDescription());
 		questionEntity.setQuestion(questionDto.getQuestion());
+		questionEntity.setIs_draft(questionDto.isIs_draft());
 		
 		questionRepository.save(questionEntity);
 		return questionDto;
@@ -82,5 +88,20 @@ public class QuestionServiceImpl implements QuestionServiceInterface{
 	}
 
 
+	@Override
+	public List<Object> getAllDraftQuestions() {
+
+	List<Object> questionEntity1= questionRepository.findByQuestionAndIsDraftTrue();
+
+	return questionEntity1;
+
+
+	}
 	
+	
+	
+	
+
+	
+
 }

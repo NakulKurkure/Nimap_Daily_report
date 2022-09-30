@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import antlr.collections.List;
 
 @Entity
-@SQLDelete(sql = "UPDATE question_entity SET is_active=false where id=?")
+@SQLDelete(sql = "UPDATE question_entity SET is_active=false,is_draft=false where id=?")
 @Where(clause = "is_active=true")
 @Table(name="question_entity")
 public class QuestionEntity implements Serializable{
@@ -57,6 +57,8 @@ public class QuestionEntity implements Serializable{
 	@UpdateTimestamp
 	private Date updated_At;
 	
+	
+	
 
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "pk.questions",cascade = CascadeType.ALL)
 	@JsonIgnore
@@ -64,17 +66,6 @@ public class QuestionEntity implements Serializable{
 	
 	public Long getId() {
 		return id;
-	}
-
-	public QuestionEntity(Long id, String question, String description, Date created_At, Date updated_At,
-			boolean is_Active) {
-		super();
-		this.id = id;
-		this.question = question;
-		this.description = description;
-		this.created_At = created_At;
-		this.updated_At = updated_At;
-		this.is_Active = is_Active;
 	}
 
 	public void setId(Long id) {
@@ -125,8 +116,37 @@ public class QuestionEntity implements Serializable{
 	@Column(name="is_active")
 	private boolean is_Active=true;
 
-	
+	@Column(name="is_draft")
+	private boolean is_draft=false;
 
+	public QuestionEntity(Long id, String question, String description, Date created_At, Date updated_At,
+			java.util.List<UserQuestionEntity> userQuestions, boolean is_Active, boolean is_draft) {
+		super();
+		this.id = id;
+		this.question = question;
+		this.description = description;
+		this.created_At = created_At;
+		this.updated_At = updated_At;
+		this.userQuestions = userQuestions;
+		this.is_Active = is_Active;
+		this.is_draft = is_draft;
+	}
+
+	public java.util.List<UserQuestionEntity> getUserQuestions() {
+		return userQuestions;
+	}
+
+	public void setUserQuestions(java.util.List<UserQuestionEntity> userQuestions) {
+		this.userQuestions = userQuestions;
+	}
+
+	public boolean isIs_draft() {
+		return is_draft;
+	}
+
+	public void setIs_draft(boolean is_draft) {
+		this.is_draft = is_draft;
+	}
 	
 	
 }

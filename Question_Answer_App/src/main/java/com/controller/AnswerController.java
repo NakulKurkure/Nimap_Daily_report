@@ -91,6 +91,7 @@ public class AnswerController {
 			
 		}catch(Exception e)
 		{
+			e.printStackTrace();
 			return new ResponseEntity<>(new ErrorResponseDto("Not Found Answer Id", "Not Found"),HttpStatus.NOT_FOUND);
 
 		}

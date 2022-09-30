@@ -1,23 +1,21 @@
 package com.serviceimpl;
 
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Service;
 
 import com.dto.AnswerDto;
-import com.dto.QuestionDto;
+
 import com.entity.AnswerEntity;
 import com.entity.QuestionEntity;
 import com.entity.RoleEntity;
 import com.entity.UserEntity;
 import com.entity.UserRoleEntity;
-import com.entity.UserRoleId;
 import com.exception.ResourceNotFoundException;
 import com.repository.AnswerRepository;
 import com.repository.QuestionRepository;
@@ -27,7 +25,6 @@ import com.repository.UserRoleRepository;
 import com.security.JwtTokenUtil;
 import com.serviceInterface.AnswerInterface;
 import com.serviceInterface.IAnswerListDto;
-import com.serviceInterface.IUserListDto;
 import com.util.Pagination;
 
 @Service
@@ -72,7 +69,8 @@ public class AnswerServiceImpl implements AnswerInterface{
 //		Long id=userEntity.getId();
 		
 		answerEntity.setUserId(userEntity);
-	
+//		answerEntity.setIs_draft(answerDto.isIs_draft());
+		
 		answerRepository.save(answerEntity);
 		return answerDto;
 		
@@ -99,6 +97,8 @@ public class AnswerServiceImpl implements AnswerInterface{
 		
 		answerEntity.setUserId(userEntity);
 		answerEntity.setAnswer(answerDto.getAnswer());
+//		answerEntity.setIs_draft(answerDto.isIs_draft());
+		
 //		answerEntity.setQuestion_Id(questionEntity);
 		
 		answerRepository.save(answerEntity);
@@ -122,6 +122,7 @@ public class AnswerServiceImpl implements AnswerInterface{
 		AnswerDto answerDto=new AnswerDto();
 		answerDto.setAnswer(answerEntity.getAnswer());
 		answerDto.setQuestion_id(answerEntity.getQuestion_Id().getId());
+		
 	
 		return answerDto;
 		
@@ -141,43 +142,38 @@ public class AnswerServiceImpl implements AnswerInterface{
 //		//check on repo.
 		UserEntity userEntity=userRepository.findByEmailContainingIgnoreCase(email);
 		
-		
-		Long userId=userEntity.getId();
-		System.out.println("userId"+userId);
-		
+		Long user_id=userEntity.getId();
+		System.out.println("userId"+user_id);
 		
 		
-		UserRoleEntity userRoleEntity= this.userRoleRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException("Not Found Id.."));
-		System.out.println("userId22"+userRoleEntity);
 		
-		RoleEntity roleEntity=userRoleEntity.getPk().getRoles();
-		System.out.println("roleEntity"+roleEntity.getId());
-		RoleEntity roleEntity1=roleRepository.findById(roleEntity.getId()).orElseThrow(()-> new ResourceNotFoundException("Not Found RoleId.."));
+		UserRoleEntity userRoleEntity= userRoleRepository.findByUserById(user_id);
+		System.out.println("userRoleEntity1111");
+		System.out.println("Id"+answerEntity.getUserId().getId().equals(user_id));
 		
-		System.out.println("roleEntity1"+roleEntity.getId());
-		String roleName=roleEntity1.getRoleName();
-		
-		if(roleName.equals("Admin") && userId.equals(answerEntity.getUserId()))
+
+		if(((answerEntity.getUserId().getId().equals(user_id))))
 		{
 			answerRepository.deleteById(id);
+			return;
 		}
-		else
-		{
-			throw new ResourceNotFoundException("Cannot Access.. Call To Admin..");
-		}
-		
-		
-		
-		
-		
-		
-		
-		
-		
-//		UserRoleEntity userRoleEntity1= this.userRoleRepository.findById(userRoleEntity).orElseThrow(()-> new ResourceNotFoundException("Not Found Id.."));
+		else {
+			Long roleEntityId=userRoleEntity.getPk().getRoles().getId();
+			System.out.println(""+userRoleEntity.getPk().getRoles().getId());
+			RoleEntity roleEntity1=roleRepository.findById(roleEntityId).orElseThrow(()-> new ResourceNotFoundException("Not Found RoleId.."));
+			
+			System.out.println("roleEntity1"+roleEntity1.getRoleName());
+			String roleName=roleEntity1.getRoleName();
+			if(roleName.equals("Admin"))
+			{
+				answerRepository.deleteById(id);
+				return;
 
-//		
-		
+			}
+			
+		}
+		throw new ResourceNotFoundException("Cannot Access.. Only Access to Admin the Delete Records..");
+
 	}
 
 
@@ -195,7 +191,7 @@ public class AnswerServiceImpl implements AnswerInterface{
 		{
 			return  answerRepository.findByAnswer(search,pagable,IAnswerListDto.class);
 		}
-		
+   		
 	
 	}
 

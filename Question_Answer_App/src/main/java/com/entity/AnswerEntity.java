@@ -96,20 +96,6 @@ public class AnswerEntity implements Serializable{
 	@Column(name="is_active")
 	private boolean is_Active=true;
 	
-
-	public AnswerEntity(Long id, String answer, Date created_At, Date updated_At, boolean is_Active,
-			QuestionEntity question_Id, UserEntity userId) {
-		super();
-		this.id = id;
-		this.answer = answer;
-		this.created_At = created_At;
-		this.updated_At = updated_At;
-		this.is_Active = is_Active;
-		this.question_Id = question_Id;
-		this.userId = userId;
-	}
-
-
 	@OneToOne(fetch = FetchType.LAZY)
 	@JsonIgnore
 	private QuestionEntity question_Id;
@@ -130,11 +116,22 @@ public class AnswerEntity implements Serializable{
 		this.userId = userId;
 	}
 
+	public AnswerEntity(Long id, String answer, Date created_At, Date updated_At, boolean is_Active,
+			QuestionEntity question_Id, UserEntity userId) {
+		super();
+		this.id = id;
+		this.answer = answer;
+		this.created_At = created_At;
+		this.updated_At = updated_At;
+		this.is_Active = is_Active;
+		this.question_Id = question_Id;
+		this.userId = userId;
+	
+	}
 
 	@OneToOne(fetch = FetchType.LAZY) 
 	@JsonIgnore
 	private UserEntity userId;
 
-	
 
 }

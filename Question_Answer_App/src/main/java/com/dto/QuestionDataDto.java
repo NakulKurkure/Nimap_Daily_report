@@ -1,37 +1,24 @@
 package com.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-public class QuestionDto {
+public class QuestionDataDto {
 
 	private String question;
 	
 	private String description;
 
-	private boolean is_draft;
-
-	public boolean isIs_draft() {
-		return is_draft;
-	}
-
-	public void setIs_draft(boolean is_draft) {
-		this.is_draft = is_draft;
-	}
-
-	public QuestionDto(String question, String description, boolean is_draft) {
+	public QuestionDataDto(String question, String description) {
 		super();
 		this.question = question;
 		this.description = description;
-		this.is_draft = is_draft;
+	}
+
+	public QuestionDataDto() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 
 	public String getQuestion() {
 		return question;
-	}
-
-	public QuestionDto() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public void setQuestion(String question) {
