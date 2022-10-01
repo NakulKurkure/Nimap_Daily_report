@@ -20,8 +20,6 @@ public interface UserRoleRepository extends JpaRepository<UserRoleEntity, Long>{
 
 
 	@Transactional
-//	@Query(value = "SELECT t from user_role t WHERE t.user_id=:userId",nativeQuery = true)
-	
 	@Query(value = "SELECT * from user_role t WHERE t.user_id=:user_id",nativeQuery = true)
 	UserRoleEntity findByUserById(@Param("user_id") Long user_id);
 

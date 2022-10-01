@@ -1,6 +1,8 @@
 package com.serviceimpl;
 
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -194,5 +196,24 @@ public class AnswerServiceImpl implements AnswerInterface{
    		
 	
 	}
+
+	@Override
+	public List<AnswerEntity> getByAnswerIdGetAll(Long id, HttpServletRequest request) {
+
+		List<AnswerEntity> ans =answerRepository.findAll();
+		return ans;
+
+		
+	}
+
+	@Override
+	public List<AnswerEntity> GetAll() {
+		
+		List<AnswerEntity> ans=answerRepository.findAll();
+		
+		return ans;
+	}
+
+	
 
 }

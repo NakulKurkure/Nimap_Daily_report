@@ -96,8 +96,9 @@ public class AnswerEntity implements Serializable{
 	@Column(name="is_active")
 	private boolean is_Active=true;
 	
-	@OneToOne(fetch = FetchType.LAZY)
-	@JsonIgnore
+	@OneToOne(fetch = FetchType.EAGER)
+	
+//	@JsonIgnore
 	private QuestionEntity question_Id;
 	
 	public QuestionEntity getQuestion_Id() {
@@ -129,8 +130,8 @@ public class AnswerEntity implements Serializable{
 	
 	}
 
-	@OneToOne(fetch = FetchType.LAZY) 
-	@JsonIgnore
+	@OneToOne(fetch = FetchType.EAGER) 
+//	@JsonIgnore
 	private UserEntity userId;
 
 

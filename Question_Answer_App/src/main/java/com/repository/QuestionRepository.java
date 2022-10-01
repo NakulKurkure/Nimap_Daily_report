@@ -30,6 +30,11 @@ public interface QuestionRepository extends JpaRepository<QuestionEntity, Long>{
 	List<Object> findByQuestionAndIsDraftTrue();
 
 	
+	@Query(value="select * from question_entity q where q.is_draft=true",nativeQuery = true)
+
+	List<Object> findByQuestions();
+
+	
 //	@Query(value="")
 //	Page<IQuestionListDto> findByAdmin(String search, Pageable pagable, Class<IQuestionListDto> class1);
 

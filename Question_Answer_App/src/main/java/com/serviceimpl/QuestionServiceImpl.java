@@ -3,6 +3,8 @@ package com.serviceimpl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,9 +12,17 @@ import org.springframework.stereotype.Service;
 
 import com.dto.QuestionDataDto;
 import com.dto.QuestionDto;
+import com.entity.AnswerEntity;
 import com.entity.QuestionEntity;
+import com.entity.UserEntity;
+import com.entity.UserQuestionEntity;
+import com.entity.UserRoleEntity;
 import com.exception.ResourceNotFoundException;
 import com.repository.QuestionRepository;
+import com.repository.UserQuestionRepository;
+import com.repository.UserRepository;
+import com.repository.UserRoleRepository;
+import com.security.JwtTokenUtil;
 import com.serviceInterface.IQuestionListDto;
 import com.serviceInterface.IUserListDto;
 import com.serviceInterface.QuestionServiceInterface;
@@ -24,6 +34,15 @@ public class QuestionServiceImpl implements QuestionServiceInterface{
 
 	@Autowired
 	private QuestionRepository questionRepository;
+	
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
+	
+	@Autowired
+	private UserRepository userRepository;
+	
+	@Autowired
+	private UserQuestionRepository userQuestionRepository;
 	
 	@Override
 	public QuestionDto addQuestions(QuestionDto questionDto) {
@@ -97,8 +116,57 @@ public class QuestionServiceImpl implements QuestionServiceInterface{
 
 
 	}
-	
-	
+//
+	public QuestionDto updateQuestionByUserId(QuestionDto questionDto, Long id,HttpServletRequest request) {
+		
+		
+		
+		QuestionEntity questionEntity=  questionRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Not Found Question Id.."));
+		
+		final String header=request.getHeader("Authorization");
+		String requestToken=header.substring(7);
+//		//email 
+		final String email=jwtTokenUtil.getUsernameFromToken(requestToken);
+//		//check on repo.
+		UserEntity userEntity=userRepository.findByEmailContainingIgnoreCase(email);
+		
+//		System.out.println("Id"+userEntityId);
+		
+		
+		try
+		{
+//			System.out.println();
+			
+			Long id1=userEntity.getId();
+			System.out.println("Id"+id1);
+		UserQuestionEntity userQuestionEntity= userQuestionRepository.findPkQueationIdByPkUsersId(id1);
+		
+		
+		if(userQuestionEntity!=null) {
+			
+			throw new Exception("User in not valid");
+		}
+		
+		System.out.println("Id"+userQuestionEntity);
+		
+//		QuestionEntity questionEntity2= questionRepository.findById(questionEntityId).orElseThrow(()-> new ResourceNotFoundException("Not Found Id"));
+//		
+//		System.out.println("Idsssss"+userQuestionEntity);	
+//	
+//			questionEntity2.setDescription(questionDto.getDescription());
+//			questionEntity2.setQuestion(questionDto.getQuestion());
+//			questionEntity2.setIs_draft(questionDto.isIs_draft());
+//			
+//			questionRepository.save(questionEntity2);
+			
+			return questionDto;
+		}catch(Exception e)
+		{
+			throw new ResourceNotFoundException("Not Found UserId..");
+		}
+
+	}
+
 	
 	
 

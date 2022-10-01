@@ -1,6 +1,10 @@
 package com.controller;
 
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -13,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.dto.AuthResponseDto;
 import com.dto.ErrorResponseDto;
 import com.dto.SuccessDto;
 import com.dto.SuccessResponseDto;
@@ -36,7 +42,7 @@ public class UserController {
 	{
 		try
 		{
-			System.out.println("1"+id);
+//			System.out.println("1"+id);
 			return new ResponseEntity<>(new SuccessResponseDto("Success", "Success", this.userServiceInterface.getUserId(id)),HttpStatus.ACCEPTED);
 		}catch(Exception e)
 		{
@@ -98,6 +104,34 @@ public class UserController {
 		
 	}
 
+	//AdminToken can access only User..
+	@GetMapping("/get/{id}")
+	public ResponseEntity<?> adminBasedOnUser(@PathVariable Long id,HttpServletRequest request)
+	{
+		try
+		{
+			
+			System.out.println("Id"+id);
+		UserDataDto userDataDto= this.userServiceInterface.adminBasedOnUser(id,request);	
+		return new ResponseEntity<>(new AuthResponseDto("Success", "Success", userDataDto),HttpStatus.OK);
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+			return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), "Please Enter Valid UserId.."),HttpStatus.NOT_FOUND);
+		}
+		
+		
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
 }
 
 

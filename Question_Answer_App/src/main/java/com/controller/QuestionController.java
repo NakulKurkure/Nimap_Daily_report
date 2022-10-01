@@ -2,6 +2,8 @@ package com.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,8 @@ import com.dto.ErrorResponseDto;
 import com.dto.QuestionDataDto;
 import com.dto.QuestionDto;
 import com.dto.SuccessDto;
+import com.dto.SuccessResponseDto;
+import com.entity.AnswerEntity;
 import com.entity.QuestionEntity;
 import com.serviceInterface.IQuestionListDto;
 import com.serviceInterface.QuestionServiceInterface;
@@ -115,6 +119,7 @@ public class QuestionController {
 	}
 	
 	
+	//AllDraftTrueData QuestionsFetched..
 	@GetMapping("/draft")
 	public ResponseEntity<?> getAllDraft()
 	{
@@ -125,6 +130,28 @@ public class QuestionController {
 		
 		
 	}
+	
+	//Users can edit only his/her post, not someone else’s.
+	@PutMapping("/edit/{id}")
+	public ResponseEntity<?> updateQuestionByUserId(@RequestBody QuestionDto questionDto,@PathVariable Long id,HttpServletRequest request)
+	{
+		try
+		{
+			QuestionDto questionDto1=questionServiceInterface.updateQuestionByUserId(questionDto,id,request);
+			return new ResponseEntity<>(new AuthResponseDto("Updated..", "SuccessFully Updated..",questionDto1),HttpStatus.CREATED);
+		}catch(Exception e)
+		{
+		
+			return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), "Not Found Question Id.."),HttpStatus.NOT_FOUND);
+		}
+		
+		
+		
+	}
+	
+
+	
+	
 	
 	
 }

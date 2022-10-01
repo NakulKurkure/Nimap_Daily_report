@@ -2,6 +2,8 @@ package com.controller;
 
 
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,7 @@ import com.dto.AnswerDto;
 import com.dto.ErrorResponseDto;
 import com.dto.SuccessDto;
 import com.dto.SuccessResponseDto;
+import com.entity.AnswerEntity;
 import com.serviceInterface.AnswerInterface;
 import com.serviceInterface.IAnswerListDto;
 
@@ -60,7 +63,8 @@ public class AnswerController {
 		
 	}
 	
-	@GetMapping("{id}")
+	//Only Dto data will be displayed..
+	@GetMapping("/{id}")
 	public ResponseEntity<?> getByAnswerId(@PathVariable Long id,HttpServletRequest request)
 	{
 		try
@@ -79,6 +83,27 @@ public class AnswerController {
 	}
 	
 	
+	
+
+	//All Data is Displayed getById
+	@GetMapping("/get/{id}")
+	public ResponseEntity<?> getByAnswerIdGetAll(@PathVariable Long id,HttpServletRequest request)
+	{
+		try
+		{
+//			this.answerInterface.getByAnswerIdGetAll(id,request);
+			return new ResponseEntity<>(new SuccessResponseDto("Success", "Successfully added Answer..", this.answerInterface.getByAnswerIdGetAll(id,request)),HttpStatus.ACCEPTED);
+
+			
+		}catch(Exception e)
+		{
+			return new ResponseEntity<>(new ErrorResponseDto("Not Found Answer Id", "Not Found"),HttpStatus.NOT_FOUND);
+
+		}
+		
+	
+	
+	}
 	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteAnswerById( @PathVariable Long id,HttpServletRequest request)
@@ -117,7 +142,26 @@ public class AnswerController {
 		
 	}
 	
+	@GetMapping("/get")
+	public ResponseEntity<?> GetAll()
+	{
+		try
+		{
+
+			return new ResponseEntity<>(new SuccessResponseDto("Success", "Successfully added Answer..", this.answerInterface.GetAll()),HttpStatus.ACCEPTED);
+
+			
+		}catch(Exception e)
+		{
+			return new ResponseEntity<>(new ErrorResponseDto("Not Found Answer Id", "Not Found"),HttpStatus.NOT_FOUND);
+
+		}
+		
 	
+	
+	}
+
+
 	
 
 }

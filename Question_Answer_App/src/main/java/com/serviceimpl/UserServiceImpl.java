@@ -1,6 +1,10 @@
 package com.serviceimpl;
 
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,9 +13,18 @@ import org.springframework.stereotype.Service;
 
 import com.dto.UserDataDto;
 import com.dto.UserDto;
+import com.entity.AnswerEntity;
+import com.entity.QuestionEntity;
+import com.entity.RoleEntity;
 import com.entity.UserEntity;
+import com.entity.UserRoleEntity;
 import com.exception.ResourceNotFoundException;
+import com.repository.AnswerRepository;
+import com.repository.QuestionRepository;
+import com.repository.RoleRepository;
 import com.repository.UserRepository;
+import com.repository.UserRoleRepository;
+import com.security.JwtTokenUtil;
 import com.serviceInterface.IUserListDto;
 import com.serviceInterface.UserServiceInterface;
 import com.util.Pagination;
@@ -19,13 +32,27 @@ import com.util.Pagination;
 @Service
 public class UserServiceImpl implements UserServiceInterface{
 
-	
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
 
 	@Autowired
 	private UserRepository userRepository;
 	
 	@Autowired
+	private UserRoleRepository userRoleRepository;
+	
+	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private RoleRepository roleRepository;
+	
+	@Autowired
+	private AnswerRepository answerRepository;
+	
+	@Autowired
+	private QuestionRepository questionRepository;
+	
 	
 	@Override
 	public void addUser(UserDto userDto) {
@@ -94,6 +121,55 @@ public class UserServiceImpl implements UserServiceInterface{
 		{
 			return  userRepository.findByUsername(search,pagable,IUserListDto.class);
 		}
+		
+	}
+
+	@Override
+	public UserDataDto adminBasedOnUser(Long id,HttpServletRequest request) {
+		
+		System.out.println("Id"+id);
+		UserEntity userEntity1=userRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Not Found UserId"));
+		
+		
+		final String header=request.getHeader("Authorization");
+		String requestToken=header.substring(7);
+//		//email 
+		final String email=jwtTokenUtil.getUsernameFromToken(requestToken);
+//		//check on repo.
+		UserEntity userEntity=userRepository.findByEmailContainingIgnoreCase(email);
+		
+		Long user_id=userEntity.getId();
+		System.out.println("userId"+user_id);
+		
+		UserRoleEntity userRoleEntity= userRoleRepository.findByUserById(user_id);
+		System.out.println("userRoleEntity1111");
+	
+		Long roleEntityId=userRoleEntity.getPk().getRoles().getId();
+		System.out.println(""+userRoleEntity.getPk().getRoles().getId());
+		
+		RoleEntity roleEntity1=roleRepository.findById(roleEntityId).orElseThrow(()-> new ResourceNotFoundException("Not Found RoleId.."));
+
+		
+		String roleName=roleEntity1.getRoleName();
+		
+		if(roleName.equals("Admin"))
+			{
+			
+			UserDataDto users=new UserDataDto();
+			users.setUsername(userEntity1.getUsername());
+			users.setGender(userEntity1.getGender());
+			users.setEmail(userEntity1.getEmail());
+			
+			
+			System.out.println("userId"+user_id);
+			
+			return users;
+			}else
+			{
+				throw new ResourceNotFoundException("Not Found UserId..");
+				
+			}
+		
 		
 	}
 
