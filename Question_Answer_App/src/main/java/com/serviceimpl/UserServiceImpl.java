@@ -110,7 +110,6 @@ public class UserServiceImpl implements UserServiceInterface{
 
 	@Override
 	public Page<IUserListDto> getAllUsers(String search, String pageNumber, String pageSize) {
-		// TODO Auto-generated method stub
 		
 		Pageable pagable=new Pagination().getPagination(pageNumber, pageSize);
 		if((search=="")||(search==null)||(search.length()==0))

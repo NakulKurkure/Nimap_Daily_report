@@ -28,6 +28,7 @@ import net.bytebuddy.dynamic.TypeResolutionStrategy.Lazy;
 @Entity
 @SQLDelete(sql = "UPDATE answer_entity set is_active=false where id=?")
 @Where(clause = "is_active=true")
+// converts the Java object to JSON object,
 public class AnswerEntity implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -97,8 +98,6 @@ public class AnswerEntity implements Serializable{
 	private boolean is_Active=true;
 	
 	@OneToOne(fetch = FetchType.EAGER)
-	
-//	@JsonIgnore
 	private QuestionEntity question_Id;
 	
 	public QuestionEntity getQuestion_Id() {
@@ -108,7 +107,7 @@ public class AnswerEntity implements Serializable{
 	public void setQuestion_Id(QuestionEntity question_Id) {
 		this.question_Id = question_Id;
 	}
-
+	
 	public UserEntity getUserId() {
 		return userId;
 	}
@@ -117,8 +116,17 @@ public class AnswerEntity implements Serializable{
 		this.userId = userId;
 	}
 
+
+
+	@OneToOne(fetch = FetchType.EAGER) 
+	private UserEntity userId;
+	
+	
+	@Column(name="is_flag")
+	private boolean is_flag=false;
+	
 	public AnswerEntity(Long id, String answer, Date created_At, Date updated_At, boolean is_Active,
-			QuestionEntity question_Id, UserEntity userId) {
+			QuestionEntity question_Id, UserEntity userId, boolean is_flag) {
 		super();
 		this.id = id;
 		this.answer = answer;
@@ -127,12 +135,14 @@ public class AnswerEntity implements Serializable{
 		this.is_Active = is_Active;
 		this.question_Id = question_Id;
 		this.userId = userId;
-	
+		this.is_flag = is_flag;
 	}
 
-	@OneToOne(fetch = FetchType.EAGER) 
-//	@JsonIgnore
-	private UserEntity userId;
+	public boolean isIs_flag() {
+		return is_flag;
+	}
 
-
+	public void setIs_flag(boolean is_flag) {
+		this.is_flag = is_flag;
+	}
 }

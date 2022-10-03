@@ -36,6 +36,9 @@ public class QuestionController {
 	@Autowired
 	private QuestionServiceInterface questionServiceInterface;
 	
+	
+	//Users have the functionality to save a post as a draft.
+	//Users can create a scheduled post where he/she can add the date when to publish a post. 
 	@PostMapping
 	public ResponseEntity<?> addQuestions(@RequestBody QuestionDto questionDto)
 	{
@@ -66,6 +69,7 @@ public class QuestionController {
 		
 	}
 	
+	//Store a flag if the post and comments are edited.
 	@PutMapping("/{id}")
 	public ResponseEntity<?> updateQuestionById(@RequestBody QuestionDto questionDto,@PathVariable Long id)
 	{
@@ -131,27 +135,5 @@ public class QuestionController {
 		
 	}
 	
-	//Users can edit only his/her post, not someone else’s.
-	@PutMapping("/edit/{id}")
-	public ResponseEntity<?> updateQuestionByUserId(@RequestBody QuestionDto questionDto,@PathVariable Long id,HttpServletRequest request)
-	{
-		try
-		{
-			QuestionDto questionDto1=questionServiceInterface.updateQuestionByUserId(questionDto,id,request);
-			return new ResponseEntity<>(new AuthResponseDto("Updated..", "SuccessFully Updated..",questionDto1),HttpStatus.CREATED);
-		}catch(Exception e)
-		{
-		
-			return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), "Not Found Question Id.."),HttpStatus.NOT_FOUND);
-		}
-		
-		
-		
-	}
-	
 
-	
-	
-	
-	
 }

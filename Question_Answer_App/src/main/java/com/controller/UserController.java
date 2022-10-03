@@ -42,7 +42,7 @@ public class UserController {
 	{
 		try
 		{
-//			System.out.println("1"+id);
+
 			return new ResponseEntity<>(new SuccessResponseDto("Success", "Success", this.userServiceInterface.getUserId(id)),HttpStatus.ACCEPTED);
 		}catch(Exception e)
 		{
@@ -87,6 +87,7 @@ public class UserController {
 		
 	}
 	
+	//@RequestParam is a Spring annotation used to bind a web request parameter to a method parameter.
 	@GetMapping
 	public ResponseEntity<?> getAllUsers(@RequestParam(defaultValue = "") String search,
 			@RequestParam(defaultValue = "1") String pageNumber,
@@ -122,16 +123,8 @@ public class UserController {
 		}
 		
 		
-		
-		
 	}
-	
-	
-	
-	
-	
-	
-	
+
 }
 
 

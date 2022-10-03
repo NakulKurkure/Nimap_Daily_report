@@ -26,6 +26,8 @@ public interface AnswerInterface {
 
 	Object GetAll();
 
+	AnswerDto updateQuestionByUserId(AnswerDto questionDto, Long id, HttpServletRequest request);
+
 
 	
 	

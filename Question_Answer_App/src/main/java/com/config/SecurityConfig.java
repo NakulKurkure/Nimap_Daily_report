@@ -67,9 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				// all other requests need to be authenticated
 				// Add a filter to validate the tokens with every request
 				// dont authenticate this particular request
-				.antMatchers("/auth/login", "/auth/forgot-pass", "/auth/register", "/public/**",
-						"/file/downloadFile/**", "/user/forgot-pass-confirm", "/auth/login-with-otp/confirm",
-						"/auth/login-with-otp")
+				.antMatchers("/auth/login", "/auth/register")
 				.permitAll().
 				// all other requests need to be authenticated
 				anyRequest().authenticated().and().httpBasic().and().
@@ -87,6 +85,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		return new BCryptPasswordEncoder();
 	}
 
+	//Bean annotation is usually declared in Configuration classes methods. 
+	//applied on a method to specify that it returns a bean to be managed by Spring context.
 	@Bean
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {

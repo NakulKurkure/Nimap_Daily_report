@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dto.AnswerDto;
+import com.dto.AuthResponseDto;
 import com.dto.ErrorResponseDto;
+import com.dto.QuestionDto;
 import com.dto.SuccessDto;
 import com.dto.SuccessResponseDto;
 import com.entity.AnswerEntity;
@@ -45,6 +47,8 @@ public class AnswerController {
 		
 	}
 	
+	
+	//Store a flag if the post and comments are edited.
 	@PutMapping("/{id}")
 	public ResponseEntity<?> updateAnswer(@RequestBody AnswerDto answerDto,@PathVariable Long id,HttpServletRequest request)
 	{
@@ -105,6 +109,8 @@ public class AnswerController {
 	
 	}
 	
+	//Only Admin and users who have commented have the permission to delete the comment.
+	//	Eg. Suresh cannot delete Rohit’s comment. But Raj(Admin) can delete anyone’s comment.
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteAnswerById( @PathVariable Long id,HttpServletRequest request)
 	{
@@ -160,6 +166,27 @@ public class AnswerController {
 	
 	
 	}
+	
+
+	//Users can edit only his/her post, not someone else’s
+		@PutMapping("/edit/{id}")
+		public ResponseEntity<?> updateQuestionByUserId(@RequestBody AnswerDto questionDto,@PathVariable Long id,HttpServletRequest request)
+		{
+			try
+			{
+				AnswerDto questionDto1=answerInterface.updateQuestionByUserId(questionDto,id,request);
+				return new ResponseEntity<>(new AuthResponseDto("Updated..", "SuccessFully Updated..",questionDto1),HttpStatus.CREATED);
+			}catch(Exception e)
+			{
+			
+				return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), "Not Found Question Id.."),HttpStatus.NOT_FOUND);
+			}
+			
+			
+			
+		}
+		
+
 
 
 	

@@ -25,7 +25,7 @@ public interface QuestionServiceInterface {
 
 	List<Object> getAllDraftQuestions();
 
-	QuestionDto updateQuestionByUserId(QuestionDto questionDto, Long id, HttpServletRequest request);
+//	QuestionDto updateQuestionByUserId(QuestionDto questionDto, Long id, HttpServletRequest request);
 
 //	QuestionDto updateQuestionByUserId(QuestionDto questionDto, Long id);
 

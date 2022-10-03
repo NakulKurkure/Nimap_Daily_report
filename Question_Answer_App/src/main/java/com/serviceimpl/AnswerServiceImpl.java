@@ -87,9 +87,6 @@ public class AnswerServiceImpl implements AnswerInterface{
 		
 		AnswerEntity answerEntity=answerRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Not Found Id"));
 		
-//		QuestionEntity questionEntity=questionRepository.findById(answerDto.getQuestion_id()).orElseThrow(()-> new ResourceNotFoundException("Not Found Question Id.."));
-		
-		
 		final String header=request.getHeader("Authorization");
 		String requestToken=header.substring(7);
 //		//email 
@@ -99,9 +96,7 @@ public class AnswerServiceImpl implements AnswerInterface{
 		
 		answerEntity.setUserId(userEntity);
 		answerEntity.setAnswer(answerDto.getAnswer());
-//		answerEntity.setIs_draft(answerDto.isIs_draft());
-		
-//		answerEntity.setQuestion_Id(questionEntity);
+		answerEntity.setIs_flag(answerDto.isIs_flag());
 		
 		answerRepository.save(answerEntity);
 		}
@@ -212,6 +207,41 @@ public class AnswerServiceImpl implements AnswerInterface{
 		List<AnswerEntity> ans=answerRepository.findAll();
 		
 		return ans;
+	}
+
+	@Override
+	public AnswerDto updateQuestionByUserId(AnswerDto answerDto, Long id, HttpServletRequest request) {
+		
+
+		AnswerEntity answerEntity=  answerRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Not Found Question Id.."));
+		
+		final String header=request.getHeader("Authorization");
+		String requestToken=header.substring(7);
+//		//email 
+		final String email=jwtTokenUtil.getUsernameFromToken(requestToken);
+//		//check on repo.
+		UserEntity userEntity=userRepository.findByEmailContainingIgnoreCase(email);
+
+			
+		Long user_id=userEntity.getId();
+		System.out.println("Id"+user_id);
+		
+			
+		
+		if(user_id.equals(answerEntity.getUserId().getId()))
+		{
+		System.out.println("hi"+answerEntity.getUserId().getId());
+			
+		answerEntity.setAnswer(answerDto.getAnswer());
+		answerRepository.save(answerEntity);
+		return answerDto;
+			
+		}
+		
+		
+		
+		throw new ResourceNotFoundException("Cannot Access.. Only Access that User who inserted Records those User are Update these Records...");
+		
 	}
 
 	

@@ -33,9 +33,6 @@ import com.util.PasswordValidation;
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-
-	
-	
 	@Autowired
 	private UserServiceInterface userServiceInterface;
 	
@@ -92,7 +89,6 @@ public class AuthController {
 		if(PasswordValidation.isValidforEmail(request.getEmail())&& PasswordValidation.isValid(request.getPassword()))
 		{
 			
-		
 		try
 		{
 			

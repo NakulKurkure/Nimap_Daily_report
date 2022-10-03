@@ -6,6 +6,25 @@ public class AnswerDto {
 	private String answer;
 	
 	private Long question_id;
+	
+	public AnswerDto(String answer, Long question_id, boolean is_flag) {
+		super();
+		this.answer = answer;
+		this.question_id = question_id;
+		this.is_flag = is_flag;
+	}
+
+
+	public boolean isIs_flag() {
+		return is_flag;
+	}
+
+
+	public void setIs_flag(boolean is_flag) {
+		this.is_flag = is_flag;
+	}
+
+	private boolean is_flag;
 
 	
 	

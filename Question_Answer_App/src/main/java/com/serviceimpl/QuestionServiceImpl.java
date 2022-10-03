@@ -18,6 +18,7 @@ import com.entity.UserEntity;
 import com.entity.UserQuestionEntity;
 import com.entity.UserRoleEntity;
 import com.exception.ResourceNotFoundException;
+import com.repository.AnswerRepository;
 import com.repository.QuestionRepository;
 import com.repository.UserQuestionRepository;
 import com.repository.UserRepository;
@@ -42,7 +43,7 @@ public class QuestionServiceImpl implements QuestionServiceInterface{
 	private UserRepository userRepository;
 	
 	@Autowired
-	private UserQuestionRepository userQuestionRepository;
+	private AnswerRepository answerRepository;
 	
 	@Override
 	public QuestionDto addQuestions(QuestionDto questionDto) {
@@ -51,6 +52,7 @@ public class QuestionServiceImpl implements QuestionServiceInterface{
 		questionEntity.setQuestion(questionDto.getQuestion());
 		questionEntity.setDescription(questionDto.getDescription());
 		questionEntity.setIs_draft(questionDto.isIs_draft());
+		questionEntity.setIs_publish(questionDto.getIs_publish());
 		
 		questionRepository.save(questionEntity);
 		
@@ -79,6 +81,7 @@ public class QuestionServiceImpl implements QuestionServiceInterface{
 		questionEntity.setDescription(questionDto.getDescription());
 		questionEntity.setQuestion(questionDto.getQuestion());
 		questionEntity.setIs_draft(questionDto.isIs_draft());
+		questionEntity.setIs_flag(questionDto.isIs_flag());
 		
 		questionRepository.save(questionEntity);
 		return questionDto;
@@ -116,60 +119,6 @@ public class QuestionServiceImpl implements QuestionServiceInterface{
 
 
 	}
-//
-	public QuestionDto updateQuestionByUserId(QuestionDto questionDto, Long id,HttpServletRequest request) {
-		
-		
-		
-		QuestionEntity questionEntity=  questionRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Not Found Question Id.."));
-		
-		final String header=request.getHeader("Authorization");
-		String requestToken=header.substring(7);
-//		//email 
-		final String email=jwtTokenUtil.getUsernameFromToken(requestToken);
-//		//check on repo.
-		UserEntity userEntity=userRepository.findByEmailContainingIgnoreCase(email);
-		
-//		System.out.println("Id"+userEntityId);
-		
-		
-		try
-		{
-//			System.out.println();
-			
-			Long id1=userEntity.getId();
-			System.out.println("Id"+id1);
-		UserQuestionEntity userQuestionEntity= userQuestionRepository.findPkQueationIdByPkUsersId(id1);
-		
-		
-		if(userQuestionEntity!=null) {
-			
-			throw new Exception("User in not valid");
-		}
-		
-		System.out.println("Id"+userQuestionEntity);
-		
-//		QuestionEntity questionEntity2= questionRepository.findById(questionEntityId).orElseThrow(()-> new ResourceNotFoundException("Not Found Id"));
-//		
-//		System.out.println("Idsssss"+userQuestionEntity);	
-//	
-//			questionEntity2.setDescription(questionDto.getDescription());
-//			questionEntity2.setQuestion(questionDto.getQuestion());
-//			questionEntity2.setIs_draft(questionDto.isIs_draft());
-//			
-//			questionRepository.save(questionEntity2);
-			
-			return questionDto;
-		}catch(Exception e)
-		{
-			throw new ResourceNotFoundException("Not Found UserId..");
-		}
 
-	}
-
-	
-	
-
-	
 
 }

@@ -58,7 +58,35 @@ public class QuestionEntity implements Serializable{
 	private Date updated_At;
 	
 	
+	public QuestionEntity(Long id, String question, String description, Date created_At, Date updated_At,
+			Date is_publish, java.util.List<UserQuestionEntity> userQuestions, boolean is_Active, boolean is_draft,
+			boolean is_flag) {
+		super();
+		this.id = id;
+		this.question = question;
+		this.description = description;
+		this.created_At = created_At;
+		this.updated_At = updated_At;
+		this.is_publish = is_publish;
+		this.userQuestions = userQuestions;
+		this.is_Active = is_Active;
+		this.is_draft = is_draft;
+		this.is_flag = is_flag;
+	}
+
+
+	@Column(name="is_publish")
+	private Date is_publish;
 	
+
+	public Date getIs_publish() {
+		return is_publish;
+	}
+
+	public void setIs_publish(Date is_publish) {
+		this.is_publish = is_publish;
+	}
+
 
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "pk.questions",cascade = CascadeType.ALL)
 	@JsonIgnore
@@ -148,5 +176,17 @@ public class QuestionEntity implements Serializable{
 		this.is_draft = is_draft;
 	}
 	
-	
+	public boolean isIs_flag() {
+		return is_flag;
+	}
+
+	public void setIs_flag(boolean is_flag) {
+		this.is_flag = is_flag;
+	}
+
+
+	@Column(name="is_flag")
+	private boolean is_flag =false;
+
+
 }

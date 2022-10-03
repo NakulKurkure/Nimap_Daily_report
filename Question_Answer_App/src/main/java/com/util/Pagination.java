@@ -10,6 +10,7 @@ public class Pagination {
 		// TODO Auto-generated constructor stub
 	}
 
+	//Abstract interface for pagination information.
 	public Pageable getPagination(String pageNumber,String pageSize)
 	{
 		return PageRequest.of(Integer.parseInt(pageNumber)-1, Integer.parseInt(pageSize));
