@@ -20,7 +20,7 @@ import com.entity.UserRoleEntity;
 import com.serviceInterface.UserRoleServiceInterface;
 
 @RestController
-@RequestMapping("/userrole")
+@RequestMapping("/api/userrole")
 public class UserRoleController {
 
 	@Autowired

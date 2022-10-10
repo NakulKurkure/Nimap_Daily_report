@@ -7,7 +7,6 @@ import com.entity.GenderEnum;
 public class UserDto {
 
 	@NonNull
-	
 	private String email;
 	
 	@NonNull

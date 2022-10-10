@@ -1,7 +1,5 @@
 package com.controller;
 
-
-
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,16 +21,17 @@ import org.springframework.web.bind.annotation.RestController;
 import com.dto.AnswerDto;
 import com.dto.AuthResponseDto;
 import com.dto.ErrorResponseDto;
-import com.dto.QuestionDto;
+//import com.dto.QuestionDto;
 import com.dto.SuccessDto;
 import com.dto.SuccessResponseDto;
-import com.entity.AnswerEntity;
+//import com.entity.AnswerEntity;
 import com.serviceInterface.AnswerInterface;
 import com.serviceInterface.IAnswerListDto;
+import com.serviceInterface.IQuestionListDto;
 
 
 @RestController
-@RequestMapping("/answer")
+@RequestMapping("/api/answer")
 public class AnswerController {
 
 	@Autowired
@@ -160,7 +159,7 @@ public class AnswerController {
 		}catch(Exception e)
 		{
 			return new ResponseEntity<>(new ErrorResponseDto("Not Found Answer Id", "Not Found"),HttpStatus.NOT_FOUND);
-
+			
 		}
 		
 	
@@ -182,13 +181,24 @@ public class AnswerController {
 				return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), "Not Found Question Id.."),HttpStatus.NOT_FOUND);
 			}
 			
-			
-			
 		}
 		
 
-
-
-	
+		//List of AnswersByQuestionId
+		@GetMapping("/getanswer/{id}")
+		public ResponseEntity<?> getQuestionAndAnswerById(@PathVariable Long id,HttpServletRequest request)
+		{
+			try
+			{
+				
+			List<IAnswerListDto> question=answerInterface.getQuestionAndAnswerById(id,request);
+			return new ResponseEntity<>(new AuthResponseDto("Success", "Success", question),HttpStatus.OK);
+			}catch(Exception e)
+			{
+				return new ResponseEntity<>(new ErrorResponseDto("not Found", "Not Found Question Id"),HttpStatus.BAD_REQUEST);
+			}
+			
+			
+		}
 
 }

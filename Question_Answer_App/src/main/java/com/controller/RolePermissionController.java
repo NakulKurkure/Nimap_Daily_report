@@ -21,7 +21,7 @@ import com.serviceInterface.RolePermissionServiceInterface;
 
 
 @RestController
-@RequestMapping("/rolepermission")
+@RequestMapping("/api/rolepermission")
 public class RolePermissionController {
 
 	@Autowired

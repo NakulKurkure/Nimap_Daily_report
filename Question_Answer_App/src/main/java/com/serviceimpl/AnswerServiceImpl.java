@@ -1,6 +1,7 @@
 package com.serviceimpl;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,6 +28,7 @@ import com.repository.UserRoleRepository;
 import com.security.JwtTokenUtil;
 import com.serviceInterface.AnswerInterface;
 import com.serviceInterface.IAnswerListDto;
+import com.serviceInterface.IQuestionListDto;
 import com.util.Pagination;
 
 @Service
@@ -59,7 +61,7 @@ public class AnswerServiceImpl implements AnswerInterface{
 		
 		QuestionEntity QuestionEntity=questionRepository.findById(answerDto.getQuestion_id()).orElseThrow(()->new ResourceNotFoundException("Not Found Question Id.."));
 		
-		answerEntity.setQuestion_Id(QuestionEntity);
+		answerEntity.setQuestionId(QuestionEntity);
 		
 		final String header=request.getHeader("Authorization");
 		String requestToken=header.substring(7);
@@ -118,7 +120,7 @@ public class AnswerServiceImpl implements AnswerInterface{
 
 		AnswerDto answerDto=new AnswerDto();
 		answerDto.setAnswer(answerEntity.getAnswer());
-		answerDto.setQuestion_id(answerEntity.getQuestion_Id().getId());
+		answerDto.setQuestion_id(answerEntity.getQuestionId().getId());
 		
 	
 		return answerDto;
@@ -141,8 +143,6 @@ public class AnswerServiceImpl implements AnswerInterface{
 		
 		Long user_id=userEntity.getId();
 		System.out.println("userId"+user_id);
-		
-		
 		
 		UserRoleEntity userRoleEntity= userRoleRepository.findByUserById(user_id);
 		System.out.println("userRoleEntity1111");
@@ -243,7 +243,18 @@ public class AnswerServiceImpl implements AnswerInterface{
 		throw new ResourceNotFoundException("Cannot Access.. Only Access that User who inserted Records those User are Update these Records...");
 		
 	}
-
 	
+	@Override
+	public ArrayList<IAnswerListDto> getQuestionAndAnswerById(Long id, HttpServletRequest request) {
+		
+		System.out.println("Id"+id);
+		questionRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Not Found Question Id"));
+
+		ArrayList<IAnswerListDto> answerEntity1=answerRepository.findAnswerById(id,IAnswerListDto.class);
+		System.out.println("QuestionEntity111"+answerEntity1);
+		return (ArrayList<IAnswerListDto>)answerEntity1;
+		
+							
+	}
 
 }

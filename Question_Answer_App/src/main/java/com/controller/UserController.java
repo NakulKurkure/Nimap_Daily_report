@@ -1,7 +1,6 @@
 package com.controller;
 
 
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,20 +23,19 @@ import com.dto.SuccessDto;
 import com.dto.SuccessResponseDto;
 import com.dto.UserDataDto;
 import com.dto.UserDto;
-import com.entity.UserEntity;
 import com.serviceInterface.IUserListDto;
 import com.serviceInterface.UserServiceInterface;
 
 //For connecting any hibernate application with the database - dialect
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController {
 
 	@Autowired
 	private UserServiceInterface userServiceInterface;
 	
-	@GetMapping("/user/{id}")
+	@GetMapping("/{id}")
 	public ResponseEntity<?> getByUserId(@PathVariable Long id)
 	{
 		try
@@ -104,7 +102,7 @@ public class UserController {
 		return new ResponseEntity<>(new ErrorResponseDto(" No Records Avaliable..", "Not Avaliable.."),HttpStatus.BAD_REQUEST);
 		
 	}
-
+	
 	//AdminToken can access only User..
 	@GetMapping("/get/{id}")
 	public ResponseEntity<?> adminBasedOnUser(@PathVariable Long id,HttpServletRequest request)
@@ -112,7 +110,7 @@ public class UserController {
 		try
 		{
 			
-			System.out.println("Id"+id);
+		System.out.println("Id"+id);
 		UserDataDto userDataDto= this.userServiceInterface.adminBasedOnUser(id,request);	
 		return new ResponseEntity<>(new AuthResponseDto("Success", "Success", userDataDto),HttpStatus.OK);
 		}
@@ -121,7 +119,6 @@ public class UserController {
 			e.printStackTrace();
 			return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), "Please Enter Valid UserId.."),HttpStatus.NOT_FOUND);
 		}
-		
 		
 	}
 

@@ -3,7 +3,7 @@ package com.security;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+//import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.entity.UserEntity;
 import com.exception.ResourceNotFoundException;
-import com.repository.AuthRepository;
+//import com.repository.AuthRepository;
 import com.repository.UserRepository;
 import com.util.CacheOperations;
 @Service
@@ -32,22 +32,24 @@ public class UserDetailService implements UserDetailsService{
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		System.out.println("In the eree"+email);
 	
-		UserEntity userEntity = null;
+		UserEntity userEntity1;
+		
 		if(!cacheOperations.isKeyExist(email, email))
 		{
 			
-			UserEntity userEntity1=userRepository.findByEmailContainingIgnoreCase(email);
+			userEntity1=userRepository.findByEmailContainingIgnoreCase(email);
+			System.out.println("UserEntity"+userEntity1);
 			
 			cacheOperations.addInCache(email, email, userEntity1);
 			System.out.println("From Database");
 			
 		}else
 		{
-			userEntity=(UserEntity) cacheOperations.getFromCache(email, email);
+			userEntity1=(UserEntity) cacheOperations.getFromCache(email, email);
 			System.out.println("From Cache");
 		}
 		
-		if(userEntity==null)
+		if(userEntity1==null)
 		{
 			throw new ResourceNotFoundException("Not Found EmailId");
 		}
@@ -57,7 +59,7 @@ public class UserDetailService implements UserDetailsService{
 			
 			System.out.println("In the ppp"+email);
 
-			return new org.springframework.security.core.userdetails.User(userEntity.getEmail(),userEntity.getPassword(),new ArrayList<>());
+			return new org.springframework.security.core.userdetails.User(userEntity1.getEmail(),userEntity1.getPassword(),new ArrayList<>());
 		
 	}
 	

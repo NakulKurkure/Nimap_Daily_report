@@ -8,11 +8,12 @@ import org.springframework.data.domain.Page;
 
 import com.dto.QuestionDataDto;
 import com.dto.QuestionDto;
+import com.dto.UserDataDto;
 import com.entity.QuestionEntity;
 
 public interface QuestionServiceInterface {
 
-	QuestionDto addQuestions(QuestionDto questionDto);
+	QuestionDto addQuestions(QuestionDto questionDto,HttpServletRequest request);
 
 	QuestionDataDto getQuestion(Long id);
 
@@ -25,9 +26,7 @@ public interface QuestionServiceInterface {
 
 	List<Object> getAllDraftQuestions();
 
-//	QuestionDto updateQuestionByUserId(QuestionDto questionDto, Long id, HttpServletRequest request);
-
-//	QuestionDto updateQuestionByUserId(QuestionDto questionDto, Long id);
+	List<Object> getAllQuestionsByUserId(long id,HttpServletRequest request);
 
 
 

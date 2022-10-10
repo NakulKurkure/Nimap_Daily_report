@@ -22,7 +22,7 @@ import com.serviceInterface.IRoleListDto;
 import com.serviceInterface.RoleServiceInterface;
 
 @RestController
-@RequestMapping("/role")
+@RequestMapping("/api/role")
 public class RoleController {
 
 	@Autowired
@@ -114,8 +114,5 @@ public class RoleController {
 		return new ResponseEntity<>(new ErrorResponseDto("Not Avaliable Records", "Not Avaliable"),HttpStatus.NOT_FOUND);
 		
 	}
-	
-	
-	
 	
 }

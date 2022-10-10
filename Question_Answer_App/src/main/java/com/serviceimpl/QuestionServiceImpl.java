@@ -1,6 +1,5 @@
 package com.serviceimpl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -10,29 +9,35 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+
 import com.dto.QuestionDataDto;
 import com.dto.QuestionDto;
-import com.entity.AnswerEntity;
+
 import com.entity.QuestionEntity;
+import com.entity.RoleEntity;
 import com.entity.UserEntity;
-import com.entity.UserQuestionEntity;
 import com.entity.UserRoleEntity;
 import com.exception.ResourceNotFoundException;
 import com.repository.AnswerRepository;
 import com.repository.QuestionRepository;
-import com.repository.UserQuestionRepository;
+import com.repository.RoleRepository;
 import com.repository.UserRepository;
 import com.repository.UserRoleRepository;
 import com.security.JwtTokenUtil;
+
 import com.serviceInterface.IQuestionListDto;
-import com.serviceInterface.IUserListDto;
 import com.serviceInterface.QuestionServiceInterface;
-import com.serviceInterface.getQuestions;
 import com.util.Pagination;
 
 @Service
 public class QuestionServiceImpl implements QuestionServiceInterface{
 
+	@Autowired
+	private UserRoleRepository userRoleRepository;
+	
+	@Autowired
+	private RoleRepository roleRepository;
+	
 	@Autowired
 	private QuestionRepository questionRepository;
 	
@@ -46,13 +51,24 @@ public class QuestionServiceImpl implements QuestionServiceInterface{
 	private AnswerRepository answerRepository;
 	
 	@Override
-	public QuestionDto addQuestions(QuestionDto questionDto) {
+	public QuestionDto addQuestions(QuestionDto questionDto,HttpServletRequest request) {
+		
+		final String header=request.getHeader("Authorization");
+		String requestToken=header.substring(7);
+//		//email 
+		final String email=jwtTokenUtil.getUsernameFromToken(requestToken);
+//		//check on repo.
+		UserEntity userEntity=userRepository.findByEmailContainingIgnoreCase(email);
+
+		
+		
 		
 		QuestionEntity questionEntity=new QuestionEntity();
 		questionEntity.setQuestion(questionDto.getQuestion());
 		questionEntity.setDescription(questionDto.getDescription());
 		questionEntity.setIs_draft(questionDto.isIs_draft());
 		questionEntity.setIs_publish(questionDto.getIs_publish());
+		questionEntity.setUser_id(userEntity);
 		
 		questionRepository.save(questionEntity);
 		
@@ -119,6 +135,56 @@ public class QuestionServiceImpl implements QuestionServiceInterface{
 
 
 	}
-
-
+	
+	public List<Object> getAllQuestionsByUserId(long id,HttpServletRequest request)
+	{
+		
+		UserEntity userEntity1= userRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Not Found UserId"));
+		System.out.println("Id"+id);
+		final String header=request.getHeader("Authorization");
+		String requestToken=header.substring(7);
+//		//email 
+		final String email=jwtTokenUtil.getUsernameFromToken(requestToken);
+//		//check on repo.
+		UserEntity userEntity=userRepository.findByEmailContainingIgnoreCase(email);
+		
+		Long user_id=userEntity.getId();
+		System.out.println("userId"+user_id);
+		
+		
+		
+		UserRoleEntity userRoleEntity= userRoleRepository.findByUserById(user_id);
+		System.out.println("userRoleEntity1111");
+		
+		Long roleEntityId=userRoleEntity.getPk().getRoles().getId();
+		System.out.println(""+userRoleEntity.getPk().getRoles().getId());
+		
+		RoleEntity roleEntity1=roleRepository.findById(roleEntityId).orElseThrow(()-> new ResourceNotFoundException("Not Found RoleId.."));
+		
+		
+		String roleName=roleEntity1.getRoleName();
+		System.out.println("role"+roleName);
+		if(roleName.equals("Admin"))
+		{
+		
+//		QuestionEntity questionEntity1= questionRepository.findByUsersId(id).orElseThrow(()-> new ResourceNotFoundException("Not found Id"));	
+//		System.out.println(questionEntity1);
+			
+		System.out.println("Hi"+questionRepository.findByUsersQuestionAndAnswerByUserId(id));
+		List<Object> questionEntity= questionRepository.findByUsersQuestionAndAnswerByUserId(id);	
+		return (List<Object>)questionEntity;
+		
+			
+			
+		}else
+		{
+			throw new ResourceNotFoundException("Not Found ");
+		}
+		
+		
+		
+		
+	}
+	
+	
 }

@@ -23,14 +23,12 @@ import com.dto.ErrorResponseDto;
 import com.dto.QuestionDataDto;
 import com.dto.QuestionDto;
 import com.dto.SuccessDto;
-import com.dto.SuccessResponseDto;
-import com.entity.AnswerEntity;
-import com.entity.QuestionEntity;
+
 import com.serviceInterface.IQuestionListDto;
 import com.serviceInterface.QuestionServiceInterface;
 
 @RestController
-@RequestMapping("/question")
+@RequestMapping("/api/question")
 public class QuestionController {
 
 	@Autowired
@@ -40,11 +38,11 @@ public class QuestionController {
 	//Users have the functionality to save a post as a draft.
 	//Users can create a scheduled post where he/she can add the date when to publish a post. 
 	@PostMapping
-	public ResponseEntity<?> addQuestions(@RequestBody QuestionDto questionDto)
+	public ResponseEntity<?> addQuestions(@RequestBody QuestionDto questionDto,HttpServletRequest request)
 	{
 		try
 		{
-			questionServiceInterface.addQuestions(questionDto);
+			questionServiceInterface.addQuestions(questionDto,request);
 			return new ResponseEntity<>(new SuccessDto("Success", "SuccessFully Added Question"),HttpStatus.CREATED);
 		}catch(Exception e)
 		{
@@ -134,6 +132,24 @@ public class QuestionController {
 		
 		
 	}
+	
+	//Only Admin fetch all Users and Questions
+	@GetMapping("/admin/{id}")
+	public ResponseEntity<?> getAllAnswers(@PathVariable long id,HttpServletRequest request)
+	{
+		try
+		{
+			
+		
+		List<Object> list= questionServiceInterface.getAllQuestionsByUserId(id,request);
+		
+		return new ResponseEntity<>(new AuthResponseDto("Success", "Success",list),HttpStatus.ACCEPTED);
+		}catch(Exception e)
+		{
+			return new ResponseEntity<>(new ErrorResponseDto("Invalid Id", "userId is Not Found"),HttpStatus.NOT_FOUND);
+		}
+	}
+
 	
 
 }

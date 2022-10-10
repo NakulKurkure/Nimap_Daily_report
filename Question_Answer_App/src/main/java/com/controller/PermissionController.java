@@ -26,7 +26,7 @@ import com.serviceInterface.PermissionServiceInterface;
 
 
 @RestController
-@RequestMapping("/permission")
+@RequestMapping("/api/permission")
 public class PermissionController {
 
 	@Autowired

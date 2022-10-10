@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Page;
 
 import com.dto.AnswerDto;
-import com.entity.AnswerEntity;
+
 
 public interface AnswerInterface {
 
@@ -27,6 +27,8 @@ public interface AnswerInterface {
 	Object GetAll();
 
 	AnswerDto updateQuestionByUserId(AnswerDto questionDto, Long id, HttpServletRequest request);
+
+	List<IAnswerListDto> getQuestionAndAnswerById(Long id, HttpServletRequest request);
 
 
 	

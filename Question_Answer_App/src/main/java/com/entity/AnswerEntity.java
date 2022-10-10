@@ -2,16 +2,13 @@ package com.entity;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -19,11 +16,6 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import net.bytebuddy.dynamic.TypeResolutionStrategy.Lazy;
 
 @Entity
 @SQLDelete(sql = "UPDATE answer_entity set is_active=false where id=?")
@@ -98,16 +90,17 @@ public class AnswerEntity implements Serializable{
 	private boolean is_Active=true;
 	
 	@OneToOne(fetch = FetchType.EAGER)
-	private QuestionEntity question_Id;
+	private QuestionEntity questionId;
 	
-	public QuestionEntity getQuestion_Id() {
-		return question_Id;
+	
+	public QuestionEntity getQuestionId() {
+		return questionId;
 	}
 
-	public void setQuestion_Id(QuestionEntity question_Id) {
-		this.question_Id = question_Id;
+	public void setQuestionId(QuestionEntity questionId) {
+		this.questionId = questionId;
 	}
-	
+
 	public UserEntity getUserId() {
 		return userId;
 	}
@@ -124,16 +117,16 @@ public class AnswerEntity implements Serializable{
 	
 	@Column(name="is_flag")
 	private boolean is_flag=false;
-	
+
 	public AnswerEntity(Long id, String answer, Date created_At, Date updated_At, boolean is_Active,
-			QuestionEntity question_Id, UserEntity userId, boolean is_flag) {
+			QuestionEntity questionId, UserEntity userId, boolean is_flag) {
 		super();
 		this.id = id;
 		this.answer = answer;
 		this.created_At = created_At;
 		this.updated_At = updated_At;
 		this.is_Active = is_Active;
-		this.question_Id = question_Id;
+		this.questionId = questionId;
 		this.userId = userId;
 		this.is_flag = is_flag;
 	}

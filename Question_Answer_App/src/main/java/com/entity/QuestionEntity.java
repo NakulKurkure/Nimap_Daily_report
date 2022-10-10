@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -147,18 +148,6 @@ public class QuestionEntity implements Serializable{
 	@Column(name="is_draft")
 	private boolean is_draft=false;
 
-	public QuestionEntity(Long id, String question, String description, Date created_At, Date updated_At,
-			java.util.List<UserQuestionEntity> userQuestions, boolean is_Active, boolean is_draft) {
-		super();
-		this.id = id;
-		this.question = question;
-		this.description = description;
-		this.created_At = created_At;
-		this.updated_At = updated_At;
-		this.userQuestions = userQuestions;
-		this.is_Active = is_Active;
-		this.is_draft = is_draft;
-	}
 
 	public java.util.List<UserQuestionEntity> getUserQuestions() {
 		return userQuestions;
@@ -176,8 +165,33 @@ public class QuestionEntity implements Serializable{
 		this.is_draft = is_draft;
 	}
 	
+	public QuestionEntity(Long id, String question, String description, Date created_At, Date updated_At,
+			Date is_publish, java.util.List<UserQuestionEntity> userQuestions, boolean is_Active, boolean is_draft,
+			boolean is_flag, UserEntity user_id) {
+		super();
+		this.id = id;
+		this.question = question;
+		this.description = description;
+		this.created_At = created_At;
+		this.updated_At = updated_At;
+		this.is_publish = is_publish;
+		this.userQuestions = userQuestions;
+		this.is_Active = is_Active;
+		this.is_draft = is_draft;
+		this.is_flag = is_flag;
+		this.user_id = user_id;
+	}
+
 	public boolean isIs_flag() {
 		return is_flag;
+	}
+
+	public UserEntity getUser_id() {
+		return user_id;
+	}
+
+	public void setUser_id(UserEntity user_id) {
+		this.user_id = user_id;
 	}
 
 	public void setIs_flag(boolean is_flag) {
@@ -188,5 +202,9 @@ public class QuestionEntity implements Serializable{
 	@Column(name="is_flag")
 	private boolean is_flag =false;
 
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	private UserEntity user_id;
+	
 
 }

@@ -1,10 +1,15 @@
 package com.serviceInterface;
 
-import com.entity.QuestionEntity;
 
 public interface IAnswerListDto {
 
 	public Long getId() ;
 	
+	public Long getUserId();
+	
+	public IQuestionListDto getQuestionId();
+	
 	public String getAnswer();
+
+	
 }
