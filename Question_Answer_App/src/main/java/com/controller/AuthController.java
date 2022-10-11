@@ -59,8 +59,6 @@ public class AuthController {
 		
 		if(PasswordValidation.isValidforEmail(email)&& PasswordValidation.isValid(password))
 		{
-		
-			
 			
 			UserEntity userEntity=userRepository.findByEmailContainingIgnoreCase(email);
 			
@@ -92,7 +90,7 @@ public class AuthController {
 		try
 		{
 			
-			System.out.println("In 2"+request.getEmail());
+		System.out.println("In 2"+request.getEmail());
 		UserEntity user=userRepository.findByEmailContainingIgnoreCase(request.getEmail());
 		
 		if(userDetailService.comparePassword(request.getPassword(), user.getPassword()))
@@ -132,7 +130,7 @@ public class AuthController {
 		
 		}else
 		{
-			return new ResponseEntity<>(new SuccessResponseDto("Password should have Minimum 8 and maximum 50 characters, at least one uppercase letter, one lowercase letter, one number and one special character and No White Spaces", "Password validation not done"),HttpStatus.OK);
+			return new ResponseEntity<>(new SuccessResponseDto("Password should have Minimum 8 and maximum 50 characters, at least one uppercase letter, one lowercase letter, one number and one special character and No White Spaces", "Password validation not done"),HttpStatus.BAD_REQUEST);
 		}
 		
 		

@@ -26,8 +26,8 @@ import com.dto.SuccessDto;
 import com.dto.SuccessResponseDto;
 //import com.entity.AnswerEntity;
 import com.serviceInterface.AnswerInterface;
-import com.serviceInterface.IAnswerListDto;
-import com.serviceInterface.IQuestionListDto;
+import com.serviceInterface.IListAnswerDto;
+
 
 
 @RestController
@@ -60,7 +60,7 @@ public class AnswerController {
 		}
 		catch(Exception e)
 		{
-			return new ResponseEntity<>(new ErrorResponseDto("Not Found Answer Id", "Not Found"),HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(new ErrorResponseDto("Not Found Answer Id", "Not Found"),HttpStatus.BAD_REQUEST);
 		}
 		
 		
@@ -123,7 +123,7 @@ public class AnswerController {
 		{
 			e.printStackTrace();
 			return new ResponseEntity<>(new ErrorResponseDto("Not Found Answer Id", "Not Found"),HttpStatus.NOT_FOUND);
-
+			
 		}
 		
 		
@@ -136,7 +136,7 @@ public class AnswerController {
 			@RequestParam(defaultValue = "5") String pageSize)
 	{
 		
-		Page<IAnswerListDto> page= this.answerInterface.getAllAnswers(search,pageNumber,pageSize);
+		Page<IListAnswerDto> page= this.answerInterface.getAllAnswers(search,pageNumber,pageSize);
 		if(page.getTotalElements()!=0)
 		{
 			return new ResponseEntity<>(new SuccessResponseDto("Success", "Success", page.getContent()),HttpStatus.OK);
@@ -191,14 +191,13 @@ public class AnswerController {
 			try
 			{
 				
-			List<IAnswerListDto> question=answerInterface.getQuestionAndAnswerById(id,request);
-			return new ResponseEntity<>(new AuthResponseDto("Success", "Success", question),HttpStatus.OK);
+			List<IListAnswerDto> IAnswerListDto=answerInterface.getQuestionAndAnswerById(id,request);
+			return new ResponseEntity<>(new AuthResponseDto("Success", "Success", IAnswerListDto),HttpStatus.OK);
 			}catch(Exception e)
 			{
-				return new ResponseEntity<>(new ErrorResponseDto("not Found", "Not Found Question Id"),HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<>(new ErrorResponseDto("not Found", "Not Found Question Id"),HttpStatus.NOT_FOUND);
 			}
 			
-			
 		}
-
+		
 }

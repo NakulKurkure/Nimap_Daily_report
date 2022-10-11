@@ -27,7 +27,7 @@ import com.repository.UserRepository;
 import com.repository.UserRoleRepository;
 import com.security.JwtTokenUtil;
 import com.serviceInterface.AnswerInterface;
-import com.serviceInterface.IAnswerListDto;
+import com.serviceInterface.IListAnswerDto;
 import com.serviceInterface.IQuestionListDto;
 import com.util.Pagination;
 
@@ -176,17 +176,17 @@ public class AnswerServiceImpl implements AnswerInterface{
 
 
 	@Override
-	public Page<IAnswerListDto> getAllAnswers(String search, String pageNumber, String pageSize) {
+	public Page<IListAnswerDto> getAllAnswers(String search, String pageNumber, String pageSize) {
 		
 		
 		Pageable pagable=new Pagination().getPagination(pageNumber, pageSize);
 		if((search=="")||(search==null)||(search.length()==0))
 		{
-			return answerRepository.findByOrderById(pagable,IAnswerListDto.class);
+			return answerRepository.findByOrderById(pagable,IListAnswerDto.class);
 		}
 		else
 		{
-			return  answerRepository.findByAnswer(search,pagable,IAnswerListDto.class);
+			return  answerRepository.findByAnswer(search,pagable,IListAnswerDto.class);
 		}
    		
 	
@@ -245,16 +245,14 @@ public class AnswerServiceImpl implements AnswerInterface{
 	}
 	
 	@Override
-	public ArrayList<IAnswerListDto> getQuestionAndAnswerById(Long id, HttpServletRequest request) {
+	public List<IListAnswerDto> getQuestionAndAnswerById(Long id, HttpServletRequest request) {
 		
 		System.out.println("Id"+id);
 		questionRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Not Found Question Id"));
-
-		ArrayList<IAnswerListDto> answerEntity1=answerRepository.findAnswerById(id,IAnswerListDto.class);
-		System.out.println("QuestionEntity111"+answerEntity1);
-		return (ArrayList<IAnswerListDto>)answerEntity1;
 		
-							
+		List<IListAnswerDto> answerEntity1=answerRepository.findByQuestionIdId(id,IListAnswerDto.class);
+		return answerEntity1;
+		
 	}
 
 }

@@ -8,15 +8,23 @@ public class AuthResponseDto {
 		return message;
 	}
 
-	public void setMessage(String message) {
-		this.message = message;
+	public Object getData() {
+		return data;
 	}
 
-	public AuthResponseDto(String message, String msgKey, Object token) {
+	public void setData(Object data) {
+		this.data = data;
+	}
+
+	public AuthResponseDto(String message, String msgKey, Object data) {
 		super();
 		this.message = message;
 		this.msgKey = msgKey;
-		this.token = token;
+		this.data = data;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
 	}
 
 	public String getMsgKey() {
@@ -27,25 +35,13 @@ public class AuthResponseDto {
 		this.msgKey = msgKey;
 	}
 
-	private Object token;
+	private Object data;
 
 	public AuthResponseDto() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public AuthResponseDto(Object token) {
-		super();
-		this.token = token;
-	}
-
-	public Object getToken() {
-		return token;
-	}
-
-	public void setToken(Object token) {
-		this.token = token;
-	}
 
 	
 	

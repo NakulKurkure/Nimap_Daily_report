@@ -1,15 +1,24 @@
 package com.dto;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 import org.springframework.lang.NonNull;
 
 import com.entity.GenderEnum;
 
 public class UserDto {
 
-	@NonNull
+	@NotNull(message = "email Name is Required.")
+	@NotBlank(message = "email Name is Required.")
+	@NotEmpty(message="email Name is Required.")
 	private String email;
 	
-	@NonNull
+
+	@NotNull(message = "UserName is Required.")
+	@NotBlank(message = "UserName is Required.")
+	@NotEmpty(message="UserName is Required.")
 	private String username;
 	
 	@NonNull
@@ -28,7 +37,11 @@ public class UserDto {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	@NonNull
+
+
+	@NotNull(message = "Password is Required.")
+	@NotBlank(message = "Password is Required.")
+	@NotEmpty(message="password is Required.")
 	private String password;
 	public String getEmail() {
 		return email;

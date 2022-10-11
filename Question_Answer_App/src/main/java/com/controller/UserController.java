@@ -44,7 +44,7 @@ public class UserController {
 			return new ResponseEntity<>(new SuccessResponseDto("Success", "Success", this.userServiceInterface.getUserId(id)),HttpStatus.ACCEPTED);
 		}catch(Exception e)
 		{
-			return new ResponseEntity<>(new ErrorResponseDto("Please Enter Valid Email Id..", "Wrong Email Id.."),HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(new ErrorResponseDto("Please Enter Valid Email Id..", "Wrong Email Id.."),HttpStatus.BAD_REQUEST);
 		}
 		
 		
@@ -62,7 +62,7 @@ public class UserController {
 	
 		}catch(Exception e)
 		{
-			return new ResponseEntity<>(new ErrorResponseDto("Please Enter Valid UserId..", "Not Updated Data.."),HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(new ErrorResponseDto("Please Enter Valid UserId..", "Not Updated Data.."),HttpStatus.BAD_REQUEST);
 		}
 			
 	}

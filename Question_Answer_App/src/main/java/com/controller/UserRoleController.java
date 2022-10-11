@@ -51,7 +51,7 @@ public class UserRoleController {
 			return new ResponseEntity<>(new SuccessResponseDto("Successfully Updated..", "Updated..", userRoleRequestDto),HttpStatus.OK);
 		}catch(Exception e)
 		{
-			return new ResponseEntity<>("Not Found UserId and RoleId..",HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>("Not Found UserId and RoleId..",HttpStatus.BAD_REQUEST);
 		}
 		
 	}
@@ -73,7 +73,7 @@ public class UserRoleController {
 	
 		
 	}
-	
+				
 	@GetMapping
 	public List<UserRoleEntity>getAllUserRole()
 	{

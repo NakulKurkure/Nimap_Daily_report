@@ -10,7 +10,7 @@ import com.entity.PermissionEntity;
 import com.exception.ResourceNotFoundException;
 import com.repository.PermissionRepository;
 import com.serviceInterface.IPermissionListDto;
-import com.serviceInterface.IUserListDto;
+
 import com.serviceInterface.PermissionServiceInterface;
 import com.util.Pagination;
 
@@ -90,8 +90,6 @@ public class PermissionServiceImpl implements PermissionServiceInterface{
 		}
 	
 	}
-	
-	
 	
 	
 }

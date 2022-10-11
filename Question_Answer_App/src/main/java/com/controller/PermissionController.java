@@ -52,9 +52,9 @@ public class PermissionController {
 	public ResponseEntity<?> getPermissionById(@PathVariable("id") Long id){
 		try {
 		
-	 PermissionDto permission=this.permissionServiceInterface.getPermissionById(id);
+	 PermissionDto permissionDto=this.permissionServiceInterface.getPermissionById(id);
 		
-		return new ResponseEntity<>(new AuthResponseDto("Success", "Success", permission),HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(new AuthResponseDto("Success", "Success", permissionDto),HttpStatus.ACCEPTED);
 		
 	}catch(Exception e) {
 		

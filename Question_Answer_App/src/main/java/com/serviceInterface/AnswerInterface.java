@@ -20,7 +20,7 @@ public interface AnswerInterface {
 
 	void deleteAnswerById(Long id,HttpServletRequest request);
 
-	Page<IAnswerListDto> getAllAnswers(String search, String pageNumber, String pageSize);
+	Page<IListAnswerDto> getAllAnswers(String search, String pageNumber, String pageSize);
 
 	Object getByAnswerIdGetAll(Long id, HttpServletRequest request);
 
@@ -28,7 +28,7 @@ public interface AnswerInterface {
 
 	AnswerDto updateQuestionByUserId(AnswerDto questionDto, Long id, HttpServletRequest request);
 
-	List<IAnswerListDto> getQuestionAndAnswerById(Long id, HttpServletRequest request);
+	List<IListAnswerDto> getQuestionAndAnswerById(Long id, HttpServletRequest request);
 
 
 	

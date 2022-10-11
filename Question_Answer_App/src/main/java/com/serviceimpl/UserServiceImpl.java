@@ -1,7 +1,7 @@
 package com.serviceimpl;
 
 
-import java.util.List;
+
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,14 +13,12 @@ import org.springframework.stereotype.Service;
 
 import com.dto.UserDataDto;
 import com.dto.UserDto;
-import com.entity.AnswerEntity;
-import com.entity.QuestionEntity;
+
 import com.entity.RoleEntity;
 import com.entity.UserEntity;
 import com.entity.UserRoleEntity;
 import com.exception.ResourceNotFoundException;
-import com.repository.AnswerRepository;
-import com.repository.QuestionRepository;
+
 import com.repository.RoleRepository;
 import com.repository.UserRepository;
 import com.repository.UserRoleRepository;
@@ -47,12 +45,7 @@ public class UserServiceImpl implements UserServiceInterface{
 	@Autowired
 	private RoleRepository roleRepository;
 	
-	@Autowired
-	private AnswerRepository answerRepository;
-	
-	@Autowired
-	private QuestionRepository questionRepository;
-	
+
 	
 	@Override
 	public void addUser(UserDto userDto) {

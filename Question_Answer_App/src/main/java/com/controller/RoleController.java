@@ -39,7 +39,7 @@ public class RoleController {
 		return new ResponseEntity<>(new SuccessDto("Success", "SuccessFully Added Roles.."),HttpStatus.OK);
 		}catch(Exception e)
 		{
-			return new ResponseEntity<>(new ErrorResponseDto("Invalid UserId..", "Invalid Id.."),HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(new ErrorResponseDto("Invalid UserId..", "Invalid Id.."),HttpStatus.BAD_REQUEST);
 		}
 		
 		
@@ -56,7 +56,7 @@ public class RoleController {
 		}
 		catch(Exception e)
 		{
-			return new ResponseEntity<>(new ErrorResponseDto("Invalid UserId..", "Invalid Id.."),HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(new ErrorResponseDto("Invalid UserId..", "Invalid Id.."),HttpStatus.NOT_FOUND);
 		}
 		
 		
@@ -76,7 +76,7 @@ public class RoleController {
 		return new ResponseEntity<>(new AuthResponseDto("Success", "SuccessFully Updated..",roleDto1 ),HttpStatus.OK);
 		}catch(Exception e)
 		{
-			return new ResponseEntity<>(new ErrorResponseDto("Invalid UserId..", "Invalid"),HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(new ErrorResponseDto("Invalid UserId..", "Invalid"),HttpStatus.BAD_REQUEST);
 		}
 		
 	}
