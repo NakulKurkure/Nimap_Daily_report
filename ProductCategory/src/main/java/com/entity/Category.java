@@ -1,18 +1,24 @@
 package com.entity;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
+
+
 //The finally block in java is used to put important codes such as clean up code.
 //The finally block executes whether exception rise or not and whether exception handled or not.
 @Entity
@@ -31,15 +37,6 @@ public class Category {
 	@Column(name="category_id")
 	private long categoryId;
 	
-	public Category(long categoryId, String category, Date createdAt, Date updatedAt, boolean isActive) {
-		super();
-		this.categoryId = categoryId;
-		this.category = category;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
-		this.isActive = isActive;
-	}
-
 	public long getCategoryId() {
 		return categoryId;
 	}
@@ -80,6 +77,25 @@ public class Category {
 		this.isActive = isActive;
 	}
 
+	public List<Product> getProduct() {
+		return product;
+	}
+
+	public void setProduct(List<Product> product) {
+		this.product = product;
+	}
+
+	public Category(long categoryId, String category, Date createdAt, Date updatedAt, boolean isActive,
+			List<Product> product) {
+		super();
+		this.categoryId = categoryId;
+		this.category = category;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+		this.isActive = isActive;
+		this.product = product;
+	}
+
 	@Column(name="category")
 	private String category;
 	
@@ -93,4 +109,8 @@ public class Category {
 	
 	@Column(name="is_active")
 	private boolean isActive=true;
+	
+
+	@OneToMany(cascade = CascadeType.ALL,mappedBy = "category",fetch = FetchType.LAZY)
+	private List<Product> product;
 }

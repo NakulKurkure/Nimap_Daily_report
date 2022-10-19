@@ -2,38 +2,60 @@ package com.entity;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
+
+
 
 @Entity
+@Where(clause = "is_active=true")
+@SQLDelete(sql = "UPDATE product set is_active=false where product_id=?")
 @Table(name="product")
 public class Product {
 
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long productId;
+	private Long productId;
+
+	@Column(name="product")
+	private String product;
 	
-	public Product(long productId, String product, Date createdAt, Date updatedAt, boolean isActive) {
+	
+
+	public Product(Long productId, String product, Date createdAt, Date updatedAt, boolean isActive,
+			Category category) {
 		super();
 		this.productId = productId;
 		this.product = product;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
 		this.isActive = isActive;
+		this.category = category;
 	}
 
 
-	@Column(name="product")
-	private String product;
-	
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
+
 	@Column(name="created_at")
 	@CreationTimestamp
 	private Date createdAt;
@@ -44,13 +66,18 @@ public class Product {
 	
 	@Column(name="is_active")
 	private boolean isActive=true;
+
+
+	@ManyToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name="category_id")
+	private Category category;
 	
 	public Product() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
 
-	public long getProductId() {
+	public Long getProductId() {
 		return productId;
 	}
 

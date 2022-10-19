@@ -19,6 +19,7 @@ public class CategoryDto {
 	@NotBlank(message="message * Required")
 	private String category;
 
+	
 
 	public CategoryDto() {
 		super();

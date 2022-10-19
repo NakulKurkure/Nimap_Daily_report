@@ -23,6 +23,8 @@ import com.dto.ErrorDetailsDto;
 
 import com.dto.SuccessDto;
 import com.dto.SuccessResponseDto;
+import com.entity.Category;
+import com.repository.CategoryRepository;
 import com.serviceInterface.CategoryServiceInterface;
 import com.serviceInterface.ICategoryListDto;
 
@@ -34,25 +36,28 @@ public class CategoryController {
 	@Autowired
 	private CategoryServiceInterface categoryServiceInterface;
 	
+	@Autowired
+	private CategoryRepository categoryRepository;
+	
 	@PostMapping
 	public ResponseEntity<?> addCategory(@Valid @RequestBody CategoryDto categoryDto)
 	{
 		
-		String category= categoryDto.getCategory();
+		String category=categoryDto.getCategory();
 		
-		if(category==null)
+		Category category2= categoryRepository.findByCategory(category);
+		
+		if(category2==null)
 		{
+		
 			categoryServiceInterface.addCategory(categoryDto);
 			
-			return new ResponseEntity<>(new SuccessDto("Success", "Successfully Added Category"),HttpStatus.CREATED);
-			
+			return new ResponseEntity<>(new SuccessDto("Success..", "Successfully Added Category.."),HttpStatus.CREATED);
 		}else
 		{
-			return new ResponseEntity<>(new ErrorDetailsDto("Exist ..", "Category Alredy Exists."),HttpStatus.BAD_REQUEST);	
-
+			return new ResponseEntity<>(new SuccessDto("Exists..", "Already Exists.."),HttpStatus.BAD_REQUEST);
 		}
-		
-		
+	
 	}
 	
 	@PutMapping("/{id}")
@@ -107,8 +112,8 @@ public class CategoryController {
 	
 	@GetMapping
 	public ResponseEntity<?> getAllCategory(
-			@RequestParam(defaultValue = "") String search
-			,@RequestParam (defaultValue = "1") String pageNumber,
+			@RequestParam(defaultValue = "") String search,
+			@RequestParam (defaultValue = "1") String pageNumber,
 			@RequestParam(defaultValue = "5") String pageSize
 			)
 	{

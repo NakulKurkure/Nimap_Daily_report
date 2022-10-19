@@ -24,6 +24,8 @@ public class CategoryServiceImpl implements CategoryServiceInterface{
 	@Override
 	public void addCategory(CategoryDto categoryDto) {
 		
+		
+		
 		Category category=new Category();
 		category.setCategory(categoryDto.getCategory());
 		
@@ -74,7 +76,7 @@ public class CategoryServiceImpl implements CategoryServiceInterface{
 		
 		if((search=="")||(search==null)||(search.length()==0))
 		{
-			return categoryRepository.findByOrderByCategoryId(pagable,ICategoryListDto.class);
+			return categoryRepository.findByOrderByCategoryIdDesc(pagable,ICategoryListDto.class);
 		}
 		else
 		{
@@ -82,10 +84,6 @@ public class CategoryServiceImpl implements CategoryServiceInterface{
 		}
 		
 	}
-
-	
-	
-	
 
 	
 }
