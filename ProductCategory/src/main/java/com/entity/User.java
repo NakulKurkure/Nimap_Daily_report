@@ -1,15 +1,30 @@
 package com.entity;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.print.DocFlavor.STRING;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 @Entity
+@Where(clause ="is_active=true")
+@SQLDelete(sql = "UPDATE users set is_active=false where user_id=?")
 @Table(name="users")
 public class User {
 
@@ -22,9 +37,11 @@ public class User {
 	private String userName;
 	
 	@Column(name="gender")
+	@Enumerated(EnumType.STRING)
 	private GenderEnum gender;
 	
 	@Column(name="created_at")
+	@CreationTimestamp
 	private Date createdAt;
 	
 	public User(Long userId, String userName, GenderEnum gender, Date createdAt, Date updatedAt, String email,
@@ -41,6 +58,7 @@ public class User {
 	}
 
 	@Column(name="updated_at")
+	@UpdateTimestamp
 	private Date updatedAt;
 	
 	@Column(name="email")
@@ -51,6 +69,12 @@ public class User {
 	
 	@Column(name="is_active")
 	private boolean isActive=true;
+	
+	
+	@ManyToMany
+	private List<Role> role;
+	
+	
 	
 	public String getEmail() {
 		return email;

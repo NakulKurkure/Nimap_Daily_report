@@ -1,17 +1,11 @@
 package com.dto;
 
+import java.util.List;
+
 import com.entity.GenderEnum;
 
+
 public class UserDto {
-
-
-	public UserDto(String userName, String email, String password, GenderEnum gender) {
-		super();
-		this.userName = userName;
-		this.email = email;
-		this.password = password;
-		this.gender = gender;
-	}
 
 	public String getPassword() {
 		return password;
@@ -54,10 +48,35 @@ public class UserDto {
 		this.gender = gender;
 	}
 
+	
+
+	public List<Long> getRoleId() {
+		return roleId;
+	}
+
+
+
+	public UserDto(String userName, String email, String password, GenderEnum gender, List<Long> roleId) {
+		super();
+		this.userName = userName;
+		this.email = email;
+		this.password = password;
+		this.gender = gender;
+		this.roleId = roleId;
+	}
+
+
+
+	public void setRoleId(List<Long> roleId) {
+		this.roleId = roleId;
+	}
+
 	private String email;
 	
 	private String password;
 	
 	private GenderEnum gender;
+
+	private List<Long> roleId;
 	
 }
