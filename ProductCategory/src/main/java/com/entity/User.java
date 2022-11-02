@@ -71,11 +71,33 @@ public class User {
 	private boolean isActive=true;
 	
 	
-	@ManyToMany
+	@ManyToMany(cascade = CascadeType.ALL)
 	private List<Role> role;
 	
 	
 	
+	public User(Long userId, String userName, GenderEnum gender, Date createdAt, Date updatedAt, String email,
+			String password, boolean isActive, List<Role> role) {
+		super();
+		this.userId = userId;
+		this.userName = userName;
+		this.gender = gender;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+		this.email = email;
+		this.password = password;
+		this.isActive = isActive;
+		this.role = role;
+	}
+
+	public List<Role> getRole() {
+		return role;
+	}
+
+	public void setRole(List<Role> role) {
+		this.role = role;
+	}
+
 	public String getEmail() {
 		return email;
 	}

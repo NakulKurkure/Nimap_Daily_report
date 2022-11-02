@@ -2,6 +2,11 @@ package com.dto;
 
 import java.util.List;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+
+import org.springframework.lang.NonNull;
+
 import com.entity.GenderEnum;
 
 
@@ -15,6 +20,9 @@ public class UserDto {
 		this.password = password;
 	}
 
+	@NonNull
+	@NotBlank
+	@NotEmpty
 	private String userName;
 	
 	public String getUserName() {
@@ -71,12 +79,24 @@ public class UserDto {
 		this.roleId = roleId;
 	}
 
+	@NonNull
+	@NotBlank
+	@NotEmpty
 	private String email;
 	
+	@NonNull
+	@NotBlank
+	@NotEmpty
 	private String password;
 	
+	@NonNull
+	@NotBlank
+	@NotEmpty
 	private GenderEnum gender;
 
+	@NonNull
+	@NotBlank
+	@NotEmpty
 	private List<Long> roleId;
 	
 }

@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 
 import com.dto.UserDataDto;
 import com.dto.UserDto;
@@ -39,8 +40,23 @@ public class UserServiceImpl implements UserServiceInterface{
 	
 	@Override
 	public void addUser(UserDto userDto) {
-		
 		User user=new User();
+		//iterate and Save
+		ArrayList<Role> roles=new ArrayList<Role>();
+		System.out.println("Role"+userDto.getRoleId().size());
+		for(int i=0;i<userDto.getRoleId().size();i++)
+		{
+			
+		System.out.println("Role"+roles);
+		
+		Long roleId= userDto.getRoleId().get(i);
+		System.out.println("RoleId"+roleId);
+		Role role1= roleRepository.findById(roleId).orElseThrow(()-> new ResourceNotFoundException("Not Found RoleId"));		
+		System.out.println("RoleId"+roleId);
+		
+		System.out.println("Role1"+role1);
+		
+		System.out.println("Roles"+roles);
 		
 		user.setEmail(userDto.getEmail());
 		user.setGender(userDto.getGender());
@@ -48,63 +64,59 @@ public class UserServiceImpl implements UserServiceInterface{
 		user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		
 		
+		System.out.println("user"+user);
 		
-		List<Long> role= userDto.getRoleId();
-		
-		ArrayList<Role> roles=new ArrayList<Role>();
-		User user1=new User();
-		for(int i=0;i<role.size();i++)
-		{
-		System.out.println("Role"+roles);
-		
-		System.out.println("Roles"+role);
-		user1.setUserId(role.get(i));
-		
-		System.out.println("UserId"+user1.getUserId());	
-		
-		userDto.setRoleId(role);
-	
-		roles.addAll(roles);
-		
-		userRepository.save(user1);
+		roles.add(role1);
+		user.setRole(roles);
+		userRepository.save(user);
+
 		
 		}
-		
-		
-		
+	
 	}
-
+			
 	@Override
 	public void updateUserById(UserDto userDto, Long id) {
 	
 		User user=userRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Not Found UserId..."));
-	
+		
+		ArrayList<Role> roles=new ArrayList<>();
+		
+		for(int i=0;i<userDto.getRoleId().size();i++)
+		{
+			
+		Long roleId=userDto.getRoleId().get(i);
+		
+		Role role=roleRepository.findById(roleId).orElseThrow(()-> new ResourceNotFoundException("Not Found RoleId.."));
+		
+		
 		user.setEmail(userDto.getEmail());
 		user.setGender(userDto.getGender());
 		user.setUserName(userDto.getUserName());
 		user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+			
+		roles.add(role);
 		
+		user.setRole(roles);
 		userRepository.save(user);
-		
+		}
+	
 	}
-
+	
 	@Override
-	public UserDataDto getByUserId(Long id) {
+	public List<IUserListDto> getByUserId(Long id) {
 		
-		User user=userRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Not Found UserId..."));
+		userRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Not Found UserId..."));
 		
-		UserDataDto userDataDto =new UserDataDto();
-		userDataDto.setUserName(user.getUserName());
-		userDataDto.setGender(user.getGender());
-		userDataDto.setEmail(user.getEmail());
+		List<IUserListDto> users=userRepository.findByUserId(id,IUserListDto.class);
 		
-		return userDataDto;
+		return (List<IUserListDto>) users;
 	}
-
+	
 	@Override
 	public void deleteUserById(Long id) {
 
-		User user=userRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Not Found UserId..."));
+		userRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Not Found UserId..."));
 		
 		userRepository.deleteById(id);
 		

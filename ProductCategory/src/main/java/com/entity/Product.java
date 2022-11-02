@@ -76,7 +76,7 @@ public class Product {
 		super();
 		
 	}
-
+	
 	public Long getProductId() {
 		return productId;
 	}

@@ -12,4 +12,6 @@ public interface IUserListDto {
 	
 	public GenderEnum getGender();
 	
+	public IRoleListDto getRole();
+	
 }

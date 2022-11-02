@@ -1,5 +1,7 @@
 package com.dto;
 
+import java.util.ArrayList;
+
 import com.entity.GenderEnum;
 
 public class UserDataDto {
@@ -11,6 +13,8 @@ public class UserDataDto {
 	private String email;
 	
 	private GenderEnum gender;
+	
+//	private ArrayList<Long>
 	
 	public UserDataDto(String email, GenderEnum gender, String userName) {
 		super();

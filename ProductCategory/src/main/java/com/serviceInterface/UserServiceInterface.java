@@ -1,5 +1,7 @@
 package com.serviceInterface;
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 
 import com.dto.UserDataDto;
@@ -11,7 +13,7 @@ public interface UserServiceInterface {
 
 	void updateUserById(UserDto userDto, Long id);
 
-	UserDataDto getByUserId(Long id);
+	List<IUserListDto> getByUserId(Long id);
 
 	void deleteUserById(Long id);
 

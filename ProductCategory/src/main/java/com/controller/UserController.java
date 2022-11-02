@@ -1,5 +1,7 @@
 package com.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -90,7 +92,7 @@ public class UserController {
 		try
 		{
 			
-			UserDataDto userDto=this.userServiceInterface.getByUserId(id);
+			List<IUserListDto> userDto=this.userServiceInterface.getByUserId(id);
 			return new ResponseEntity<>(new SuccessResponseDto("Success", "Success", userDto),HttpStatus.ACCEPTED);	
 
 		}catch(Exception e)
