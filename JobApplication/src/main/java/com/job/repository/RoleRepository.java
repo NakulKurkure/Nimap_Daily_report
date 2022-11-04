@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.job.entity.Role;
 import com.job.serviceInterface.IRoleListDto;
 @Repository
-public interface RoleRepository extends JpaRepository<Role, Long>{
+public interface RoleRepository extends JpaRepository<Role,Long>{
 	
 	Page<IRoleListDto> findByRoleName(String search, Pageable pagable, Class<IRoleListDto> class1);
 

@@ -57,6 +57,23 @@ public class AuthController {
 		String password=userDto.getPassword();
 		
 		User user=userRepository.findByEmailContainingIgnoreCase(email);
+		
+		if(userDto.getEmail().isBlank())
+		{
+			if(userDto.getPassword().isBlank())
+			{
+				return new ResponseEntity<>(new ErrorResponseDto("Password Can Not be Empty..", "Please Enter Password..."),HttpStatus.BAD_REQUEST);
+			}
+			else
+			{
+				return new ResponseEntity<>(new ErrorResponseDto("Email Can Not be Empty..", "Please Enter Email..."),HttpStatus.BAD_REQUEST);
+				
+			}
+
+		}else
+		{
+			
+		
 			
 		if(PasswordValidation.isValidforEmail(email))
 			{
@@ -88,7 +105,7 @@ public class AuthController {
 				return new ResponseEntity<>(new ErrorResponseDto("Please Enter Proper format of Email .", "Email should be 8 to 30 characters in One Uppercase,One lowercase,One digit and One Unique Symbol..."),HttpStatus.BAD_REQUEST);
 			}
 			
-		
+		}
 		}
 	
 	
@@ -105,7 +122,6 @@ public class AuthController {
 			if(PasswordValidation.isValid(password))
 			{
 				
-			
 			try
 			{
 				

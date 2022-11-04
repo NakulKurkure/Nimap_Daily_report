@@ -8,4 +8,6 @@ public interface IUserListDto {
 	
 	public String getUserName();
 	
+	public IRoleListDto getRoleId();
+	
 }

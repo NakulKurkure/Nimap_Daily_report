@@ -2,22 +2,28 @@ package com.job.entity;
 
 import java.util.Date;
 
+import javax.persistence.AssociationOverride;
+import javax.persistence.AssociationOverrides;
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Where;
 
 @Entity
 @Table(name="user_role")
+@Where(clause = "is_active=true")
+@AssociationOverrides({@AssociationOverride(name="pk.user",joinColumns = @JoinColumn(name="user_id")),@AssociationOverride(name="pk.role",joinColumns = @JoinColumn(name="role_id"))})
 public class UserRole {
 
-	public UserRole(UserRoleId pk, Date createdAt, Date updatedAt, boolean isActive) {
+	
+	public UserRole() {
 		super();
-		this.pk = pk;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
-		this.isActive = isActive;
+		
 	}
 
 	@EmbeddedId
@@ -39,6 +45,14 @@ public class UserRole {
 		this.createdAt = createdAt;
 	}
 
+	public UserRole(UserRoleId pk, Date createdAt, Date updatedAt, boolean isActive) {
+		super();
+		this.pk = pk;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+		this.isActive = isActive;
+	}
+
 	public Date getUpdatedAt() {
 		return updatedAt;
 	}
@@ -56,9 +70,11 @@ public class UserRole {
 	}
 
 	@Column(name="created_at")
+	@CreationTimestamp
 	private Date createdAt;
 	
 	@Column(name="updated_at")
+	@UpdateTimestamp
 	private Date updatedAt;
 	
 	@Column(name="is_active")

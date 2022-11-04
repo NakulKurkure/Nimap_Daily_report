@@ -1,18 +1,23 @@
 package com.job.entity;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
+
 
 @Entity
 @Table(name="users")
@@ -47,6 +52,9 @@ public class User {
 	
 	@Column(name="password")
 	private String password;
+	
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "pk.user",cascade = CascadeType.ALL)
+	List<UserRole> userRoles;
 	
 	public Long getUserId() {
 		return userId;
