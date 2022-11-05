@@ -75,7 +75,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				// all other requests need to be authenticated
 				// Add a filter to validate the tokens with every request
 				// dont authenticate this particular request
-				.antMatchers("/api/auth/register","/api/auth/login")
+				.antMatchers("/api/auth/register","/api/auth/login","api/auth/forgot")
 				.permitAll().
 				// all other requests need to be authenticated
 				anyRequest().authenticated().and().httpBasic().and().

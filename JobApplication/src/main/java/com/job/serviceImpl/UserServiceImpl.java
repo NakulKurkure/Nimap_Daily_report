@@ -11,6 +11,7 @@ import com.job.dto.UserDto;
 import com.job.entity.User;
 import com.job.exception.ResourceNotFoundException;
 import com.job.repository.UserRepository;
+import com.job.serviceInterface.ILIstUserDto;
 import com.job.serviceInterface.IUserListDto;
 import com.job.serviceInterface.UserServiceInterface;
 
@@ -71,18 +72,20 @@ public class UserServiceImpl implements UserServiceInterface{
 	}
 
 	@Override
-	public Page<IUserListDto> getAllUsers(String search, String pageNumber, String pageSize) {
+	public Page<ILIstUserDto> getAllUsers(String search, String pageNumber, String pageSize) {
 		Pageable pagable=new com.job.util.Pagination().getPagination(pageNumber, pageSize);
 		if((search=="")||(search==null)||(search.length()==0))
 		{
-			return userRepository.findByOrderByUserIdDesc(pagable,IUserListDto.class);
+			return userRepository.findByOrderByUserIdDesc(pagable,ILIstUserDto.class);
 		}
 		else
 		{
-			return  userRepository.findByUserName(search,pagable,IUserListDto.class);
+			return  userRepository.findByUserName(search,pagable,ILIstUserDto.class);
 		}
 	
 	}
 
+	
+	
 	
 }

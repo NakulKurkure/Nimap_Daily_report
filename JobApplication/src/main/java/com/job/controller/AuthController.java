@@ -2,6 +2,7 @@ package com.job.controller;
 
 import java.util.Calendar;
 
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,13 +21,18 @@ import com.job.dto.AuthRequestDto;
 import com.job.dto.AuthResponseDto;
 import com.job.dto.AuthSuccessDto;
 import com.job.dto.ErrorResponseDto;
+import com.job.dto.ForgotPasswordRequestDto;
+import com.job.dto.OtpDto;
 import com.job.dto.SuccessResponseDto;
 import com.job.dto.UserDto;
 import com.job.entity.Logger;
+import com.job.entity.OtpEntity;
 import com.job.entity.User;
 import com.job.repository.UserRepository;
 import com.job.security.JwtTokenUtil;
 import com.job.security.UserDetailService;
+import com.job.serviceImpl.OtpServiceImpl;
+import com.job.serviceInterface.EmailServiceInterface;
 import com.job.serviceInterface.LoggerServiceInterface;
 import com.job.serviceInterface.UserServiceInterface;
 import com.job.validation.PasswordValidation;
@@ -48,10 +56,16 @@ public class AuthController {
 	@Autowired
 	private LoggerServiceInterface loggerServiceInterface;
 	
+	@Autowired
+	private EmailServiceInterface emailServiceInterface;
+	
+	@Autowired
+	private OtpServiceImpl otpServiceImpl;
+	
 
 	@PostMapping
 	@RequestMapping("/register")
-	public ResponseEntity<?> addUsers(@Valid @RequestBody UserDto userDto)
+	public ResponseEntity<?> addUsers(@RequestBody UserDto userDto)
 	{
 		String email=userDto.getEmail();
 		String password=userDto.getPassword();
@@ -60,7 +74,7 @@ public class AuthController {
 		
 		if(userDto.getEmail().isBlank())
 		{
-			if(userDto.getPassword().isBlank())
+			if(userDto.getPassword().isEmpty())
 			{
 				return new ResponseEntity<>(new ErrorResponseDto("Password Can Not be Empty..", "Please Enter Password..."),HttpStatus.BAD_REQUEST);
 			}
@@ -175,8 +189,59 @@ public class AuthController {
 			
 			
 		}
+	
+	@Transactional
+	@GetMapping("/logout")
+	public ResponseEntity<?> logOut(@RequestHeader("Authorization") String token)
+	{
 		
 		
+		loggerServiceInterface.logOutUser(token);
+		
+		return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully LOgout User"),HttpStatus.ACCEPTED);
+		
+	}
+		
+		@PostMapping("/forgot")
+		public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequestDto otpDto)
+		{
+			
+			try
+			{
+				
+			System.out.println("gdgd");
+			User user=userRepository.findByEmailContainingIgnoreCase(otpDto.getEmail());
+			
+			final long otp=emailServiceInterface.generateOtp();
+			System.out.println("OTP"+otp);
+			final String url="OTP FOR FORGOT PASSWORD IS "+otp;
+			System.out.println("URL"+url);
+			Calendar calender = Calendar.getInstance();
+			calender.add(Calendar.MINUTE, 5);
+			System.out.println("URL"+otpDto+user);
+			
+			
+			
+			OtpEntity entities = new OtpEntity();
+			entities.setUserId(user);
+			entities.setEmail(otpDto.getEmail());
+			entities.setOtp(otp);
+			entities.setExpireAt(calender.getTime());
+			
+			
+			otpServiceImpl.saveOtp(otpDto,user,entities);
+			
+			this.emailServiceInterface.sendMail(user.getEmail(),"OTP ", "Expire within 5 Minutes..", user);
+			this.emailServiceInterface.sendSimpleMessage(user.getEmail(),"subject" , url);
+			
+			return new ResponseEntity<>(new AuthSuccessDto("OTP SEND SUCCESSFULLY...", "Otp send to user Successfully..", user.getEmail()),HttpStatus.OK);
+		
+			}catch(Exception e)
+			{
+				return new ResponseEntity<>(new ErrorResponseDto("Email Not Found!..", "Please Enter Valid Email!!"),HttpStatus.BAD_REQUEST);
+
+			}
+		}
 		
 	}
 	

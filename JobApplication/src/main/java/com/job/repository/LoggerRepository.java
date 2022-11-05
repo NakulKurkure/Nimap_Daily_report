@@ -8,4 +8,6 @@ import com.job.entity.Logger;
 @Repository
 public interface LoggerRepository extends JpaRepository<Logger, Long>{
 
+	void removeByToken(String userToken);
+
 }

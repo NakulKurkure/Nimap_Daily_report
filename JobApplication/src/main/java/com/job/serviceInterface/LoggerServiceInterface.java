@@ -7,4 +7,6 @@ public interface LoggerServiceInterface {
 
 	void createLogger(Logger logger, User user);
 
+	void logOutUser(String token);
+
 }

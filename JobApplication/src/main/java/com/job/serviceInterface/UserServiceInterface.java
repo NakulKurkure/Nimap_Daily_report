@@ -16,6 +16,6 @@ public interface UserServiceInterface {
 
 	void deleteByUserId(Long id);
 
-	Page<IUserListDto> getAllUsers(String search, String pageNumber, String pageSize);
+	Page<ILIstUserDto> getAllUsers(String search, String pageNumber, String pageSize);
 
 }

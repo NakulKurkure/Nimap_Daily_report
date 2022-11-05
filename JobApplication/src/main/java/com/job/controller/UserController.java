@@ -85,7 +85,7 @@ public class UserController {
 
 	{
 
-		Page<com.job.serviceInterface.IUserListDto> page=userServiceInterface.getAllUsers(search,pageNumber,pageSize);
+		Page<com.job.serviceInterface.ILIstUserDto> page=userServiceInterface.getAllUsers(search,pageNumber,pageSize);
 			
 		if(page.getTotalElements()!=0)
 		{

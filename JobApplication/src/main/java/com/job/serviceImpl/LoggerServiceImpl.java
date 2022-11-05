@@ -21,4 +21,13 @@ public class LoggerServiceImpl implements LoggerServiceInterface{
 		
 	}
 
+	@Override
+	public void logOutUser(String token) {
+		
+		final String userToken=token.substring(7);
+		
+		this.loggerRepository.removeByToken(userToken);
+		
+	}
+
 }
