@@ -10,4 +10,8 @@ public interface EmailServiceInterface {
 
 	void sendSimpleMessage(String email, String string, String url);
 
+//	String sendSimpleMessage(String email, String string);
+
+	String sendMessage(String email, String string, String jobTitle);
+
 }

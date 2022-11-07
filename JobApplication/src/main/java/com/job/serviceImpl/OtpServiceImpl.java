@@ -1,5 +1,7 @@
 package com.job.serviceImpl;
 
+import java.util.Calendar;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,37 +26,17 @@ public class OtpServiceImpl implements OtpInterface{
 	
 	
 	
-	public OtpEntity saveOtp(ForgotPasswordRequestDto otpDto, User user, OtpEntity entities) throws Exception {
-
-		try
-		{
-		com.job.entity.OtpEntity otpentity = this.otpRepository.findByEmailContainingIgnoreCase(otpDto.getEmail());
-System.out.println("OTP"+otpentity);
-		if (otpentity != null) {
-
-			throw new ResourceNotFoundException("Something went wrong");
-		}
-
-		else {
+	
+	public OtpEntity saveOtp(ForgotPasswordRequestDto otpDto, User user1,OtpEntity entities) throws Exception {
 			
 			this.otpRepository.save(entities);
 			return entities;
-		}
-	} catch (Exception e) {
-
-		throw new Exception("Something went wrong !!!!");
-	}
 
 	}
-//
-//
-//
-//	public OtpEntity saveOtp(ForgotPasswordRequestDto otpDto, User user, OtpEntity entities) {
-//		// TODO Auto-generated method stub
-//		
-//		
-//		return entities;
-//	}
 
 
-}
+
+	}
+
+
+

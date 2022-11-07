@@ -21,6 +21,7 @@ import com.job.dto.AuthRequestDto;
 import com.job.dto.AuthResponseDto;
 import com.job.dto.AuthSuccessDto;
 import com.job.dto.ErrorResponseDto;
+import com.job.dto.ForgotPasswordDto;
 import com.job.dto.ForgotPasswordRequestDto;
 import com.job.dto.OtpDto;
 import com.job.dto.SuccessResponseDto;
@@ -28,11 +29,15 @@ import com.job.dto.UserDto;
 import com.job.entity.Logger;
 import com.job.entity.OtpEntity;
 import com.job.entity.User;
+import com.job.exception.ResourceNotFoundException;
+import com.job.repository.OtpRepository;
 import com.job.repository.UserRepository;
 import com.job.security.JwtTokenUtil;
 import com.job.security.UserDetailService;
 import com.job.serviceImpl.OtpServiceImpl;
+
 import com.job.serviceInterface.EmailServiceInterface;
+import com.job.serviceInterface.ForgotPassConfirmInterface;
 import com.job.serviceInterface.LoggerServiceInterface;
 import com.job.serviceInterface.UserServiceInterface;
 import com.job.validation.PasswordValidation;
@@ -62,6 +67,12 @@ public class AuthController {
 	@Autowired
 	private OtpServiceImpl otpServiceImpl;
 	
+	@Autowired
+	private OtpRepository otpRepository;
+	
+	@Autowired
+	private ForgotPassConfirmInterface forgotPassConfirmInterface;
+	
 
 	@PostMapping
 	@RequestMapping("/register")
@@ -72,21 +83,8 @@ public class AuthController {
 		
 		User user=userRepository.findByEmailContainingIgnoreCase(email);
 		
-		if(userDto.getEmail().isBlank())
-		{
-			if(userDto.getPassword().isEmpty())
-			{
-				return new ResponseEntity<>(new ErrorResponseDto("Password Can Not be Empty..", "Please Enter Password..."),HttpStatus.BAD_REQUEST);
-			}
-			else
-			{
-				return new ResponseEntity<>(new ErrorResponseDto("Email Can Not be Empty..", "Please Enter Email..."),HttpStatus.BAD_REQUEST);
-				
-			}
+		
 
-		}else
-		{
-			
 		
 			
 		if(PasswordValidation.isValidforEmail(email))
@@ -120,7 +118,7 @@ public class AuthController {
 			}
 			
 		}
-		}
+		
 	
 	
 	@PostMapping("/login")
@@ -202,6 +200,7 @@ public class AuthController {
 		
 	}
 		
+
 		@PostMapping("/forgot")
 		public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequestDto otpDto)
 		{
@@ -209,33 +208,43 @@ public class AuthController {
 			try
 			{
 				
-			System.out.println("gdgd");
 			User user=userRepository.findByEmailContainingIgnoreCase(otpDto.getEmail());
 			
 			final long otp=emailServiceInterface.generateOtp();
 			System.out.println("OTP"+otp);
 			final String url="OTP FOR FORGOT PASSWORD IS "+otp;
 			System.out.println("URL"+url);
+			
 			Calendar calender = Calendar.getInstance();
 			calender.add(Calendar.MINUTE, 5);
 			System.out.println("URL"+otpDto+user);
 			
+			com.job.entity.OtpEntity otpentity = this.otpRepository.findByEmailContainingIgnoreCase(otpDto.getEmail()).orElseThrow(()-> new ResourceNotFoundException("Enter Valid Email Id..."));
+
 			
+			User user2=userRepository.findByEmailContainingIgnoreCase(otpDto.getEmail());
 			
+			if (otpentity != null) {
+				
+			throw new ResourceNotFoundException("Something went wrong");
+			}
+				
+			else {
+				
 			OtpEntity entities = new OtpEntity();
 			entities.setUserId(user);
 			entities.setEmail(otpDto.getEmail());
 			entities.setOtp(otp);
+			System.out.println("OTP"+otp);
 			entities.setExpireAt(calender.getTime());
 			
-			
 			otpServiceImpl.saveOtp(otpDto,user,entities);
-			
-			this.emailServiceInterface.sendMail(user.getEmail(),"OTP ", "Expire within 5 Minutes..", user);
-			this.emailServiceInterface.sendSimpleMessage(user.getEmail(),"subject" , url);
+			//////
+			emailServiceInterface.sendMail(user.getEmail(),"OTP ", "Expire within 5 Minutes..", user);
+			emailServiceInterface.sendSimpleMessage(user.getEmail(),"subject" , url);
 			
 			return new ResponseEntity<>(new AuthSuccessDto("OTP SEND SUCCESSFULLY...", "Otp send to user Successfully..", user.getEmail()),HttpStatus.OK);
-		
+				}
 			}catch(Exception e)
 			{
 				return new ResponseEntity<>(new ErrorResponseDto("Email Not Found!..", "Please Enter Valid Email!!"),HttpStatus.BAD_REQUEST);
@@ -243,8 +252,44 @@ public class AuthController {
 			}
 		}
 		
-	}
-	
-	
-	
+		
+		
+		@PostMapping("forgot-password-conf")
+		public ResponseEntity<?> forgotPasswordConfirm(@RequestBody ForgotPasswordDto forgotPasswordDto)
+		{
+			
+		try
+		{
+			
+		if(PasswordValidation.isValid(forgotPasswordDto.getPassword()))
+			{
+				
+				if(PasswordValidation.isValid(forgotPasswordDto.getConfirmPassword()))
+				{
+					
+					forgotPassConfirmInterface.forgotPasswordConfirm(forgotPasswordDto);
+					
+					return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Passsword Updated ..."),HttpStatus.CREATED);	
+				}
+				else
+				{
+					return new ResponseEntity<>(new ErrorResponseDto("Confirm Password should have Minimum 8 and maximum 50 characters, at least one uppercase letter, one lowercase letter, one number and one special character and No White Spaces.", "Please Enter Valid Password..."),HttpStatus.CREATED);	
 
+				}
+				
+			}
+			else
+			{
+				return new ResponseEntity<>(new ErrorResponseDto("Password should have Minimum 8 and maximum 50 characters, at least one uppercase letter, one lowercase letter, one number and one special character and No White Spaces.", "Please Enter Valid Confirm Password..."),HttpStatus.CREATED);	
+
+			}
+		}catch(Exception e)
+		{
+			return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(),e.getLocalizedMessage()),HttpStatus.CREATED);	
+
+		}
+		}
+			
+			
+		}
+		

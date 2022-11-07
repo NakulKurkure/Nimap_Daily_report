@@ -7,5 +7,5 @@ import com.job.entity.User;
 
 public interface OtpInterface {
 
-	public OtpEntity saveOtp(ForgotPasswordRequestDto otpDto, User user) throws Exception;
+	public OtpEntity saveOtp(ForgotPasswordRequestDto otpDto, User user,OtpEntity en) throws Exception;
 }

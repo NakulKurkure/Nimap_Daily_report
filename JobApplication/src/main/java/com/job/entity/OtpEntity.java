@@ -12,8 +12,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
 @Entity
 @Table(name="otp_entity")
+
 public class OtpEntity {
 
 	@Id
@@ -106,9 +110,11 @@ public class OtpEntity {
 	private Long otp;
 	
 	@Column(name="created_at")
+	@CreationTimestamp
 	private Date createdAt;
 	
 	@Column(name="updated_at")
+	@UpdateTimestamp
 	private Date updatedAt;
 	
 	
