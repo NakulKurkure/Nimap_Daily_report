@@ -29,11 +29,11 @@ public class UserJobController {
 		
 			userJobServiceInterface.addUserJob(userJobRequestDto);
 			
-			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Added UserRoles.."),HttpStatus.CREATED);	
+			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Added UserJobs.."),HttpStatus.CREATED);	
 		}
 		catch(Exception e)
 		{
-			return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(),e.getLocalizedMessage()),HttpStatus.CREATED);	
+			return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(),e.getLocalizedMessage()),HttpStatus.BAD_REQUEST);	
 
 		}
 	}	

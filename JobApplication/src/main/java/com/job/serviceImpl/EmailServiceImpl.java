@@ -49,12 +49,12 @@ public class EmailServiceImpl implements EmailServiceInterface{
 	}
 
 	@Override
-	public String sendMessage(String email, String text,String subject) {
+	public String sendMessage(String email, String text,String job) {
 		SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
 		System.out.println("mail");
 		simpleMailMessage.setFrom("nakulkurkure1998@gmail.com");
 		simpleMailMessage.setTo(email);
-		simpleMailMessage.setSubject("Candidate Apply sucessfully To Job"+subject);
+		simpleMailMessage.setSubject("sucessfully Applied To Job"+job);
 		simpleMailMessage.setText(text);
 		System.out.println("Email shjkshsjsk");
 		javaMailSender.send(simpleMailMessage);

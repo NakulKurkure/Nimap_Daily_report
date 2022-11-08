@@ -1,10 +1,18 @@
 package com.job.dto;
 
-public class UserJobRequestDto {
+import java.io.Serializable;
+import java.util.List;
+
+public class UserJobRequestDto implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	private Long userId;
 	
-	private Long jobId;
+	private List<Long> jobId;
 
 	public Long getUserId() {
 		return userId;
@@ -14,22 +22,25 @@ public class UserJobRequestDto {
 		this.userId = userId;
 	}
 
-	public UserJobRequestDto() {
-		super();
-	}
-
-	public Long getJobId() {
+	public List<Long> getJobId() {
 		return jobId;
 	}
 
-	public UserJobRequestDto(Long userId, Long jobId) {
+	public void setJobId(List<Long> jobId) {
+		this.jobId = jobId;
+	}
+
+	public UserJobRequestDto() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public UserJobRequestDto(Long userId, List<Long> jobId) {
 		super();
 		this.userId = userId;
 		this.jobId = jobId;
 	}
 
-	public void setJobId(Long jobId) {
-		this.jobId = jobId;
-	}
+	
 	
 }

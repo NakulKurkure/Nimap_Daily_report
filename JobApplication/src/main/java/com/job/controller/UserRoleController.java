@@ -62,7 +62,7 @@ public class UserRoleController {
 		
 		userRoleServiceInterface.deleteUserRole(userRoleRequestDto);
 		
-		return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Updated UserRoles..."),HttpStatus.ACCEPTED);
+		return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Deleted UserRoles..."),HttpStatus.ACCEPTED);
 		}catch(Exception e)
 		{
 			return new ResponseEntity<>(new ErrorResponseDto("Invalid..", "Invalid UserId and Role Id..."),HttpStatus.BAD_REQUEST);

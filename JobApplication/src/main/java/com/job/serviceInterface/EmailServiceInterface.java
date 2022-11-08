@@ -12,6 +12,9 @@ public interface EmailServiceInterface {
 
 //	String sendSimpleMessage(String email, String string);
 
-	String sendMessage(String email, String string, String jobTitle);
+	String sendMessage(String email, String string, String job);
+
+
+
 
 }

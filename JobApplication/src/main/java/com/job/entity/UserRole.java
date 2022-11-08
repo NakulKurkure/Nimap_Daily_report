@@ -1,5 +1,6 @@
 package com.job.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.AssociationOverride;
@@ -18,9 +19,10 @@ import org.hibernate.annotations.Where;
 @Table(name="user_role")
 @Where(clause = "is_active=true")
 @AssociationOverrides({@AssociationOverride(name="pk.user",joinColumns = @JoinColumn(name="user_id")),@AssociationOverride(name="pk.role",joinColumns = @JoinColumn(name="role_id"))})
-public class UserRole {
+public class UserRole implements Serializable{
 
-	
+	private static final long serialVersionUID = 1L;
+
 	public UserRole() {
 		super();
 		

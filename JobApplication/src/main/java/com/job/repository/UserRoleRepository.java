@@ -1,5 +1,6 @@
 package com.job.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -26,9 +27,12 @@ public interface UserRoleRepository extends JpaRepository<UserRole, Long>{
 	@Modifying
 	@Query(value = "update user_role ur set is_active=false where ur.role_id=:role_id and ur.user_id=:user_id",nativeQuery = true)
 	void deleteUserRole(User user_id, Role role_id);
-//
+
 	@Transactional
-	@Query(value="SELECT * from user_role t WHERE t.user_id=:user_id",nativeQuery = true)
-	Optional<UserRole> findByUserById(@Param("user_id") Long user_id);
+	//fetched from database
+	@Query(value = "SELECT * from user_role t WHERE t.user_id=:user_id",nativeQuery = true)
+	List<UserRole> findByUserId(@Param("user_id") Long user_id);
+
+
 
 }

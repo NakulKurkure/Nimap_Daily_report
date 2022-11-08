@@ -1,5 +1,6 @@
 package com.job.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -18,12 +19,20 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 @Table(name="users")
 @Where(clause = "is_active=true")
 @SQLDelete(sql = "update users set is_active=false where user_id=?")
-public class User {
+public class User implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,7 +62,10 @@ public class User {
 	@Column(name="password")
 	private String password;
 	
+	
+
 	@OneToMany(fetch = FetchType.LAZY,mappedBy = "pk.user",cascade = CascadeType.ALL)
+	@JsonBackReference
 	List<UserRole> userRoles;
 	
 	public Long getUserId() {

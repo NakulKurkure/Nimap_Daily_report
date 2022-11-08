@@ -21,11 +21,18 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name="job")
 @Where(clause = "is_active=true")
 @SQLDelete(sql = "update job set is_active=false where id=?")
-public class Job {
+public class Job implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -138,7 +145,9 @@ public class Job {
 	@Column(name="date_of_joining")
 	private Date dateOfJoining;
 	
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.job",cascade = CascadeType.ALL)
+	
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "job",cascade = CascadeType.ALL)
+	@JsonBackReference
 	List<UserJob> userJob;
 	
 	
