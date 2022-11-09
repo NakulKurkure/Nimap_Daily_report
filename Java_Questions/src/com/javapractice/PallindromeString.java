@@ -1,7 +1,5 @@
 package com.javapractice;
 
-//import java.awt.peer.SystemTrayPeer;
-
 public class PallindromeString {
 	
 	public static void main(String[] args) {
