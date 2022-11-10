@@ -3,6 +3,8 @@ package com.job.controller;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,7 @@ import com.job.dto.ErrorResponseDto;
 import com.job.dto.JobDto;
 import com.job.dto.SuccessResponseDto;
 import com.job.exception.ResourceNotFoundException;
+import com.job.serviceInterface.IListAllJobsDto;
 import com.job.serviceInterface.IListJobDto;
 import com.job.serviceInterface.JobServiceInterface;
 
@@ -34,10 +37,14 @@ public class JobController {
 	@Autowired
 	private JobServiceInterface jobServiceInterface;
 	
-	
+	//Only Recruiter:- Post a job, with the following fields - Job Title and Job Description 
 	@PostMapping
-	public ResponseEntity<?> addJobByRecuriter(@RequestBody JobDto jobDto)
+	public ResponseEntity<?> addJobByRecuriter(@RequestBody JobDto jobDto,HttpServletRequest request)
 	{
+		
+		try
+		{
+			
 		
 		Date date=new Date();
 		
@@ -53,17 +60,27 @@ public class JobController {
 			}
 		}else
 		{
-			jobServiceInterface.addJob(jobDto);
+			jobServiceInterface.addJob(jobDto,request);
 			
 			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Added Jobs"),HttpStatus.CREATED);
 				
 		}
+		}catch(Exception e)
+		{
+			return new ResponseEntity<>(new ErrorResponseDto( "Not Valid..",e.getMessage()),HttpStatus.BAD_REQUEST);
+		}
 		
 	}
 	
+	
+	// Only Admin :-Update a job, with the following fields - Job Title and Job Description 
 	@PutMapping("/{id}")
-	public ResponseEntity<?> updateJobById(@RequestBody JobDto jobDto,@PathVariable Long id)
+	public ResponseEntity<?> updateJobById(@RequestBody JobDto jobDto,@PathVariable Long id,HttpServletRequest request)
 	{
+		
+		try
+		{
+			
 		
 		if(jobDto.getJobTitle().isBlank())
 			{
@@ -77,10 +94,16 @@ public class JobController {
 			}
 		}else
 		{
-			jobServiceInterface.updateJob(jobDto,id);
+			jobServiceInterface.updateJob(jobDto,id,request);
 			
 			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Added Jobs"),HttpStatus.CREATED);
 				
+		}
+		}
+		catch(Exception e)
+		{
+			return new ResponseEntity<>(new ErrorResponseDto( "Not Valid..",e.getMessage()),HttpStatus.BAD_REQUEST);
+	
 		}
 		
 	}
@@ -137,6 +160,25 @@ public class JobController {
 	}
 	
 	
+	
+	//getAllJobs By RecuriterId Using Recuriter Token
+	@GetMapping("/getAllJobs")
+	public ResponseEntity<?> getAllJobsByRecruiter(HttpServletRequest request)
+	{
+		try
+		{
+			
+		List<IListAllJobsDto> jobs=jobServiceInterface.getAllJobsByRecruiter(request);
+		return new ResponseEntity<>(new AuthSuccessDto("Success.", "Success..", jobs),HttpStatus.ACCEPTED);
+		
+		}catch(Exception e)
+		{
+			return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), "Only Recruiter access.."),HttpStatus.NOT_FOUND);	
+		}
+		
+		
+		
+	}
 	
 	
 	

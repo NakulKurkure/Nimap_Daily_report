@@ -1,5 +1,7 @@
 package com.job.serviceInterface;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.data.domain.Page;
 
 import com.job.dto.UserDataDto;
@@ -14,7 +16,7 @@ public interface UserServiceInterface {
 
 	UserDataDto getByUserId(Long id);
 
-	void deleteByUserId(Long id);
+	void deleteByUserId(Long id,HttpServletRequest request);
 
 	Page<ILIstUserDto> getAllUsers(String search, String pageNumber, String pageSize);
 

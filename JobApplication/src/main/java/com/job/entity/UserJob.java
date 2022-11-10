@@ -58,7 +58,6 @@ public class UserJob implements Serializable{
 //	@JsonManagedReference
 	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
 	@JsonManagedReference
-
 	private Job job;
 
 

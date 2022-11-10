@@ -1,5 +1,7 @@
 package com.job.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -63,11 +65,11 @@ public class UserController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteByUserId(@PathVariable Long id)
+	public ResponseEntity<?> deleteByUserId(@PathVariable Long id,HttpServletRequest request)
 	{
 		try
 		{
-			userServiceInterface.deleteByUserId(id);
+			userServiceInterface.deleteByUserId(id,request);
 			
 			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SucessFully Deleted User..."),HttpStatus.OK);	
 		}catch(Exception e)

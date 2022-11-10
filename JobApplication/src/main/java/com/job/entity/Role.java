@@ -17,6 +17,8 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.Where;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 
 @Entity
 @Where(clause = "is_active=true")
@@ -113,6 +115,7 @@ public class Role {
 	private boolean isActive=true;
 	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.role",cascade = CascadeType.ALL)
+	@JsonBackReference
 	List<UserRole> userRoles;
 	
 }

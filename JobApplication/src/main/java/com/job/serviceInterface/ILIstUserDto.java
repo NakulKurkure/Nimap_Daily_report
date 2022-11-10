@@ -3,10 +3,12 @@ package com.job.serviceInterface;
 public interface ILIstUserDto {
 
 
-	public Long getUserId();
+	public Long getUser_id();
 	
-	public String getEmail() ;
+	public String getemail() ;
 	
-	public String getUserName();
+	public String getUser_name();
+	
+	
 	
 }

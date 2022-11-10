@@ -1,5 +1,7 @@
 package com.job.serviceImpl;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -63,9 +65,10 @@ public class UserServiceImpl implements UserServiceInterface{
 	}
 
 	@Override
-	public void deleteByUserId(Long id) {
+	public void deleteByUserId(Long id,HttpServletRequest request) {
 		
 		userRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Not Found UserId"));
+		
 		
 		userRepository.deleteById(id);
 		

@@ -5,12 +5,15 @@ import java.io.Serializable;
 import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Embeddable
 public class UserRoleId implements Serializable{
 
 	
 	private static final long serialVersionUID = 1L;
 	@ManyToOne
+	@JsonManagedReference
 	private User user;
 	
 	public UserRoleId(User user, Role role) {
@@ -25,6 +28,7 @@ public class UserRoleId implements Serializable{
 	}
 
 	@ManyToOne
+	@JsonManagedReference
 	private Role role;
 
 	public User getUser() {
