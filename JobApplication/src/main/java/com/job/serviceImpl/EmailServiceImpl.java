@@ -5,6 +5,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.job.entity.OtpEntity;
 import com.job.entity.User;
 import com.job.serviceInterface.EmailServiceInterface;
 
@@ -24,14 +25,13 @@ public class EmailServiceImpl implements EmailServiceInterface{
 		
 	}
 
-	@Override
-	public String sendMail(String email, String subject, String text, User user) {
+	public String sendMail(String email, String subject, String text, User user,OtpEntity otp) {
 		SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
 		System.out.println("mail");
 		simpleMailMessage.setFrom("nakulkurkure1998@gmail.com");
 		simpleMailMessage.setTo(user.getEmail());
 		simpleMailMessage.setSubject("Send sucessfully");
-		simpleMailMessage.setText("Text demo");
+		simpleMailMessage.setText("Your forgot Password is "+otp.getOtp());
 		javaMailSender.send(simpleMailMessage);
 		return "Email Send";
 		
@@ -61,6 +61,17 @@ public class EmailServiceImpl implements EmailServiceInterface{
 		return "Email Send";
 		
 	}
+//
+//	@Override
+//	public void sendMail(String email, String string, String string2, User user, long otp) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+
+
+
+	
+	
 	
 	
 }

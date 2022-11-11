@@ -19,6 +19,7 @@ import com.job.dto.AuthSuccessDto;
 import com.job.dto.ErrorResponseDto;
 import com.job.dto.SuccessResponseDto;
 import com.job.dto.UserRoleRequestDto;
+import com.job.serviceInterface.IListUserRoleDto;
 import com.job.serviceInterface.IUserJobListDto;
 import com.job.serviceInterface.IUserListDto;
 import com.job.serviceInterface.UserRoleServiceInterface;
@@ -85,7 +86,7 @@ public class UserRoleController {
 //			@RequestParam(defaultValue = "5") String pageSize)
 //	{
 //		
-//		Page<IUserListDto> page= userRoleServiceInterface.getAllUserRole(search,pageNumber,pageSize);
+//		Page<IListUserRoleDto> page= userRoleServiceInterface.getAllUserRole(search,pageNumber,pageSize);
 //		if(page.getTotalElements()!=0)
 //		{
 //			return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", page.getContent()),HttpStatus.ACCEPTED);

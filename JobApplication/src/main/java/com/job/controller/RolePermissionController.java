@@ -1,5 +1,6 @@
 package com.job.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -91,6 +93,12 @@ public class RolePermissionController {
 //			return new ResponseEntity<>(new ErrorResponseDto("Records Not Available..", "No Records Available..."),HttpStatus.NOT_FOUND);
 //	    }
 //	}
-
-	
+//
+//	@GetMapping("/{id}")
+//	public ResponseEntity<?> getPermissionById(@PathVariable Long id)
+//	{
+//		ArrayList<String>tt= this.rolePermissionServiceInterface.getPermissionByUserId(id);
+//		return new ResponseEntity<>(tt,HttpStatus.OK);
+//	}
+//	
 }

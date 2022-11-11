@@ -13,6 +13,8 @@ public interface UserRoleServiceInterface {
 
 	void deleteUserRole(UserRoleRequestDto userRoleRequestDto);
 
+//	Page<IListUserRoleDto> getAllUserRole(String search, String pageNumber, String pageSize);
+
 //	Page<IUserListDto> getAllUserRole(String search, String pageNumber, String pageSize);
 
 //	List<IUserListDto> GetAllUserRole(UserRoleRequestDto userRoleRequestDto);

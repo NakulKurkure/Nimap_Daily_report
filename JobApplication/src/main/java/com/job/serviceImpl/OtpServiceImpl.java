@@ -25,8 +25,6 @@ public class OtpServiceImpl implements OtpInterface{
 	private UserRepository userRepository;
 	
 	
-	
-	
 	public OtpEntity saveOtp(ForgotPasswordRequestDto otpDto, User user1,OtpEntity entities) throws Exception {
 			
 			this.otpRepository.save(entities);

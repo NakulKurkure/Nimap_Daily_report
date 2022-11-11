@@ -203,7 +203,7 @@ public class JobServiceImpl implements JobServiceInterface{
 		{
 			List<IListAllJobsDto> list=jobRespository.findByJobAndPkUserByRecruiterId(recuriter_id);
 			
-			System.out.println("Dj");
+			
 			return list;	
 		}
 		else

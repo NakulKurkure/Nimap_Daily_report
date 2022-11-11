@@ -52,11 +52,11 @@ public class UserJobServiceImpl implements UserJobServiceInterface{
 	@Override
 	public void addUserJob(UserJobRequestDto userJobRequestDto, HttpServletRequest request) {
 	
-	
+		
 		User user=userRepository.findById(userJobRequestDto.getUserId()).orElseThrow(()-> new ResourceNotFoundException("Not Found UserId"));
 		
 		ArrayList<Job> userJobs = new ArrayList<>();
-
+		
 		for(int i=0;i<userJobRequestDto.getJobId().size();i++)
 		{
 			
@@ -145,6 +145,7 @@ public class UserJobServiceImpl implements UserJobServiceInterface{
 	@Override
 	 public Page<IListUserListDto> getAllUserJobs(String search, String pageNumber, String pageSize)
 	  {
+		
 			Pageable pagable=new Pagination().getPagination(pageNumber, pageSize);
 			if((search=="")||(search==null)||(search.length()==0))
 			{

@@ -77,10 +77,8 @@ public class JobController {
 	@PutMapping("/{id}")
 	public ResponseEntity<?> updateJobById(@RequestBody JobDto jobDto,@PathVariable Long id,HttpServletRequest request)
 	{
-		
 		try
 		{
-			
 		
 		if(jobDto.getJobTitle().isBlank())
 			{
@@ -161,7 +159,7 @@ public class JobController {
 	
 	
 	
-	//getAllJobs By RecuriterId Using Recuriter Token
+	//getAllJobs By RecuriterId Using Only Recuriter Token
 	@GetMapping("/getAllJobs")
 	public ResponseEntity<?> getAllJobsByRecruiter(HttpServletRequest request)
 	{

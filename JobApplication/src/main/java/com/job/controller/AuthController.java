@@ -42,6 +42,8 @@ import com.job.serviceInterface.LoggerServiceInterface;
 import com.job.serviceInterface.UserServiceInterface;
 import com.job.validation.PasswordValidation;
 
+import net.bytebuddy.dynamic.DynamicType.Builder.MethodDefinition.ImplementationDefinition.Optional;
+
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -202,7 +204,7 @@ public class AuthController {
 		
 
 		@PostMapping("/forgot")
-		public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequestDto otpDto)
+		public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordRequestDto otpDto) 
 		{
 			
 			try
@@ -210,6 +212,7 @@ public class AuthController {
 				
 			User user=userRepository.findByEmailContainingIgnoreCase(otpDto.getEmail());
 			
+			System.out.println("Email"+user.getEmail());
 			final long otp=emailServiceInterface.generateOtp();
 			System.out.println("OTP"+otp);
 			final String url="OTP FOR FORGOT PASSWORD IS "+otp;
@@ -217,19 +220,21 @@ public class AuthController {
 			
 			Calendar calender = Calendar.getInstance();
 			calender.add(Calendar.MINUTE, 5);
-			System.out.println("URL"+otpDto+user);
+			System.out.println("URL"+otpDto+user.getEmail());
 			
-			com.job.entity.OtpEntity otpentity = this.otpRepository.findByEmailContainingIgnoreCase(otpDto.getEmail()).orElseThrow(()-> new ResourceNotFoundException("Enter Valid Email Id..."));
-
-			
+//			com.job.entity.OtpEntity otpentity = this.otpRepository.findByEmailContainingIgnoreCase(user.getEmail()).orElseThrow(()-> new ResourceNotFoundException("Enter Valid Email Id..."));
+//			
+//			System.out.println("OTPEntity"+otpentity.getEmail());
+//			
 			User user2=userRepository.findByEmailContainingIgnoreCase(otpDto.getEmail());
+			System.out.println("User"+user2.getEmail());
 			
-			if (otpentity != null) {
+//			if (otpentity != null) {
+//				System.out.println("Nss");
+//			throw new ResourceNotFoundException("Something went wrong");
+//			}
 				
-			throw new ResourceNotFoundException("Something went wrong");
-			}
-				
-			else {
+//			else {
 				
 			OtpEntity entities = new OtpEntity();
 			entities.setUserId(user);
@@ -239,19 +244,27 @@ public class AuthController {
 			entities.setExpireAt(calender.getTime());
 			
 			otpServiceImpl.saveOtp(otpDto,user,entities);
-			//////
-			emailServiceInterface.sendMail(user.getEmail(),"OTP ", "Expire within 5 Minutes..", user);
+			
+			String email=otpDto.getEmail();
+			
+			OtpEntity otpEntity= otpRepository.findByOtp(otp).orElseThrow();
+			
+			System.out.println("OtpEntity"+otpEntity);
+			
+			emailServiceInterface.sendMail(user.getEmail(),"OTP ", "Expire within 5 Minutes..", user,otpEntity);
+			
 			emailServiceInterface.sendSimpleMessage(user.getEmail(),"subject" , url);
 			
 			return new ResponseEntity<>(new AuthSuccessDto("OTP SEND SUCCESSFULLY...", "Otp send to user Successfully..", user.getEmail()),HttpStatus.OK);
-				}
+//				}
 			}catch(Exception e)
 			{
 				return new ResponseEntity<>(new ErrorResponseDto("Email Not Found!..", "Please Enter Valid Email!!"),HttpStatus.BAD_REQUEST);
 
 			}
-		}
 		
+		
+		}
 		
 		
 		@PostMapping("forgot-password-conf")

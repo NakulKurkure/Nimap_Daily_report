@@ -1,5 +1,6 @@
 package com.job.serviceImpl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,20 +31,20 @@ public class ForgotPassConfirmServiceImpl implements ForgotPassConfirmInterface{
 	@Autowired
 	private OtpRepository otpRepository;
 	
-	
-	
 	public void forgotPasswordConfirm(ForgotPasswordDto forgotPasswordDto) {
 			
-		OtpEntity otpEntity= this.otpRepository.findByEmailContainingIgnoreCase(forgotPasswordDto.getEmail()).orElseThrow(()-> new ResourceNotFoundException("Enter Valid Email Id.."));
-		
+		System.out.println("In theOtp"+otpRepository.findByEmailContainingIgnoreCase(forgotPasswordDto.getEmail()));
+		List<OtpEntity> otpEntity= this.otpRepository.findByEmailContainingIgnoreCase(forgotPasswordDto.getEmail());
+		 System.out.println("Otp");
 		OtpEntity otp= otpRepository.findByOtp(forgotPasswordDto.getOtp()).orElseThrow(()-> new ResourceNotFoundException("Enter Valid OTP.. "));
+		System.out.println("OtpEntity"+otp);
 		
 		ForgotPasswordConfirm forgotPasswordConfirm=new ForgotPasswordConfirm();
 		
 		forgotPasswordConfirm.setEmail(forgotPasswordDto.getEmail());
 		
 		if(otp.getOtp().equals(forgotPasswordDto.getOtp()))
-			{
+		{
 			forgotPasswordConfirm.setOtp(otp.getOtp());
 			
 			if(forgotPasswordDto.getPassword().equals(forgotPasswordDto.getConfirmPassword()))
@@ -69,6 +70,6 @@ public class ForgotPassConfirmServiceImpl implements ForgotPassConfirmInterface{
 		
 		
 		
-	}
+		}
 
 }

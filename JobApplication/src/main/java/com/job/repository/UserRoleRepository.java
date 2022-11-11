@@ -1,5 +1,6 @@
 package com.job.repository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,7 +17,9 @@ import org.springframework.stereotype.Repository;
 import com.job.entity.Role;
 import com.job.entity.User;
 import com.job.entity.UserRole;
+import com.job.serviceInterface.IListUserRoleDto;
 import com.job.serviceInterface.IUserListDto;
+
 
 @Repository
 public interface UserRoleRepository extends JpaRepository<UserRole, Long>{
@@ -46,6 +49,22 @@ public interface UserRoleRepository extends JpaRepository<UserRole, Long>{
 	//fetched from database
 	@Query(value = "SELECT * from user_role t WHERE t.user_id=:user_id",nativeQuery = true)
 	UserRole findByUserById(@Param("user_id") Long user_id);
+
+
+
+//	ArrayList<RoleIdList> findByPkUserIdIn(Long userId, Class<RoleIdList> class1);
+
+//	ArrayList<RoleIdList> findPkByuser_idIn(Long userId, Class<RoleIdList> class1);
+
+//	ArrayList<RoleIdList> findPkByUserId(Long user_id, Class<RoleIdList> class1);
+
+//	ArrayList<RoleIdList> findPkByUser_id(Long user_id, Class<RoleIdList> class1);
+
+//	ArrayList<RoleIdList> findPkByUserId(Long user_id, Class<RoleIdList> class1);
+
+//	Page<IListUserRoleDto> findByOrderByPkId(Pageable pagable, Class<IUserListDto> class1);
+
+//	Page<IListUserRoleDto> findByOrderByPkUserRoleId(Pageable pagable, Class<IUserListDto> class1);
 
 //	Page<IUserListDto> findByOrderById(Pageable pagable, Class<IUserListDto> class1);
 
