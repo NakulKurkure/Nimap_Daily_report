@@ -38,8 +38,6 @@ public class UserRoleServiceImpl implements UserRoleServiceInterface{
 		
 		try
 		{
-	
-
 		
 		ArrayList<UserRole> userRoles = new ArrayList<>();
 
@@ -105,7 +103,7 @@ public class UserRoleServiceImpl implements UserRoleServiceInterface{
 //		Pageable pagable=new Pagination().getPagination(pageNumber, pageSize);
 //		if((search=="")||(search==null)||(search.length()==0))
 //		{
-//			return userRoleRepository.findByOrderByPkId(pagable,IUserListDto.class);
+//			return userRoleRepository.findByOrderById(pagable,IListUserRoleDto.class);
 //		}
 //		
 //		return null;

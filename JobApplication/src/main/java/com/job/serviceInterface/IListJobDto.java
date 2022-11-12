@@ -8,7 +8,7 @@ public interface IListJobDto {
 	
 	public String getJobDescription();
 	
-	public IRoleListDto getRecruiterId();
+	
 	
 	
 }

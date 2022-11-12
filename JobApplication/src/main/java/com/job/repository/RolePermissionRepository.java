@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import com.job.entity.RolePermission;
 import com.job.serviceInterface.IListRoleDto;
-//import com.job.serviceInterface.PermissionIdList;
+
 @Repository
 public interface RolePermissionRepository extends JpaRepository<RolePermission, Long>{
 

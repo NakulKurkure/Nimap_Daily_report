@@ -10,6 +10,6 @@ public interface UserJobServiceInterface {
 
 	void addUserJob(UserJobRequestDto userJobRequestDto, HttpServletRequest request);
 
-	Page<IListUserListDto> getAllUserJobs(String search, String pageNumber, String pageSize);
+	Page<IListUserListDto> getAllUserJobs(String search, String pageNumber, String pageSize,HttpServletRequest request);
 
 }

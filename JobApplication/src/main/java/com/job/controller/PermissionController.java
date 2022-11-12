@@ -1,7 +1,7 @@
 package com.job.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.CacheManager;
+
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.job.dto.AuthResponseDto;
 import com.job.dto.AuthSuccessDto;
 import com.job.dto.ErrorResponseDto;
 import com.job.dto.PermissionDto;
@@ -35,11 +34,27 @@ public class PermissionController {
 
 		try {
 
+			
+			if(dto.getActionName().isBlank())
+			{
+				
+				if(dto.getBaseUrl().isBlank())
+				{
+					return new ResponseEntity<>(new ErrorResponseDto("Enter Valid BaseUrl and ActionName..", "Please Enter Valid BaseUrl and ActionName..."),HttpStatus.BAD_REQUEST);
+				}else
+				{
+					return new ResponseEntity<>(new ErrorResponseDto("Enter Valid ActionName", "Please Enter Valid ActionName.."),HttpStatus.BAD_REQUEST);
 
+				}
+				
+			}else
+			{
+				this.permissionServiceInterface.addPermission(dto);
 
-		this.permissionServiceInterface.addPermission(dto);
-
-		return new ResponseEntity<>(new SuccessResponseDto("Permission Added Successfully", "Permission Added"),HttpStatus.CREATED);
+				return new ResponseEntity<>(new SuccessResponseDto("Permission Added Successfully", "Permission Added"),HttpStatus.CREATED);		
+			}
+			
+		
 
 	}catch(Exception e) {
 		return new ResponseEntity<>(new ErrorResponseDto("Permission Not Added, please check agian ","not Added"),HttpStatus.BAD_REQUEST);

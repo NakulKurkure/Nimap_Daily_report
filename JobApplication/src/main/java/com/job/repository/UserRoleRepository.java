@@ -50,6 +50,10 @@ public interface UserRoleRepository extends JpaRepository<UserRole, Long>{
 	@Query(value = "SELECT * from user_role t WHERE t.user_id=:user_id",nativeQuery = true)
 	UserRole findByUserById(@Param("user_id") Long user_id);
 
+//	Page<IListUserRoleDto> findByOrderById(Pageable pagable, Class<IUserListDto> class1);
+//
+//	Page<IListUserRoleDto> findByOrderById(Pageable pagable, Class<IListUserRoleDto> class1);
+
 
 
 //	ArrayList<RoleIdList> findByPkUserIdIn(Long userId, Class<RoleIdList> class1);

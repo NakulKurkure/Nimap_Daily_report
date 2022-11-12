@@ -52,10 +52,14 @@ public class UserJobController {
 	public ResponseEntity<?> getAllUserJob(
 			@RequestParam(defaultValue = "") String search,
 			@RequestParam(defaultValue = "1") String pageNumber,
-			@RequestParam(defaultValue = "5") String pageSize)
+			@RequestParam(defaultValue = "5") String pageSize,HttpServletRequest request)
 	{
+		try
+		{
+			
 		
-		Page<IListUserListDto> page= userJobServiceInterface.getAllUserJobs(search,pageNumber,pageSize);
+		
+		Page<IListUserListDto> page= userJobServiceInterface.getAllUserJobs(search,pageNumber,pageSize,request);
 		if(page.getTotalElements()!=0)
 		{
 			return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", page.getContent()),HttpStatus.ACCEPTED);
@@ -64,5 +68,11 @@ public class UserJobController {
 		{
 			return new ResponseEntity<>(new ErrorResponseDto("Records Not Available..", "No Records Available..."),HttpStatus.NOT_FOUND);
 	    }
+		
+		}catch(Exception e)
+		{
+			return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), e.getLocalizedMessage()),HttpStatus.NOT_FOUND);
+
+		}
 	}
 }

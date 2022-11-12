@@ -1,5 +1,7 @@
 package com.job.serviceImpl;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import com.job.entity.User;
 import com.job.exception.ResourceNotFoundException;
 import com.job.repository.UserRepository;
 import com.job.serviceInterface.ILIstUserDto;
+import com.job.serviceInterface.IListUsersDto;
 import com.job.serviceInterface.IUserListDto;
 import com.job.serviceInterface.UserServiceInterface;
 
@@ -74,21 +77,39 @@ public class UserServiceImpl implements UserServiceInterface{
 		
 	}
 
+	//UserRole 
 	@Override
-	public Page<ILIstUserDto> getAllUsers(String search, String pageNumber, String pageSize) {
+	public Page<IListUsersDto> getAllUsers(String search, String pageNumber, String pageSize) {
 		Pageable pagable=new com.job.util.Pagination().getPagination(pageNumber, pageSize);
 		if((search=="")||(search==null)||(search.length()==0))
 		{
-			return userRepository.findByOrderByUserIdDesc(pagable,ILIstUserDto.class);
+			return userRepository.findByOrderByUserIdDesc(pagable,IListUsersDto.class);
 		}
 		else
 		{
-			return  userRepository.findByUserName(search,pagable,ILIstUserDto.class);
+			return  userRepository.findByUserName(search,pagable,IListUsersDto.class);
 		}
 	
 	}
 
+	@Override
+	public Page<ILIstUserDto> getUserListByCandidate(String search, String pageNumber, String pageSize) {
+		
+		Pageable pagable=new com.job.util.Pagination().getPagination(pageNumber, pageSize);
+		
+		if((search=="")||(search==null)||(search.length()==0))
+		{
+			return userRepository.findByOrderByUserId(pagable,ILIstUserDto.class);
+		}
+		else
+		{
+			
+			Page<ILIstUserDto> list= userRepository.findByUserByCandidate(search,pagable,ILIstUserDto.class);
+			return list;
+		}
+		
+			
 	
-	
+	}
 	
 }

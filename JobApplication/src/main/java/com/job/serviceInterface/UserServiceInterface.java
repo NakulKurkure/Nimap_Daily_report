@@ -1,5 +1,7 @@
 package com.job.serviceInterface;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.data.domain.Page;
@@ -18,6 +20,11 @@ public interface UserServiceInterface {
 
 	void deleteByUserId(Long id,HttpServletRequest request);
 
-	Page<ILIstUserDto> getAllUsers(String search, String pageNumber, String pageSize);
+	Page<IListUsersDto> getAllUsers(String search, String pageNumber, String pageSize);
+
+//	Page<IListUsersDto> getAllUsers(String search);
+
+	Page<ILIstUserDto> getUserListByCandidate(String search, String pageNumber, String pageSize);
+
 
 }

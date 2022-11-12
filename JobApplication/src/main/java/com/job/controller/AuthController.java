@@ -85,13 +85,8 @@ public class AuthController {
 		
 		User user=userRepository.findByEmailContainingIgnoreCase(email);
 		
-		
-
-		
-			
 		if(PasswordValidation.isValidforEmail(email))
 			{
-			
 				if(PasswordValidation.isValid(password))
 					{
 					
@@ -221,21 +216,10 @@ public class AuthController {
 			Calendar calender = Calendar.getInstance();
 			calender.add(Calendar.MINUTE, 5);
 			System.out.println("URL"+otpDto+user.getEmail());
-			
-//			com.job.entity.OtpEntity otpentity = this.otpRepository.findByEmailContainingIgnoreCase(user.getEmail()).orElseThrow(()-> new ResourceNotFoundException("Enter Valid Email Id..."));
-//			
-//			System.out.println("OTPEntity"+otpentity.getEmail());
-//			
+		
 			User user2=userRepository.findByEmailContainingIgnoreCase(otpDto.getEmail());
 			System.out.println("User"+user2.getEmail());
-			
-//			if (otpentity != null) {
-//				System.out.println("Nss");
-//			throw new ResourceNotFoundException("Something went wrong");
-//			}
-				
-//			else {
-				
+
 			OtpEntity entities = new OtpEntity();
 			entities.setUserId(user);
 			entities.setEmail(otpDto.getEmail());

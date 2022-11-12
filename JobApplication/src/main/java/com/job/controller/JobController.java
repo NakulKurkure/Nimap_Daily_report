@@ -23,10 +23,12 @@ import com.job.dto.AuthSuccessDto;
 import com.job.dto.ErrorResponseDto;
 import com.job.dto.JobDto;
 import com.job.dto.SuccessResponseDto;
+import com.job.entity.Job;
 import com.job.exception.ResourceNotFoundException;
 import com.job.serviceInterface.IListAllJobsDto;
 import com.job.serviceInterface.IListJobDto;
 import com.job.serviceInterface.JobServiceInterface;
+import com.job.serviceInterface.UserServiceInterface;
 
 
 
@@ -44,10 +46,7 @@ public class JobController {
 		
 		try
 		{
-			
-		
-		Date date=new Date();
-		
+
 		if(jobDto.getJobTitle().isBlank())
 				{
 			if(jobDto.getJobDescription().isEmpty())
@@ -60,14 +59,14 @@ public class JobController {
 			}
 		}else
 		{
-			jobServiceInterface.addJob(jobDto,request);
+			Job job=jobServiceInterface.addJob(jobDto,request);
 			
 			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Added Jobs"),HttpStatus.CREATED);
 				
 		}
 		}catch(Exception e)
 		{
-			return new ResponseEntity<>(new ErrorResponseDto( "Not Valid..",e.getMessage()),HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new ErrorResponseDto(e.getLocalizedMessage(),"Job Add Only By Recruiter.."),HttpStatus.BAD_REQUEST);
 		}
 		
 	}
@@ -88,7 +87,7 @@ public class JobController {
 			}else
 			{
 				 return new ResponseEntity<>(new ErrorResponseDto("Enter Valid Job Description..", "Please Enter Valid Job Description..."),HttpStatus.BAD_REQUEST);
-
+				 
 			}
 		}else
 		{
@@ -122,20 +121,20 @@ public class JobController {
 		
 	}
 	
-	
+	//Only Admin
+	//Can remove specific jobs, candidate or recruiter accounts
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteByJobId(@PathVariable Long id)
+	public ResponseEntity<?> deleteByJobId(@PathVariable Long id,HttpServletRequest request)
 	{
 		try
 		{
-			jobServiceInterface.deleteByJobId(id);
+			jobServiceInterface.deleteByJobId(id,request);
 			return new ResponseEntity<>(new SuccessResponseDto("Success..", "Succesfully Deleted job.."),HttpStatus.CREATED);
 
 		}catch (Exception e) {
-			return new ResponseEntity<>(new ErrorResponseDto("Invalid..", "Please Enter Valid JobId"),HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), "Please Enter Valid JobId"),HttpStatus.NOT_FOUND);
 
 		}
-		
 		
 		
 	}
@@ -174,13 +173,28 @@ public class JobController {
 			return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), "Only Recruiter access.."),HttpStatus.NOT_FOUND);	
 		}
 		
-		
-		
 	}
 	
+		@GetMapping("/jobs/user")
+		public ResponseEntity<?> getAllJobsByUser(HttpServletRequest request)
+		{
+			
+			try
+			{
+				List<IListJobDto> jobs=	jobServiceInterface.getAllJobsByUser(request);
+				return new ResponseEntity<>(new AuthSuccessDto("Success.", "Success..", jobs),HttpStatus.ACCEPTED);
+
+				
+			}catch(Exception e)
+			{
+				return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), "access.."),HttpStatus.NOT_FOUND);	
+
+			}
+			
+			
+			
+		}
 	
 	
-	
-	
-	
+
 }
