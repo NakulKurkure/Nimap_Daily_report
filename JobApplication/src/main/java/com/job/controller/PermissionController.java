@@ -116,7 +116,7 @@ public class PermissionController {
 	
 	{
 		
-		Page<IPermissionListDto> page=permissionServiceInterface.getAllUsers(search,pageNumber,pageSize);
+		Page<IPermissionListDto> page=permissionServiceInterface.getAllpermission(search,pageNumber,pageSize);
 
 		if(page.getTotalElements()!=0)
 		{

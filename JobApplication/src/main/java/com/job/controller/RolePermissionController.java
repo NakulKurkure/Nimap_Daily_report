@@ -76,23 +76,23 @@ public class RolePermissionController {
 
 	}
 
-//	@GetMapping
-//	public ResponseEntity<?> getAllRolePermission(
-//			@RequestParam(defaultValue = "") String search,
-//			@RequestParam(defaultValue = "1") String pageNumber,
-//			@RequestParam(defaultValue = "5") String pageSize)
-//	{
-//		
-//		Page<IListRoleDto> page= rolePermissionServiceInterface.getAllRolePermission(search,pageNumber,pageSize);
-//		if(page.getTotalElements()!=0)
-//		{
-//			return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", page.getContent()),HttpStatus.ACCEPTED);
-//		}
-//		else
-//		{
-//			return new ResponseEntity<>(new ErrorResponseDto("Records Not Available..", "No Records Available..."),HttpStatus.NOT_FOUND);
-//	    }
-//	}
+	@GetMapping
+	public ResponseEntity<?> getAllRolePermission(
+			@RequestParam(defaultValue = "") String search,
+			@RequestParam(defaultValue = "1") String pageNumber,
+			@RequestParam(defaultValue = "5") String pageSize)
+	{
+		
+		Page<IListRoleDto> page= rolePermissionServiceInterface.getAllRolePermission(search,pageNumber,pageSize);
+		if(page.getTotalElements()!=0)
+		{
+			return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", page.getContent()),HttpStatus.ACCEPTED);
+		}
+		else
+		{
+			return new ResponseEntity<>(new ErrorResponseDto("Records Not Available..", "No Records Available..."),HttpStatus.NOT_FOUND);
+	    }
+	}
 //
 //	@GetMapping("/{id}")
 //	public ResponseEntity<?> getPermissionById(@PathVariable Long id)

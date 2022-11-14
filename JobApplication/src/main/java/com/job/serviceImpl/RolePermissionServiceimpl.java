@@ -112,18 +112,18 @@ Role roleId=this.roleRepository.findById(rolePermissionRequestDto.getRoleId()).o
 
 	
 
-//	@Override
-//	public Page<IListRoleDto> getAllRolePermission(String search, String pageNumber, String pageSize) {
-//		
-//		Pageable pagable=new Pagination().getPagination(pageNumber, pageSize);
-//		if((search=="")||(search==null)||(search.length()==0))
-//		{
-//			return rolePermissionRepository.findByOrderById(pagable,IListRoleDto.class);
-//		}
-//		
-//		return null;
-//		
-//		
-//	}
+	@Override
+	public Page<IListRoleDto> getAllRolePermission(String search, String pageNumber, String pageSize) {
+		
+		Pageable pagable=new Pagination().getPagination(pageNumber, pageSize);
+		if((search=="")||(search==null)||(search.length()==0))
+		{
+			return rolePermissionRepository.findAll(pagable,IListRoleDto.class);
+		}
+		
+		return null;
+		
+		
+	}
 
 }

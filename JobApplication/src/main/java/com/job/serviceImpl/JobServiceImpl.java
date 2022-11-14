@@ -45,9 +45,8 @@ public class JobServiceImpl implements JobServiceInterface{
 	
 	@Override
 	public Job addJob(JobDto jobDto,HttpServletRequest request) {
-	
 		
-		Role role=roleRepository.findById(jobDto.getRecruiterId()).orElseThrow(()-> new ResourceNotFoundException("Please Enter Valid RoleId..."));
+//		Role role=roleRepository.findById(jobDto.getRecruiterId()).orElseThrow(()-> new ResourceNotFoundException("Please Enter Valid RoleId..."));
 		
 		final String header=request.getHeader("Authorization");
 		String requestToken=header.substring(7);
@@ -64,6 +63,7 @@ public class JobServiceImpl implements JobServiceInterface{
 		String roleName;
 		
 			roleName=userRole.getPk().getRole().getRoleName();
+			Role role=userRole.getPk().getRole();
 			System.out.println("RoleName.."+roleName);	
 			
 			if(roleName.equals("Recruiter"))
@@ -90,7 +90,7 @@ public class JobServiceImpl implements JobServiceInterface{
 	@Override
 	public void updateJob(JobDto jobDto,Long id,HttpServletRequest request) {
 	
-		roleRepository.findById(jobDto.getRecruiterId()).orElseThrow(()-> new ResourceNotFoundException("Please Enter Valid RoleId..."));
+//		roleRepository.findById(jobDto.getRecruiterId()).orElseThrow(()-> new ResourceNotFoundException("Please Enter Valid RoleId..."));
 		
 		final String header=request.getHeader("Authorization");
 		String requestToken=header.substring(7);
@@ -129,7 +129,6 @@ public class JobServiceImpl implements JobServiceInterface{
 	
 	@Override
 	public List<IListJobDto> getJobById(Long id) {
-		
 		
 		Job job=jobRespository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Not Found JobId..."));
 		

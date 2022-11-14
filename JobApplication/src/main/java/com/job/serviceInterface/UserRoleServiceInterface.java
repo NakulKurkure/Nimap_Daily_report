@@ -1,5 +1,7 @@
 package com.job.serviceInterface;
 
+import org.springframework.data.domain.Page;
+
 import com.job.dto.UserRoleRequestDto;
 
 public interface UserRoleServiceInterface {
@@ -10,4 +12,7 @@ public interface UserRoleServiceInterface {
 
 	void deleteUserRole(UserRoleRequestDto userRoleRequestDto);
 
+	Page<ILIstUserDto> getAllUserRole(String search, String pageNumber, String pageSize);
+
+//	Page<ILIstUserDto> getAllUserRole(String search, String pageNumber, String pageSize);
 }

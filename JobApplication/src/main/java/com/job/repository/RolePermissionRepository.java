@@ -30,9 +30,11 @@ public interface RolePermissionRepository extends JpaRepository<RolePermission, 
 	void deleteRolePermission(Long role_id, Long permission_id);
 
 
-//	List<PermissionIdList> findPkPermissionByPkRolesIdIn(List<Long> roles, Class<PermissionIdList> class1);
+	@Query(value="select r.role_id as roleId,r.role_name as roleName,r.description as roleDescription,p.permission_id as permissionId,p.action_name as actionName,p.description as Description,p.base_url as baseUrl,p.method as Method from role r\r\n"
+			+ " join role_permission rp on rp.role_id=r.role_id \r\n"
+			+ " join permission p on rp.permission_id=p.permission_id",nativeQuery = true)
+	Page<IListRoleDto> findAll(Pageable pagable, Class<IListRoleDto> class1);
 
 
-//	Page<IListRoleDto> findByOrderById(Pageable pagable, Class<IListRoleDto> class1);
 
 }

@@ -94,16 +94,17 @@ public class UserController {
 			return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", page.getContent()),HttpStatus.OK);
 		}
 		return new ResponseEntity<>(new ErrorResponseDto(" No Records Avaliable..", "Not Avaliable.."),HttpStatus.BAD_REQUEST);
-
+		
 	}
 	
-	@GetMapping("/users/candidate")
+	//UserRole
+	@GetMapping("/users")
 	public ResponseEntity<?> getUserListByCandidate(@RequestParam(defaultValue = "") String search,
 			@RequestParam(defaultValue = "1") String pageNumber,
 			@RequestParam(defaultValue = "5") String pageSize)
+	
 	{
-		
-		Page<com.job.serviceInterface.ILIstUserDto> page=userServiceInterface.getUserListByCandidate(search,pageNumber,pageSize);
+		Page<com.job.serviceInterface.IListUserDtos> page=userServiceInterface.getUserListByCandidate(search,pageNumber,pageSize);
 		if(page.getTotalElements()!=0)
 		{
 			return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", page.getContent()),HttpStatus.OK);

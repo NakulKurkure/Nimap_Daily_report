@@ -10,6 +10,7 @@ import com.job.entity.Permission;
 import com.job.exception.ResourceNotFoundException;
 import com.job.repository.PermissionRepository;
 import com.job.serviceInterface.IPermissionListDto;
+//import com.job.serviceInterface.IPermissionListDto;
 import com.job.serviceInterface.PermissionServiceInterface;
 
 
@@ -74,8 +75,7 @@ public class PermissionServiceImpl implements PermissionServiceInterface{
 		
 	}
 
-	@Override
-	public Page<IPermissionListDto> getAllUsers(String search, String pageNumber, String pageSize) {
+	public Page<IPermissionListDto> getAllpermission(String search, String pageNumber, String pageSize) {
 		Pageable pagable=new com.job.util.Pagination().getPagination(pageNumber, pageSize);
 		if((search=="")||(search==null)||(search.length()==0))
 		{

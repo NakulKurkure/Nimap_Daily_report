@@ -1,6 +1,5 @@
 package com.job.controller;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,13 +23,9 @@ import com.job.dto.ErrorResponseDto;
 import com.job.dto.JobDto;
 import com.job.dto.SuccessResponseDto;
 import com.job.entity.Job;
-import com.job.exception.ResourceNotFoundException;
 import com.job.serviceInterface.IListAllJobsDto;
 import com.job.serviceInterface.IListJobDto;
 import com.job.serviceInterface.JobServiceInterface;
-import com.job.serviceInterface.UserServiceInterface;
-
-
 
 @RestController
 @RequestMapping("/api/job")

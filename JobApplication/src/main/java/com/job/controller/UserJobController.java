@@ -74,5 +74,8 @@ public class UserJobController {
 			return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), e.getLocalizedMessage()),HttpStatus.NOT_FOUND);
 
 		}
+		
+		
+		
 	}
 }

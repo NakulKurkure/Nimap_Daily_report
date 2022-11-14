@@ -15,6 +15,7 @@ import com.job.exception.ResourceNotFoundException;
 import com.job.repository.RoleRepository;
 import com.job.repository.UserRepository;
 import com.job.repository.UserRoleRepository;
+import com.job.serviceInterface.ILIstUserDto;
 import com.job.serviceInterface.IListUserRoleDto;
 import com.job.serviceInterface.IUserJobListDto;
 import com.job.serviceInterface.IUserListDto;
@@ -97,18 +98,18 @@ public class UserRoleServiceImpl implements UserRoleServiceInterface{
 		
 	}
 
-//	@Override
-//	public Page<IListUserRoleDto> getAllUserRole(String search, String pageNumber, String pageSize) {
-//		
-//		Pageable pagable=new Pagination().getPagination(pageNumber, pageSize);
-//		if((search=="")||(search==null)||(search.length()==0))
-//		{
-//			return userRoleRepository.findByOrderById(pagable,IListUserRoleDto.class);
-//		}
-//		
-//		return null;
-//	
-//	}
+	@Override
+	public Page<ILIstUserDto> getAllUserRole(String search, String pageNumber, String pageSize) {
+			
+		Pageable pagable=new Pagination().getPagination(pageNumber, pageSize);
+		if((search=="")||(search==null)||(search.length()==0))
+		{	
+			System.out.println("role");
+			return userRoleRepository.findAll(pagable,ILIstUserDto.class);
+		}				
+		return null;
+	
+	}
 
 	
 

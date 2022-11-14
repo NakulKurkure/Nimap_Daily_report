@@ -14,7 +14,11 @@ public interface PermissionServiceInterface {
 
 	void deletePermissionById(Long id);
 
-	Page<IPermissionListDto> getAllUsers(String search, String pageNumber, String pageSize);
+//	Page<IPermissionListDto> getAllUsers(String search, String pageNumber, String pageSize);
+
+	Page<IPermissionListDto> getAllpermission(String search, String pageNumber, String pageSize);
+
+//	Page<IPermissionListDto> getAllUsers(String search, String pageNumber, String pageSize);
 
 	
 }

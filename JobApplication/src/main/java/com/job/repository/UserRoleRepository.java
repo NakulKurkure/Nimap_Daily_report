@@ -17,6 +17,7 @@ import org.springframework.stereotype.Repository;
 import com.job.entity.Role;
 import com.job.entity.User;
 import com.job.entity.UserRole;
+import com.job.serviceInterface.ILIstUserDto;
 import com.job.serviceInterface.IListUserRoleDto;
 import com.job.serviceInterface.IUserListDto;
 
@@ -38,7 +39,7 @@ public interface UserRoleRepository extends JpaRepository<UserRole, Long>{
 	//fetched from database
 	@Query(value = "SELECT * from user_role t WHERE t.user_id=:user_id",nativeQuery = true)
 	List<UserRole> findByUserId(@Param("user_id") Long user_id);
-
+	
 	
 	@Transactional
 	//fetched from database
@@ -50,33 +51,13 @@ public interface UserRoleRepository extends JpaRepository<UserRole, Long>{
 	@Query(value = "SELECT * from user_role t WHERE t.user_id=:user_id",nativeQuery = true)
 	UserRole findByUserById(@Param("user_id") Long user_id);
 
-//	Page<IListUserRoleDto> findByOrderById(Pageable pagable, Class<IUserListDto> class1);
-//
-//	Page<IListUserRoleDto> findByOrderById(Pageable pagable, Class<IListUserRoleDto> class1);
+	@Transactional
+	@Query(value="select u.user_id as userId,u.user_name as userName,u.email as email,r.role_id as roleId,r.role_name as roleName,r.description as Description from role r\r\n"
+			+ " join user_role ur on ur.role_id=r.role_id \r\n"
+			+ " join users u on ur.user_id=u.user_id",nativeQuery = true)
+	Page<ILIstUserDto> findAll(Pageable pagable, Class<ILIstUserDto> class1);
 
-
-
-//	ArrayList<RoleIdList> findByPkUserIdIn(Long userId, Class<RoleIdList> class1);
-
-//	ArrayList<RoleIdList> findPkByuser_idIn(Long userId, Class<RoleIdList> class1);
-
-//	ArrayList<RoleIdList> findPkByUserId(Long user_id, Class<RoleIdList> class1);
-
-//	ArrayList<RoleIdList> findPkByUser_id(Long user_id, Class<RoleIdList> class1);
-
-//	ArrayList<RoleIdList> findPkByUserId(Long user_id, Class<RoleIdList> class1);
-
-//	Page<IListUserRoleDto> findByOrderByPkId(Pageable pagable, Class<IUserListDto> class1);
-
-//	Page<IListUserRoleDto> findByOrderByPkUserRoleId(Pageable pagable, Class<IUserListDto> class1);
-
-//	Page<IUserListDto> findByOrderById(Pageable pagable, Class<IUserListDto> class1);
-
-//	Page<IUserListDto> findByOrderById(Pageable pagable, Class<IUserListDto> class1);
-//
-//	Page<IUserListDto> findById(Pageable pagable, Class<IUserListDto> class1);
-
-//	Page<IUserListDto> findByOrderByIdDesc(Pageable pagable, Class<IUserListDto> class1);
+//IListUserRoleDto
 
 
 }

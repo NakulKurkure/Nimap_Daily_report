@@ -14,6 +14,10 @@ public interface RolePermissionServiceInterface {
 
 	void deleteRolePermission(RolePermissionRequestDto rolePermissionRequestDto);
 
+	Page<IListRoleDto> getAllRolePermission(String search, String pageNumber, String pageSize);
+
+//	ArrayList<String> getPermissionByUserId(Long id);
+
 //	ArrayList<String> getPermissionByPkUserId(Long userId);
 
 //	Page<IListRoleDto> getAllRolePermission(String search, String pageNumber, String pageSize);

@@ -20,12 +20,12 @@ public class JobDto {
 		this.jobTitle = jobTitle;
 	}
 
-	public JobDto(String jobTitle, String jobDescription, Date dateOfJoining, Long recruiterId) {
+	public JobDto(String jobTitle, String jobDescription, Date dateOfJoining) {
 		super();
 		this.jobTitle = jobTitle;
 		this.jobDescription = jobDescription;
 		this.dateOfJoining = dateOfJoining;
-		this.recruiterId = recruiterId;
+		
 	}
 
 	public String getJobDescription() {
@@ -44,20 +44,13 @@ public class JobDto {
 		this.dateOfJoining = dateOfJoining;
 	}
 
-	public Long getRecruiterId() {
-		return recruiterId;
-	}
 
-	public void setRecruiterId(Long recruiterId) {
-		this.recruiterId = recruiterId;
-	}
 
 	private String jobDescription;
 	
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date dateOfJoining;
-	
-	private Long recruiterId;
+
 	
 	
 }
