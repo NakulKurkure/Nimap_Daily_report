@@ -1,11 +1,12 @@
 package com.job.serviceImpl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.job.config.CacheConfig;
 
 
-
+@Service
 public class CacheOperation {
 
 	@Autowired

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -86,7 +87,7 @@ public class UserController {
 			@RequestParam(defaultValue = "5") String pageSize)
 
 	{
-
+		
 		Page<com.job.serviceInterface.IListUsersDto> page=userServiceInterface.getAllUsers(search,pageNumber,pageSize);
 			
 		if(page.getTotalElements()!=0)
@@ -98,6 +99,7 @@ public class UserController {
 	}
 	
 	//UserRole
+	@PreAuthorize("hasRole('')")
 	@GetMapping("/users")
 	public ResponseEntity<?> getUserListByCandidate(@RequestParam(defaultValue = "") String search,
 			@RequestParam(defaultValue = "1") String pageNumber,
@@ -110,8 +112,7 @@ public class UserController {
 			return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", page.getContent()),HttpStatus.OK);
 		}
 		return new ResponseEntity<>(new ErrorResponseDto(" No Records Avaliable..", "Not Avaliable.."),HttpStatus.BAD_REQUEST);
-
-		
+						
 	}
 	
 	

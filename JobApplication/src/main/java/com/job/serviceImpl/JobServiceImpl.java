@@ -22,6 +22,7 @@ import com.job.repository.UserRoleRepository;
 import com.job.security.JwtTokenUtil;
 import com.job.serviceInterface.IListAllJobsDto;
 import com.job.serviceInterface.IListJobDto;
+import com.job.serviceInterface.IListJobDtos;
 import com.job.serviceInterface.JobServiceInterface;
 
 @Service
@@ -45,9 +46,7 @@ public class JobServiceImpl implements JobServiceInterface{
 	
 	@Override
 	public Job addJob(JobDto jobDto,HttpServletRequest request) {
-		
-//		Role role=roleRepository.findById(jobDto.getRecruiterId()).orElseThrow(()-> new ResourceNotFoundException("Please Enter Valid RoleId..."));
-		
+				
 		final String header=request.getHeader("Authorization");
 		String requestToken=header.substring(7);
 //		//email
@@ -66,8 +65,7 @@ public class JobServiceImpl implements JobServiceInterface{
 			Role role=userRole.getPk().getRole();
 			System.out.println("RoleName.."+roleName);	
 			
-			if(roleName.equals("Recruiter"))
-			{
+			
 				Job job=new Job();
 				job.setJobTitle(jobDto.getJobTitle());
 				job.setJobDescription(jobDto.getJobDescription());
@@ -77,12 +75,7 @@ public class JobServiceImpl implements JobServiceInterface{
 				 jobRespository.save(job);
 				return job;
 				
-			}	else
-			{
-				throw new ResourceNotFoundException("Only Recruiter Can be Posted the Jobs..");
-			}
-		
-		}
+			}	
 		
 		
 		
@@ -237,37 +230,38 @@ public class JobServiceImpl implements JobServiceInterface{
 		}
 		}
 		
-		
-//		Role recuriter_ids=job.getRecruiterId();
-//		Long recuriter_id=recuriter_ids.getRoleId();		
-		
-//		System.out.println("findByJobAndPkUserByRecruiterId"+recuriter_id.longValue());
-//		if(roleName.equals("Recruiter"))
-//		{
-//			List<Object> list=jobRespository.findByJobAndPkUserByRecruiterId(recuriter_id);
-//			
-//			System.out.println("Dj");
-////			return null;	
-//		}
-//		else
-//		{
+
 			throw new ResourceNotFoundException("Only Recruiter Access..");
-//		}
-//		
-//		
+	
 		
 		
 	}
 
 
 
-
+//List of all jobs By Specific User
 	@Override
-	public List<IListJobDto> getAllJobsByUser(HttpServletRequest request) {
+	public List<IListJobDtos> getAllJobsByUser(String search, String pageNumber, String pageSize,HttpServletRequest request) {
+		
+		Pageable pagable= new com.job.util.Pagination().getPagination(pageNumber, pageSize);
+		
+		if((search=="")||(search==null)||(search.length()==0))
+		{
+			Page<IListJobDtos>list= jobRespository.findByOrderById(pagable,IListJobDtos.class);
+			return (List<IListJobDtos>) list;
+			
+		}
+		else
+		{
+			return  jobRespository.findByJobTitleByUser(search,pagable,IListJobDtos.class);
+		}
+	
 		
 		
 		
-		return null;
+		
+		
+		
 	}
 
 }

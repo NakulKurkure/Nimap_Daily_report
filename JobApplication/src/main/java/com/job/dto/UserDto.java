@@ -7,21 +7,21 @@ import javax.validation.constraints.NotNull;
 
 public class UserDto {
 
-//	@NotNull(message = "Required")
-//	@NotBlank(message="Required")
-//	@NotEmpty(message="Required")
-//	@Email
+	@NotNull(message = "Required")
+	@NotBlank(message="Required")
+	@NotEmpty(message="Required")
+
 	private String email;
 	
-//	@NotNull(message = "Required")
-//	@NotBlank(message="Required")
-//	@NotEmpty(message="Required")
+	@NotNull(message = "Required")
+	@NotBlank(message="Required")
+	@NotEmpty(message="Required")
 	
 	private String password;
 //	
-//	@NotNull
-//	@NotBlank
-//	@NotEmpty
+	@NotNull
+	@NotBlank
+	@NotEmpty
 	private String userName;
 
 	public UserDto(String email, String password, String userName) {
@@ -33,7 +33,6 @@ public class UserDto {
 
 	public UserDto() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getEmail() {

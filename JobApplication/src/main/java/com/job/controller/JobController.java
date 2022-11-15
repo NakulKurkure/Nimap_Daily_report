@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,6 +26,7 @@ import com.job.dto.SuccessResponseDto;
 import com.job.entity.Job;
 import com.job.serviceInterface.IListAllJobsDto;
 import com.job.serviceInterface.IListJobDto;
+import com.job.serviceInterface.IListJobDtos;
 import com.job.serviceInterface.JobServiceInterface;
 
 @RestController
@@ -35,6 +37,8 @@ public class JobController {
 	private JobServiceInterface jobServiceInterface;
 	
 	//Only Recruiter:- Post a job, with the following fields - Job Title and Job Description 
+	//Sanket
+	@PreAuthorize("hasRole('jobAdd')")
 	@PostMapping
 	public ResponseEntity<?> addJobByRecuriter(@RequestBody JobDto jobDto,HttpServletRequest request)
 	{
@@ -43,7 +47,7 @@ public class JobController {
 		{
 
 		if(jobDto.getJobTitle().isBlank())
-				{
+			{
 			if(jobDto.getJobDescription().isEmpty())
 			{
 			 return new ResponseEntity<>(new ErrorResponseDto("Enter Valid Job Description..", "Please Enter Valid Job Description..."),HttpStatus.BAD_REQUEST);
@@ -68,6 +72,7 @@ public class JobController {
 	
 	
 	// Only Admin :-Update a job, with the following fields - Job Title and Job Description 
+	@PreAuthorize("hasRole('jobUpdate')")
 	@PutMapping("/{id}")
 	public ResponseEntity<?> updateJobById(@RequestBody JobDto jobDto,@PathVariable Long id,HttpServletRequest request)
 	{
@@ -118,6 +123,7 @@ public class JobController {
 	
 	//Only Admin
 	//Can remove specific jobs, candidate or recruiter accounts
+	@PreAuthorize("hasRole('jobDel')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteByJobId(@PathVariable Long id,HttpServletRequest request)
 	{
@@ -153,9 +159,10 @@ public class JobController {
 	
 	
 	
-	//getAllJobs By RecuriterId Using Only Recuriter Token
+	//getAllJobs By RecuriterId Using Only Recuriter 
+	@PreAuthorize("hasRole('jobView')")
 	@GetMapping("/getAllJobs")
-	public ResponseEntity<?> getAllJobsByRecruiter(HttpServletRequest request)
+	public ResponseEntity<?> getAllJobsByRecruiterAndCandidate(HttpServletRequest request)
 	{
 		try
 		{
@@ -171,12 +178,13 @@ public class JobController {
 	}
 	
 		@GetMapping("/jobs/user")
-		public ResponseEntity<?> getAllJobsByUser(HttpServletRequest request)
+		public ResponseEntity<?> getAllJobsByUser(@RequestParam(defaultValue = "") String search,@RequestParam (defaultValue = "1") String pageNumber,
+				@RequestParam(defaultValue = "5") String pageSize,HttpServletRequest request)
 		{
 			
 			try
 			{
-				List<IListJobDto> jobs=	jobServiceInterface.getAllJobsByUser(request);
+				List<IListJobDtos> jobs=	jobServiceInterface.getAllJobsByUser(search,pageNumber,pageSize,request);
 				return new ResponseEntity<>(new AuthSuccessDto("Success.", "Success..", jobs),HttpStatus.ACCEPTED);
 
 				
@@ -186,10 +194,6 @@ public class JobController {
 
 			}
 			
-			
-			
 		}
 	
-	
-
 }

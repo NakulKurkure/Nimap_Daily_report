@@ -28,9 +28,8 @@ public class UserJobController {
 	@Autowired
 	private UserJobServiceInterface userJobServiceInterface;
 	
-//	@PreAuthorize("hasRole('userJobAdd')")
+	@PreAuthorize("hasRole('userJobAdd')")
 	@PostMapping
-	
 	public ResponseEntity<?> addUserJob(@RequestBody UserJobRequestDto userJobRequestDto,HttpServletRequest request)
 	{
 		try
@@ -47,7 +46,8 @@ public class UserJobController {
 		}
 	}	
 	
-	
+	//Admin
+	@PreAuthorize("hasRole('getAlljobView')")
 	@GetMapping
 	public ResponseEntity<?> getAllUserJob(
 			@RequestParam(defaultValue = "") String search,
@@ -56,8 +56,6 @@ public class UserJobController {
 	{
 		try
 		{
-			
-		
 		
 		Page<IListUserListDto> page= userJobServiceInterface.getAllUserJobs(search,pageNumber,pageSize,request);
 		if(page.getTotalElements()!=0)

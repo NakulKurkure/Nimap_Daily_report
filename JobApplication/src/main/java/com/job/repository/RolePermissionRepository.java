@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import com.job.entity.RolePermission;
 import com.job.serviceInterface.IListRoleDto;
+import com.job.serviceInterface.PermissionIdList;
 
 @Repository
 public interface RolePermissionRepository extends JpaRepository<RolePermission, Long>{
@@ -34,6 +35,11 @@ public interface RolePermissionRepository extends JpaRepository<RolePermission, 
 			+ " join role_permission rp on rp.role_id=r.role_id \r\n"
 			+ " join permission p on rp.permission_id=p.permission_id",nativeQuery = true)
 	Page<IListRoleDto> findAll(Pageable pagable, Class<IListRoleDto> class1);
+
+
+
+
+	List<PermissionIdList> findPkPermissionByPkRoleRoleIdIn(ArrayList<Long> roles, Class<PermissionIdList> class1);
 
 
 

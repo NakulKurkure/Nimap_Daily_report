@@ -8,9 +8,6 @@ public interface IListJobDto {
 	
 	public String getJobDescription();
 	
-	
-	
-	
 }
 
 

@@ -16,6 +16,8 @@ public interface RolePermissionServiceInterface {
 
 	Page<IListRoleDto> getAllRolePermission(String search, String pageNumber, String pageSize);
 
+	ArrayList<String> getPermissionByUserId(Long userId);
+
 //	ArrayList<String> getPermissionByUserId(Long id);
 
 //	ArrayList<String> getPermissionByPkUserId(Long userId);

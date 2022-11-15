@@ -93,12 +93,12 @@ public class RolePermissionController {
 			return new ResponseEntity<>(new ErrorResponseDto("Records Not Available..", "No Records Available..."),HttpStatus.NOT_FOUND);
 	    }
 	}
-//
-//	@GetMapping("/{id}")
-//	public ResponseEntity<?> getPermissionById(@PathVariable Long id)
-//	{
-//		ArrayList<String>tt= this.rolePermissionServiceInterface.getPermissionByUserId(id);
-//		return new ResponseEntity<>(tt,HttpStatus.OK);
-//	}
-//	
+
+	@GetMapping("/permissions/user/{id}")
+	public ResponseEntity<?> getPermissionById(@PathVariable Long id)
+	{
+		ArrayList<String>tt= this.rolePermissionServiceInterface.getPermissionByUserId(id);
+		return new ResponseEntity<>(tt,HttpStatus.OK);
+	}
+	
 }

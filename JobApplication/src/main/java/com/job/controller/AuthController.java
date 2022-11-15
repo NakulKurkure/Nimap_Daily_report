@@ -142,6 +142,7 @@ public class AuthController {
 				System.out.println("In 3"+user.getPassword());
 				User users=this.userRepository.findByEmailContainingIgnoreCase(authRequestDto.getEmail());
 
+				System.out.println("email.."+this.userDetailService.loadUserByUsername(authRequestDto.getEmail()));
 				UserDetails userDetails=this.userDetailService.loadUserByUsername(authRequestDto.getEmail());
 				System.out.println("userDetails"+userDetails);
 				String token=this.jwtTokenUtil.generateToken(userDetails);

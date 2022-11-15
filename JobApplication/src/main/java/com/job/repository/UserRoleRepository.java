@@ -20,6 +20,7 @@ import com.job.entity.UserRole;
 import com.job.serviceInterface.ILIstUserDto;
 import com.job.serviceInterface.IListUserRoleDto;
 import com.job.serviceInterface.IUserListDto;
+import com.job.serviceInterface.RoleIdList;
 
 
 @Repository
@@ -56,6 +57,14 @@ public interface UserRoleRepository extends JpaRepository<UserRole, Long>{
 			+ " join user_role ur on ur.role_id=r.role_id \r\n"
 			+ " join users u on ur.user_id=u.user_id",nativeQuery = true)
 	Page<ILIstUserDto> findAll(Pageable pagable, Class<ILIstUserDto> class1);
+
+//	ArrayList<RoleIdList> findByPkuserId(int id, Class<RoleIdList> class1);
+
+//	ArrayList<RoleIdList> findByPkUserId(int id, Class<RoleIdList> class1);
+
+//	ArrayList<RoleIdList> findByPkUserId(Long id, Class<RoleIdList> class1);
+
+	ArrayList<RoleIdList> findByPkUserUserId(Long userId, Class<RoleIdList> class1);
 
 //IListUserRoleDto
 

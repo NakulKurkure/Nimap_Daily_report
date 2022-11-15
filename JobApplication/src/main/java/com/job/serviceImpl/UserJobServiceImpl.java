@@ -53,15 +53,13 @@ public class UserJobServiceImpl implements UserJobServiceInterface{
 			 	
 	@Override
 	public void addUserJob(UserJobRequestDto userJobRequestDto, HttpServletRequest request) {
-				
-//		User user=userRepository.findById(userJobRequestDto.getUserId()).orElseThrow(()-> new ResourceNotFoundException("Not Found UserId"));
-				
+								
 		final String header=request.getHeader("Authorization");
 		String requestToken=header.substring(7);
-//		//email	
+		//email	
 		final String email3=jwtTokenUtil.getUsernameFromToken(requestToken);
 				
-//		//check on repo.
+		//check on repo.
 		User user=userRepository.findByEmailContainingIgnoreCase(email3);
 				
 		ArrayList<Job> userJobs = new ArrayList<>();
@@ -102,8 +100,6 @@ public class UserJobServiceImpl implements UserJobServiceInterface{
 				
 			}
 			
-
-		
 			System.out.println("JobId"+JobId);
 
 			Job job1=jobRespository.findById(JobId).orElseThrow(()-> new ResourceNotFoundException("Not Found Job Id"));
@@ -140,10 +136,10 @@ public class UserJobServiceImpl implements UserJobServiceInterface{
 					{
 						
 						emailServiceInterface.sendMessage(email, "Candidate Apply sucessfully To Job", job.getJobTitle());
-
+						
 					}
 			}
-
+			
 			
 		}
 			
@@ -153,28 +149,7 @@ public class UserJobServiceImpl implements UserJobServiceInterface{
 	@Override
 	 public Page<IListUserListDto> getAllUserJobs(String search, String pageNumber, String pageSize,HttpServletRequest request)
 	  {
-		final String header=request.getHeader("Authorization");
-		String requestToken=header.substring(7);
-//		//email
-		final String email=jwtTokenUtil.getUsernameFromToken(requestToken);
-		
-//		//check on repo.
-		User userEntity=userRepository.findByEmailContainingIgnoreCase(email);
-		
-		Long user_id=userEntity.getUserId();
-		System.out.println("userId"+user_id);
-		
-//		List<UserRole> userRole= userRoleRepository.findByUserId(user_id);
-		
-		UserRole userRole= (UserRole) userRoleRepository.findByUserById(user_id);
-		
-		String roleName=userRole.getPk().getRole().getRoleName();
-//			String roleName=userRole.get(i).getPk().getRole().getRoleName();
-			System.out.println("roleName.."+roleName);
-			
-//			if(roleName.equals("Admin"))
-//			{
-				
+
 			Pageable pagable=new Pagination().getPagination(pageNumber, pageSize);
 			if((search=="")||(search==null)||(search.length()==0))
 			{
@@ -184,8 +159,6 @@ public class UserJobServiceImpl implements UserJobServiceInterface{
 				return userJobRepository.findByUserName(search,pagable,IListUserListDto.class);
 			}
 			
-			
-	
 	  }
 		
 }
