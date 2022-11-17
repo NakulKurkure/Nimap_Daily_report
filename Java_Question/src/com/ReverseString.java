@@ -7,8 +7,8 @@ public class ReverseString {
 	{
 		//Pallindrome String and Reverse String is Same...	
 		
-		String a="radar";
-		
+		String a="cook";
+	
 		System.out.println("The given String is "+a);
 		
 		for(int i=a.length()-1;i>=0;i--)
