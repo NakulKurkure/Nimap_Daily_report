@@ -96,12 +96,6 @@ public class NumberPattern {
 					System.out.print(j);
 				}
 				System.out.println();
-			}
-	
-		
-		
-		
-		
-		
+			}	
 	}
 }
