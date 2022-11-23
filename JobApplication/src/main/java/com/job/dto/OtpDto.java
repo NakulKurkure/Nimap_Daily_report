@@ -24,6 +24,9 @@ public class OtpDto {
 		super();	
 	}
 
+	@NotBlank(message = "email is Required*emailRequired")
+	@NotEmpty(message = "email is Required*emailRequired")
+	@NotNull(message = "email is Required*emailRequired")
 	private Long otp;
 	
 	private Date setExpiry;

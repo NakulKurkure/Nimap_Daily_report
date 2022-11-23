@@ -41,6 +41,13 @@ public interface UserRoleRepository extends JpaRepository<UserRole, Long>{
 	@Query(value = "SELECT * from user_role t WHERE t.user_id=:user_id",nativeQuery = true)
 	List<UserRole> findByUserId(@Param("user_id") Long user_id);
 	
+//	@Transactional
+//	//fetched from database
+//	@Query(value = "SELECT * from user_role t WHERE t.user_id_id=:user_id_id",nativeQuery = true)
+//	List<UserRole> findByUserIdId(@Param("user_id_id") Long user_id_id);
+	
+	
+	
 	
 	@Transactional
 	//fetched from database
@@ -58,15 +65,8 @@ public interface UserRoleRepository extends JpaRepository<UserRole, Long>{
 			+ " join users u on ur.user_id=u.user_id",nativeQuery = true)
 	Page<ILIstUserDto> findAll(Pageable pagable, Class<ILIstUserDto> class1);
 
-//	ArrayList<RoleIdList> findByPkuserId(int id, Class<RoleIdList> class1);
-
-//	ArrayList<RoleIdList> findByPkUserId(int id, Class<RoleIdList> class1);
-
-//	ArrayList<RoleIdList> findByPkUserId(Long id, Class<RoleIdList> class1);
-
 	ArrayList<RoleIdList> findByPkUserUserId(Long userId, Class<RoleIdList> class1);
 
-//IListUserRoleDto
 
 
 }

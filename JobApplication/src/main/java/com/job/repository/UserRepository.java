@@ -1,5 +1,7 @@
 package com.job.repository;
 
+import java.util.List;
+
 import javax.transaction.Transactional;
 
 import org.springframework.data.domain.Page;
@@ -25,13 +27,12 @@ public interface UserRepository extends JpaRepository<User, Long>{
 
 	User findByEmail(String email);
 
-	@Transactional
-	@Query(value = "select users.user_id,users.email,users.user_name from role inner join user_role on user_role.role_id=role.role_id inner join users on users.user_id=user_role.user_id where role_name=:role_name",nativeQuery = true)
-	Page<IListUserDtos> findByUserByCandidate(@Param("role_name") String search, Pageable pagable, Class<IListUserDtos> class1);
-
 	Page<IListUserDtos> findByOrderByUserId(Pageable pagable, Class<IListUserDtos> class1);
 
-//	Page<IListUserDtos> findByUserByCandidate(String search, Pageable pagable, Class<IListUserDtos> class1);
+	@Transactional
+	@Query(value = "select users.user_id,users.email,users.user_name from role inner join user_role on user_role.role_id=role.role_id inner join users on users.user_id=user_role.user_id where role_name=:role_name",nativeQuery = true)
+	List<IListUserDtos> findByUserByCandidate(@Param("role_name")  String search, Class<IListUserDtos> class1);
+
 
 
 }

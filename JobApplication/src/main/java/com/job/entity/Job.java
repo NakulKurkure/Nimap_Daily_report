@@ -41,11 +41,41 @@ public class Job implements Serializable{
 	
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="recuriter_id")
-	private Role recruiterId;
+	private User recruiterId;
 
 
 	public Job() {
 		super();
+	}
+
+	public Job(Long id, User recruiterId, String jobTitle, String jobDescription, Date createdAt, Date updatedAt,
+			boolean isActive, Date dateOfJoining, List<UserJob> userJob) {
+		super();
+		this.id = id;
+		this.recruiterId = recruiterId;
+		this.jobTitle = jobTitle;
+		this.jobDescription = jobDescription;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+		this.isActive = isActive;
+		this.dateOfJoining = dateOfJoining;
+		this.userJob = userJob;
+	}
+
+	public User getRecruiterId() {
+		return recruiterId;
+	}
+
+	public void setRecruiterId(User recruiterId) {
+		this.recruiterId = recruiterId;
+	}
+
+	public List<UserJob> getUserJob() {
+		return userJob;
+	}
+
+	public void setUserJob(List<UserJob> userJob) {
+		this.userJob = userJob;
 	}
 
 	@Column(name="job_title")
@@ -53,13 +83,9 @@ public class Job implements Serializable{
 	
 	@Column(name="job_description")
 	private String jobDescription;
-	
-	public Role getRecruiterId() {
-		return recruiterId;
-	}
 
 	public Job(Long id, String jobTitle, String jobDescription, Date createdAt, Date updatedAt, boolean isActive,
-			Date dateOfJoining, Role recruiterId) {
+			Date dateOfJoining) {
 		super();
 		this.id = id;
 		this.jobTitle = jobTitle;
@@ -67,12 +93,7 @@ public class Job implements Serializable{
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
 		this.isActive = isActive;
-		this.dateOfJoining = dateOfJoining;
-		this.recruiterId = recruiterId;
-	}
-
-	public void setRecruiterId(Role recruiterId) {
-		this.recruiterId = recruiterId;
+	
 	}
 
 	@Column(name="created_at")

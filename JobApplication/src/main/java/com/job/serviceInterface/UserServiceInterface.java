@@ -24,7 +24,7 @@ public interface UserServiceInterface {
 
 //	Page<IListUsersDto> getAllUsers(String search);
 
-	Page<IListUserDtos> getUserListByCandidate(String search, String pageNumber, String pageSize);
+	List<IListUserDtos> getUserListByCandidate(String search);
 
 
 }

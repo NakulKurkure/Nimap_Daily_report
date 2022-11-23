@@ -1,9 +1,19 @@
 package com.job.dto;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 public class AuthRequestDto {
 
+	@NotNull(message = "Required")
+	@NotBlank(message="Required")
+	@NotEmpty(message="Required")
 	private String email;
 	
+	@NotNull(message = "Required")
+	@NotBlank(message="Required")
+	@NotEmpty(message="Required")
 	private String password;
 
 	public AuthRequestDto() {

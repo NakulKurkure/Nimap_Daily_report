@@ -2,10 +2,17 @@ package com.job.dto;
 
 import java.util.Date;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class JobDto {
 
+	@NotNull(message = "Required")
+	@NotBlank(message="Required")
+	@NotEmpty(message="Required")
 	private String jobTitle;
 	
 	public JobDto() {
@@ -45,10 +52,15 @@ public class JobDto {
 	}
 
 
-
+	@NotNull(message = "Required")
+	@NotBlank(message="Required")
+	@NotEmpty(message="Required")
 	private String jobDescription;
 	
 	@JsonFormat(pattern = "yyyy-MM-dd")
+	@NotNull(message = "Required")
+	@NotBlank(message="Required")
+	@NotEmpty(message="Required")
 	private Date dateOfJoining;
 
 	

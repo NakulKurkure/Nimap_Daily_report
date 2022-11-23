@@ -6,7 +6,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 public class UserDto {
-
+//
 	@NotNull(message = "Required")
 	@NotBlank(message="Required")
 	@NotEmpty(message="Required")

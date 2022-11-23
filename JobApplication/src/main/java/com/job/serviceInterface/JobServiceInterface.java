@@ -21,9 +21,11 @@ public interface JobServiceInterface {
 
 	Page<IListJobDto> getAllJobs(String search, String pageNumber, String pageSize);
 
-	List<IListAllJobsDto> getAllJobsByRecruiter(HttpServletRequest request);
+	List<IListAllJobsDto> getAllJobsByRecruiter(HttpServletRequest request,Long userId);
 
-	List<IListJobDtos> getAllJobsByUser(String search, String pageNumber, String pageSize,HttpServletRequest request);
+//	List<IListJobDtos> getAllJobsByUser(String search, String pageNumber, String pageSize,HttpServletRequest request);
+
+	List<IListJobDtos> getAllJobsByUser(String search, HttpServletRequest request);
 
 //	List<IListJobDto> getAllJobsByUser(String search, String pageNumber, String pageSize, HttpServletRequest request);
 

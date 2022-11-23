@@ -1,5 +1,7 @@
 package com.job.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,96 +26,91 @@ import com.job.dto.UserDto;
 import com.job.entity.User;
 import com.job.serviceInterface.UserServiceInterface;
 
-
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
 
 	@Autowired
 	private UserServiceInterface userServiceInterface;
-	
+
 	@PutMapping("/{id}")
-	public ResponseEntity<?> updateUserByUserId(@RequestBody UserDto userDto,@PathVariable Long id)
-	{
-		try
-		{
-			userServiceInterface.updateUser(userDto,id);
-			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Updated User.."),HttpStatus.CREATED);
-				
-		}catch (Exception e) {
-			return new ResponseEntity<> (new ErrorResponseDto("Enter Valid UserId..", "Please Enter Valid UserId"),HttpStatus.BAD_REQUEST);
+	public ResponseEntity<?> updateUserByUserId(@RequestBody UserDto userDto, @PathVariable Long id) {
+		try {
+			userServiceInterface.updateUser(userDto, id);
+			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Updated User.."),
+					HttpStatus.CREATED);
+
+		} catch (Exception e) {
+			return new ResponseEntity<>(new ErrorResponseDto("Enter Valid UserId..", "Please Enter Valid UserId"),
+					HttpStatus.BAD_REQUEST);
 		}
-		
+
 	}
-	
-	
+
 	@GetMapping("/{id}")
-	public ResponseEntity<?> getByUserId(@PathVariable Long id)
-	{
-		
-		try
-		{
-			UserDataDto user=userServiceInterface.getByUserId(id);
-			return new ResponseEntity<>(new AuthSuccessDto("Success..", "SuccessFully Updated User..",user),HttpStatus.ACCEPTED);
-			
+	public ResponseEntity<?> getByUserId(@PathVariable Long id) {
+
+		try {
+			UserDataDto user = userServiceInterface.getByUserId(id);
+			return new ResponseEntity<>(new AuthSuccessDto("Success..", "SuccessFully Updated User..", user),
+					HttpStatus.ACCEPTED);
+
+		} catch (Exception e) {
+
+			return new ResponseEntity<>(new ErrorResponseDto("Invalid UserId", "Please Enter Valid UserId"),
+					HttpStatus.NOT_FOUND);
 		}
-		catch(Exception e)
-		{
-			
-			return new ResponseEntity<>(new ErrorResponseDto("Invalid UserId", "Please Enter Valid UserId"),HttpStatus.NOT_FOUND);
-		}
-		
+
 	}
-	
+
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteByUserId(@PathVariable Long id,HttpServletRequest request)
-	{
-		try
-		{
-			userServiceInterface.deleteByUserId(id,request);
-			
-			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SucessFully Deleted User..."),HttpStatus.OK);	
-		}catch(Exception e)
-		{
-			return new ResponseEntity<>(new ErrorResponseDto("Invalid UserId..", "Please Enter Valid UserId..."),HttpStatus.NOT_FOUND);
+	public ResponseEntity<?> deleteByUserId(@PathVariable Long id, HttpServletRequest request) {
+		try {
+			userServiceInterface.deleteByUserId(id, request);
+
+			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SucessFully Deleted User..."),
+					HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(new ErrorResponseDto("Invalid UserId..", "Please Enter Valid UserId..."),
+					HttpStatus.NOT_FOUND);
 		}
-		
-		
+
 	}
-	
+
 	@GetMapping
 	public ResponseEntity<?> getAllUsers(@RequestParam(defaultValue = "") String search,
-			@RequestParam(defaultValue = "1") String pageNumber,
-			@RequestParam(defaultValue = "5") String pageSize)
+			@RequestParam(defaultValue = "1") String pageNumber, @RequestParam(defaultValue = "5") String pageSize)
 
 	{
-		
-		Page<com.job.serviceInterface.IListUsersDto> page=userServiceInterface.getAllUsers(search,pageNumber,pageSize);
-			
-		if(page.getTotalElements()!=0)
-		{
-			return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", page.getContent()),HttpStatus.OK);
+
+		Page<com.job.serviceInterface.IListUsersDto> page = userServiceInterface.getAllUsers(search, pageNumber,
+				pageSize);
+
+		if (page.getTotalElements() != 0) {
+			return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", page.getContent()), HttpStatus.OK);
 		}
-		return new ResponseEntity<>(new ErrorResponseDto(" No Records Avaliable..", "Not Avaliable.."),HttpStatus.BAD_REQUEST);
-		
+		return new ResponseEntity<>(new ErrorResponseDto(" No Records Avaliable..", "Not Avaliable.."),
+				HttpStatus.BAD_REQUEST);
+
 	}
+
+	// UserList By Candidate And Recruiter
 	
-	//UserRole
-	@PreAuthorize("hasRole('')")
-	@GetMapping("/users")
-	public ResponseEntity<?> getUserListByCandidate(@RequestParam(defaultValue = "") String search,
-			@RequestParam(defaultValue = "1") String pageNumber,
-			@RequestParam(defaultValue = "5") String pageSize)
 	
+	@GetMapping("/users/candidate")
+	public ResponseEntity<?> getUserListByCandidate(@RequestParam(defaultValue = "") String search)
+
 	{
-		Page<com.job.serviceInterface.IListUserDtos> page=userServiceInterface.getUserListByCandidate(search,pageNumber,pageSize);
-		if(page.getTotalElements()!=0)
-		{
-			return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", page.getContent()),HttpStatus.OK);
+		try {
+
+			List<com.job.serviceInterface.IListUserDtos> page = userServiceInterface.getUserListByCandidate(search);
+
+			return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", page), HttpStatus.OK);
+		} catch (Exception e) {
+
+			return new ResponseEntity<>(new ErrorResponseDto(" No Records Avaliable..", "Not Avaliable.."),
+					HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<>(new ErrorResponseDto(" No Records Avaliable..", "Not Avaliable.."),HttpStatus.BAD_REQUEST);
-						
 	}
-	
-	
-	}
+
+}

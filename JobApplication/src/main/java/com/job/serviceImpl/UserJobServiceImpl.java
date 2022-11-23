@@ -1,4 +1,5 @@
 package com.job.serviceImpl;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,142 +24,117 @@ import com.job.repository.UserRoleRepository;
 import com.job.security.JwtTokenUtil;
 import com.job.serviceInterface.EmailServiceInterface;
 import com.job.serviceInterface.IListUserListDto;
-import com.job.serviceInterface.IUserJobListDto;
+
 import com.job.serviceInterface.UserJobServiceInterface;
 import com.job.util.Pagination;
 
 @Service
-public class UserJobServiceImpl implements UserJobServiceInterface{
+public class UserJobServiceImpl implements UserJobServiceInterface {
 
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
-	private RoleRepository roleRepository;
-	
-	@Autowired
-	private  UserRoleRepository userRoleRepository;
-			
+	private UserRoleRepository userRoleRepository;
+
 	@Autowired
 	private JobRespository jobRespository;
-			
+
 	@Autowired
 	private EmailServiceInterface emailServiceInterface;
-			
+
 	@Autowired
 	private UserJobRepository userJobRepository;
-			
+
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
-			 	
+
+	// Add UserJob @PreAuthorize
 	@Override
 	public void addUserJob(UserJobRequestDto userJobRequestDto, HttpServletRequest request) {
-								
-		final String header=request.getHeader("Authorization");
-		String requestToken=header.substring(7);
-		//email	
-		final String email3=jwtTokenUtil.getUsernameFromToken(requestToken);
-				
-		//check on repo.
-		User user=userRepository.findByEmailContainingIgnoreCase(email3);
-				
+
+		final String header = request.getHeader("Authorization");
+		String requestToken = header.substring(7);
+		// email
+		final String emails = jwtTokenUtil.getUsernameFromToken(requestToken);
+
+		// check on repo.
+		User user = userRepository.findByEmailContainingIgnoreCase(emails);
+		System.out.println("user" + user);
+
+		Long user_id = user.getUserId();
+		System.out.println("UserId" + user_id);
+
+		String candidateEmail = user.getEmail();
+		System.out.println("candidateEmail" + candidateEmail);
+
 		ArrayList<Job> userJobs = new ArrayList<>();
-				
-		for(int i=0;i<userJobRequestDto.getJobId().size();i++)
-		{		
-			Long JobId=userJobRequestDto.getJobId().get(i);
-			System.out.println("JobId"+JobId);
-			Job job=jobRespository.findById(JobId).orElseThrow(()-> new ResourceNotFoundException("Not Found Job Id"));
-			
+
+		for (int i = 0; i < userJobRequestDto.getJobId().size(); i++) {
+			Long JobId = userJobRequestDto.getJobId().get(i);
+
+			System.out.println("JobId" + JobId);
+			Job job = jobRespository.findById(JobId)
+					.orElseThrow(() -> new ResourceNotFoundException("Not Found Job Id"));
+
 			System.out.println("Id");
-			List<UserRole> userRole=userRoleRepository.findByUserId(user.getUserId());
-			System.err.println("UserRole..."+userRole);
-			
+			List<UserRole> userRole = userRoleRepository.findByUserId(user.getUserId());
+			System.err.println("UserRole..." + userRole);
+
 			userJobs.add(job);
-			UserJob userJob=new UserJob();
+			UserJob userJob = new UserJob();
 			userJob.setJob(job);
 			userJob.setUser(user);
 			userJobRepository.save(userJob);
-					
-			System.out.println("Size"+userRole.size());
-					
-				
-			UserRole role=userRole.get(i);
-			
-			Long Id=role.getPk().getRole().getRoleId();
-			for(int i1=0;i1<Id;i1++)
-			{
-					
-				System.out.println("Role"+Id.SIZE);
-				
-			}	
-			String roleName=role.getPk().getRole().getRoleName();
-			System.out.println("RoleName"+roleName);
-			if(roleName.equals("Candidate"))
-			{
-				emailServiceInterface.sendMessage(user.getEmail(), "Candidate Apply sucessfully To Job", job.getJobTitle());
-				
-			}
-			
-			System.out.println("JobId"+JobId);
 
-			Job job1=jobRespository.findById(JobId).orElseThrow(()-> new ResourceNotFoundException("Not Found Job Id"));
-			
-			Role recruiterId= job1.getRecruiterId();
-			
-			System.out.println("Role"+recruiterId);
-			Long recId=recruiterId.getRoleId();
-			
-			Role roles=roleRepository.findById(recId).orElseThrow(()-> new ResourceNotFoundException("Not Found RoleId.."));
-			//3 --Recruiter
-			Long RoleId=roles.getRoleId();
-			System.out.println("RoleId"+RoleId);
-			
-			
-			
-			List<UserRole> userRoles=userRoleRepository.findRoleId(RoleId);
-			
-			System.out.println("UserRoles"+userRoles);
-			
-//			System.out.println("UserRoles"+userRoles.get(i));
-			String roleName1=roles.getRoleName();
-			
-			
-			for(int i1=0;i1<userRoles.size();i1++)
-				
-			{
-				String email=userRoles.get(i1).getPk().getUser().getEmail();
-				
-				System.out.println("RoleName1..."+roleName1);
+			for (int i1 = 0; i1 < userRole.size(); i1++) {
 
-					
-					if(roleName1.equals("Recruiter"))
-					{
-						
-						emailServiceInterface.sendMessage(email, "Candidate Apply sucessfully To Job", job.getJobTitle());
-						
+				String roleName = userRole.get(i1).getPk().getRole().getRoleName();
+				System.out.println("RoleName" + roleName);
+				if (roleName.equals("Candidate")) {
+					emailServiceInterface.sendMessage(user.getEmail(), "Candidate Apply sucessfully To Job",
+							job.getJobTitle());
+
+				}
+				System.out.println("job.getRecruiterId().getUserId()" + job.getRecruiterId().getUserId());
+				Long userIdId = job.getRecruiterId().getUserId();
+				System.out.println("UserId+RecId" + userIdId);
+				List<UserRole> list = userRoleRepository.findByUserId(userIdId);
+				System.out.println("List" + list);
+
+				for (int i11 = 0; i11 <= list.size(); i11++) {
+					String roleName1 = list.get(i11).getPk().getRole().getRoleName();
+					System.out.println("Email" + roleName);
+					String email = list.get(i11).getPk().getUser().getEmail();
+					System.out.println("Email" + email);
+
+					if (roleName1.equals("Recruiter")) {
+						emailServiceInterface.sendMessage(email, "Candidate Apply sucessfully To Job",
+								job.getJobTitle());
+
 					}
-			}
-			
-			
-		}
-			
-		
-	}
-	
-	@Override
-	 public Page<IListUserListDto> getAllUserJobs(String search, String pageNumber, String pageSize,HttpServletRequest request)
-	  {
 
-			Pageable pagable=new Pagination().getPagination(pageNumber, pageSize);
-			if((search=="")||(search==null)||(search.length()==0))
-			{
-				return userJobRepository.findByOrderById(pagable,IListUserListDto.class);
-			}else
-			{
-				return userJobRepository.findByUserName(search,pagable,IListUserListDto.class);
+				}
+//				
+
 			}
-			
-	  }
-		
+
+		}
+
+	}
+
+	//
+	@Override
+	public Page<IListUserListDto> getAllUserJobs(String search, String pageNumber, String pageSize,
+			HttpServletRequest request) {
+
+		Pageable pagable = new Pagination().getPagination(pageNumber, pageSize);
+		if ((search == "") || (search == null) || (search.length() == 0)) {
+			return userJobRepository.findByOrderById(pagable, IListUserListDto.class);
+		} else {
+			return userJobRepository.findByUserName(search, pagable, IListUserListDto.class);
+		}
+
+	}
+
 }

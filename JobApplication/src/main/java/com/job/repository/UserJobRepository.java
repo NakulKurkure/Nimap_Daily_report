@@ -22,9 +22,5 @@ public interface UserJobRepository extends JpaRepository<UserJob, Long>{
 
 	Page<IListUserListDto> findByOrderById(Pageable pagable, Class<IListUserListDto> class1);
 
-//	@Transactional
-//	@Query(value="select users.user_id as UserId,users.email as Email,users.user_name as UserName,job.id as id,job.job_title as JobTitle,job.job_description as JobDescription from job inner join user_job on user_job.job_id=job.id inner join users on users.user_id=user_job.user_user_id where user_id=:user_id"
-//	,nativeQuery = true)
-//	Page<IListUserListDto> findByUserId(@Param("user_id") Long user_id, Pageable pagable, Class<IListUserListDto> class1);
 
 }

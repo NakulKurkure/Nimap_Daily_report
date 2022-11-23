@@ -139,4 +139,8 @@ public class User implements Serializable{
 	private Date updatedAt;
 	
 	
+	@OneToMany(fetch = FetchType.LAZY,mappedBy = "user",cascade = CascadeType.ALL)
+	@JsonBackReference
+	List<UserJob> userjob;
+	
 }

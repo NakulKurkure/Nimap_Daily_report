@@ -98,6 +98,7 @@ public class RolePermissionController {
 	public ResponseEntity<?> getPermissionById(@PathVariable Long id)
 	{
 		ArrayList<String>tt= this.rolePermissionServiceInterface.getPermissionByUserId(id);
+	
 		return new ResponseEntity<>(tt,HttpStatus.OK);
 	}
 	

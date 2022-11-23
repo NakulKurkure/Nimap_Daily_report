@@ -94,10 +94,7 @@ public class PermissionController {
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?>deletePermission(@PathVariable(name = "id") Long id){
-		
-		
-		
-		
+			
 		try {
 		permissionServiceInterface.deletePermissionById(id);
 

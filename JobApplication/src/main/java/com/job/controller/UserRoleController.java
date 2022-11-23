@@ -74,8 +74,6 @@ public class UserRoleController {
 		}
 	}
 	
-				
-	//pending...
 	@GetMapping	
 	public ResponseEntity<?> getAlluserRole(
 			@RequestParam(defaultValue = "") String search,

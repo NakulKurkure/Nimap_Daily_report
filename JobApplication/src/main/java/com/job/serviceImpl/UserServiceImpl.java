@@ -93,21 +93,14 @@ public class UserServiceImpl implements UserServiceInterface{
 	
 	}
 
+
 	@Override
-	public Page<IListUserDtos> getUserListByCandidate(String search, String pageNumber, String pageSize) {
+	public List<IListUserDtos> getUserListByCandidate(String search) {
 		
-		Pageable pagable=new com.job.util.Pagination().getPagination(pageNumber, pageSize);
-		
-		if((search=="")||(search==null)||(search.length()==0))
-		{
-			return userRepository.findByOrderByUserId(pagable,IListUserDtos.class);
-		}
-		else
-		{
 			
-			Page<IListUserDtos> list= userRepository.findByUserByCandidate(search,pagable,IListUserDtos.class);
+			List<IListUserDtos> list= userRepository.findByUserByCandidate(search,IListUserDtos.class);
 			return list;
-		}
+		
 		
 			
 	}

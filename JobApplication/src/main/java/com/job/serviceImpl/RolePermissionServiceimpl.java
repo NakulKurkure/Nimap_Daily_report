@@ -128,9 +128,12 @@ Role roleId=this.roleRepository.findById(rolePermissionRequestDto.getRoleId()).o
 		
 		System.out.print("Hello "+rolePermission);
 		ArrayList<String> permission=new ArrayList<>();
+		
+
 		for(PermissionIdList element:rolePermission)
 		{
 			permission.add(element.getPkPermissionActionName());
+			System.out.println("hello");
 		}
 		return permission;
 	}
