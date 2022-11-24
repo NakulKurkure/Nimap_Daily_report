@@ -1,4 +1,5 @@
 package com.job.controller;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -26,70 +27,60 @@ public class UserRoleController {
 
 	@Autowired
 	private UserRoleServiceInterface userRoleServiceInterface;
-	
+
 	@PostMapping
-	public ResponseEntity<?> addUserRole(@RequestBody UserRoleRequestDto userRoleRequestDto)
-	{
-		
-	
-			userRoleServiceInterface.addUserRole(userRoleRequestDto);
-			
-			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Added UserRoles.."),HttpStatus.CREATED);	
-		}
-		
-		
-	
-	
+	public ResponseEntity<?> addUserRole(@RequestBody UserRoleRequestDto userRoleRequestDto) {
+
+		userRoleServiceInterface.addUserRole(userRoleRequestDto);
+
+		return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Added UserRoles.."),
+				HttpStatus.CREATED);
+	}
+
 	@PutMapping
-	public ResponseEntity<?> updateUserRole(@RequestBody UserRoleRequestDto userRoleRequestDto)
-	{
-		
-		try
-		{
-		
-		userRoleServiceInterface.updateUserRole(userRoleRequestDto);
-		
-		return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Updated UserRoles..."),HttpStatus.ACCEPTED);
-		}catch(Exception e)
-		{
-			return new ResponseEntity<>(new ErrorResponseDto("Invalid..", "Invalid UserId and Role Id..."),HttpStatus.BAD_REQUEST);
+	public ResponseEntity<?> updateUserRole(@RequestBody UserRoleRequestDto userRoleRequestDto) {
+
+		try {
+
+			userRoleServiceInterface.updateUserRole(userRoleRequestDto);
+
+			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Updated UserRoles..."),
+					HttpStatus.ACCEPTED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(new ErrorResponseDto("Invalid..", "Invalid UserId and Role Id..."),
+					HttpStatus.BAD_REQUEST);
 
 		}
 	}
-	
+
 	@DeleteMapping
-	public ResponseEntity<?> deleteUserRole(@RequestBody UserRoleRequestDto userRoleRequestDto)
-	{
-		
-		try
-		{
-		
-		userRoleServiceInterface.deleteUserRole(userRoleRequestDto);
-		
-		return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Deleted UserRoles..."),HttpStatus.ACCEPTED);
-		}catch(Exception e)
-		{
-			return new ResponseEntity<>(new ErrorResponseDto("Invalid..", "Invalid UserId and Role Id..."),HttpStatus.BAD_REQUEST);
+	public ResponseEntity<?> deleteUserRole(@RequestBody UserRoleRequestDto userRoleRequestDto) {
+
+		try {
+
+			userRoleServiceInterface.deleteUserRole(userRoleRequestDto);
+
+			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Deleted UserRoles..."),
+					HttpStatus.ACCEPTED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(new ErrorResponseDto("Invalid..", "Invalid UserId and Role Id..."),
+					HttpStatus.BAD_REQUEST);
 
 		}
 	}
-	
-	@GetMapping	
-	public ResponseEntity<?> getAlluserRole(
-			@RequestParam(defaultValue = "") String search,
-			@RequestParam(defaultValue = "1") String pageNumber,
-			@RequestParam(defaultValue = "5") String pageSize)
-	{		
-		
-		Page<ILIstUserDto> page= userRoleServiceInterface.getAllUserRole(search,pageNumber,pageSize);
-		if(page.getTotalElements()!=0)
-		{
-			return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", page.getContent()),HttpStatus.ACCEPTED);
+
+	@GetMapping
+	public ResponseEntity<?> getAlluserRole(@RequestParam(defaultValue = "") String search,
+			@RequestParam(defaultValue = "1") String pageNumber, @RequestParam(defaultValue = "5") String pageSize) {
+
+		Page<ILIstUserDto> page = userRoleServiceInterface.getAllUserRole(search, pageNumber, pageSize);
+		if (page.getTotalElements() != 0) {
+			return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", page.getContent()),
+					HttpStatus.ACCEPTED);
+		} else {
+			return new ResponseEntity<>(new ErrorResponseDto("Records Not Available..", "No Records Available..."),
+					HttpStatus.NOT_FOUND);
 		}
-		else
-		{
-			return new ResponseEntity<>(new ErrorResponseDto("Records Not Available..", "No Records Available..."),HttpStatus.NOT_FOUND);
-	  }
 	}
-	
+
 }

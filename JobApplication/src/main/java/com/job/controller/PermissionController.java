@@ -1,5 +1,7 @@
 package com.job.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;
@@ -30,7 +32,7 @@ public class PermissionController {
 	private com.job.serviceInterface.PermissionServiceInterface permissionServiceInterface;
 	
 	@PostMapping
-	public ResponseEntity<?> addPermission(@RequestBody com.job.dto.PermissionDto dto){
+	public ResponseEntity<?> addPermission(@Valid @RequestBody com.job.dto.PermissionDto dto){
 
 		try {
 

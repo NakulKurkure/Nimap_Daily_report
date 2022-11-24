@@ -48,22 +48,21 @@ public class UserJobServiceImpl implements UserJobServiceInterface {
 
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
-
+///Pending.....
 	// Add UserJob @PreAuthorize
 	@Override
-	public void addUserJob(UserJobRequestDto userJobRequestDto, HttpServletRequest request) {
-
+	public void addUserJob(UserJobRequestDto userJobRequestDto, HttpServletRequest request,long user_id) {
 		final String header = request.getHeader("Authorization");
 		String requestToken = header.substring(7);
-		// email
+//		// email
 		final String emails = jwtTokenUtil.getUsernameFromToken(requestToken);
-
-		// check on repo.
+//
+//		// check on repo.
 		User user = userRepository.findByEmailContainingIgnoreCase(emails);
-		System.out.println("user" + user);
+//		System.out.println("user" + user);
 
-		Long user_id = user.getUserId();
-		System.out.println("UserId" + user_id);
+//		System.out.println("UserId" + user_id1);
+		System.out.println();
 
 		String candidateEmail = user.getEmail();
 		System.out.println("candidateEmail" + candidateEmail);
@@ -92,8 +91,9 @@ public class UserJobServiceImpl implements UserJobServiceInterface {
 				String roleName = userRole.get(i1).getPk().getRole().getRoleName();
 				System.out.println("RoleName" + roleName);
 				if (roleName.equals("Candidate")) {
-					emailServiceInterface.sendMessage(user.getEmail(), "Candidate Apply sucessfully To Job",
+					String s=emailServiceInterface.sendMessage(user.getEmail(), "Candidate Apply sucessfully To Job",
 							job.getJobTitle());
+					System.out.println("s"+s);
 
 				}
 				System.out.println("job.getRecruiterId().getUserId()" + job.getRecruiterId().getUserId());
@@ -134,7 +134,9 @@ public class UserJobServiceImpl implements UserJobServiceInterface {
 		} else {
 			return userJobRepository.findByUserName(search, pagable, IListUserListDto.class);
 		}
-
+		
 	}
+
+	
 
 }

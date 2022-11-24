@@ -34,7 +34,7 @@ public class UserController {
 	private UserServiceInterface userServiceInterface;
 
 	@PutMapping("/{id}")
-	public ResponseEntity<?> updateUserByUserId(@RequestBody UserDto userDto, @PathVariable Long id) {
+	public ResponseEntity<?> updateUserByUserId( @RequestBody UserDto userDto, @PathVariable Long id) {
 		try {
 			userServiceInterface.updateUser(userDto, id);
 			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Updated User.."),

@@ -33,7 +33,7 @@ public class RoleController {
 	private RoleServiceInterface roleServiceInterface;
 	
 	@PostMapping
-	public ResponseEntity<?> addRole(@RequestBody RoleDto roleDto)
+	public ResponseEntity<?> addRole(@Valid @RequestBody RoleDto roleDto)
 	{
 		
 		if(roleDto.getRoleName().isBlank())

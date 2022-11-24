@@ -1,6 +1,7 @@
 package com.job.controller;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.job.Interceptor.AuthLogger;
 import com.job.dto.AuthSuccessDto;
 import com.job.dto.ErrorResponseDto;
 import com.job.dto.SuccessResponseDto;
@@ -30,10 +32,10 @@ public class UserJobController {
 
 	@PreAuthorize("hasRole('userJobAdd')")
 	@PostMapping
-	public ResponseEntity<?> addUserJob(@RequestBody UserJobRequestDto userJobRequestDto, HttpServletRequest request) {
+	public ResponseEntity<?> addUserJob(@Valid @RequestBody UserJobRequestDto userJobRequestDto, HttpServletRequest request,@RequestAttribute(AuthLogger.UserId) Long userId) {
 		try {
 
-			userJobServiceInterface.addUserJob(userJobRequestDto, request);
+			userJobServiceInterface.addUserJob(userJobRequestDto, request,userId);
 
 			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Added UserJobs.."),
 					HttpStatus.CREATED);

@@ -30,7 +30,11 @@ public interface JobRespository extends JpaRepository<Job, Long>{
 	@Transactional
 	@Query(value = "select job.job_title,job.id,job.job_description,users.user_id,users.user_name,users.email from job inner join user_job on job.id=user_job.job_id inner join users on users.user_id=user_job.user_user_id where job.recuriter_id=:recuriter_id",nativeQuery = true)
 	List<IListAllJobsDto> findByJobAndPkUserByRecruiterId(@Param("recuriter_id") Long recruiter_id);
-
+//
+//	@Transactional
+//	@Query(value = "SELECT * from job t WHERE t.recuriter_id=:recuriter_id",nativeQuery = true)
+//	List<Job> findByRecuriterId(@Param("recuriter_id") Long recruiter_id);
+	
 	@Transactional
 	@Query(value = "SELECT * from job t WHERE t.recuriter_id=:recuriter_id",nativeQuery = true)
 	List<Job> findByRecuriterId(@Param("recuriter_id") Long recruiter_id);

@@ -8,7 +8,7 @@ import com.job.dto.UserJobRequestDto;
 
 public interface UserJobServiceInterface {
 
-	void addUserJob(UserJobRequestDto userJobRequestDto, HttpServletRequest request);
+	void addUserJob(UserJobRequestDto userJobRequestDto, HttpServletRequest request,long user_id);
 
 	Page<IListUserListDto> getAllUserJobs(String search, String pageNumber, String pageSize,HttpServletRequest request);
 

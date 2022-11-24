@@ -46,26 +46,9 @@ public class JobServiceImpl implements JobServiceInterface {
 	private UserRoleRepository userRoleRepository;
 
 	@Override
-	public Job addJob(JobDto jobDto, HttpServletRequest request) {
+	public Job addJob(JobDto jobDto, HttpServletRequest request,Long user_id) {
+		User userEntity = userRepository.findById(user_id).orElseThrow(()-> new ResourceNotFoundException("Not Found UserId"));
 
-		final String header = request.getHeader("Authorization");
-		String requestToken = header.substring(7);
-//		//email
-		final String email = jwtTokenUtil.getUsernameFromToken(requestToken);
-
-//		//check on repo.
-		User userEntity = userRepository.findByEmailContainingIgnoreCase(email);
-
-		Long user_id = userEntity.getUserId();
-		System.out.println("userId" + user_id);
-
-		UserRole userRole = userRoleRepository.findByUserById(user_id);
-		String roleName;
-
-		roleName = userRole.getPk().getRole().getRoleName();
-		System.out.println("RoleName.." + roleName);
-
-		if (roleName.equals("Recruiter")) {
 			Job job = new Job();
 			job.setJobTitle(jobDto.getJobTitle());
 			job.setJobDescription(jobDto.getJobDescription());
@@ -74,35 +57,12 @@ public class JobServiceImpl implements JobServiceInterface {
 
 			jobRespository.save(job);
 			return job;
-		} else {
-			throw new ResourceNotFoundException("Only Access Recruiter...");
-		}
+		 
 	}
 
 	@Override
 	public void updateJob(JobDto jobDto, Long id, HttpServletRequest request) {
 
-//		roleRepository.findById(jobDto.getRecruiterId()).orElseThrow(()-> new ResourceNotFoundException("Please Enter Valid RoleId..."));
-
-		final String header = request.getHeader("Authorization");
-		String requestToken = header.substring(7);
-//		//email
-		final String email = jwtTokenUtil.getUsernameFromToken(requestToken);
-
-//		//check on repo.
-		User userEntity = userRepository.findByEmailContainingIgnoreCase(email);
-
-		Long user_id = userEntity.getUserId();
-		System.out.println("userId" + user_id);
-
-//		List<UserRole> userRole= userRoleRepository.findByUserId(user_id);
-
-		UserRole userRole = (UserRole) userRoleRepository.findByUserById(user_id);
-
-		String roleName = userRole.getPk().getRole().getRoleName();
-//			String roleName=userRole.get(i).getPk().getRole().getRoleName();
-		System.out.println("roleName.." + roleName);
-		if (roleName.equals("Admin")) {
 			Job job = jobRespository.findById(id)
 					.orElseThrow(() -> new ResourceNotFoundException("Not Found JobId..."));
 
@@ -111,9 +71,7 @@ public class JobServiceImpl implements JobServiceInterface {
 			job.setDateOfJoining(jobDto.getDateOfJoining());
 
 			jobRespository.save(job);
-		} else {
-			throw new ResourceNotFoundException("Only Admin Can Update The Jobs...");
-		}
+		 
 
 	}
 
@@ -129,33 +87,9 @@ public class JobServiceImpl implements JobServiceInterface {
 
 	@Override
 	public void deleteByJobId(Long id, HttpServletRequest request) {
-
-		final String header = request.getHeader("Authorization");
-		String requestToken = header.substring(7);
-//		//email
-		final String email = jwtTokenUtil.getUsernameFromToken(requestToken);
-
-//		//check on repo.
-		User userEntity = userRepository.findByEmailContainingIgnoreCase(email);
-
-		Long user_id = userEntity.getUserId();
-		System.out.println("userId" + user_id);
-
-//		List<UserRole> userRole= userRoleRepository.findByUserId(user_id);
-
-		UserRole userRole = (UserRole) userRoleRepository.findByUserById(user_id);
-
-		String roleName = userRole.getPk().getRole().getRoleName();
-
-		if (roleName.equals("Admin")) {
-
 			jobRespository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Not Found Job Id.."));
 
 			jobRespository.deleteById(id);
-
-		} else {
-			throw new ResourceNotFoundException("Only Access Admin...");
-		}
 
 	}
 
@@ -175,36 +109,17 @@ public class JobServiceImpl implements JobServiceInterface {
 	//GetAll Jobs By Candidate Id&RecruiterId
 
 	@Override
-	public List<IListAllJobsDto> getAllJobsByRecruiter(HttpServletRequest request,Long id) {
+	public List<IListAllJobsDto> getAllJobsByRecruiter(HttpServletRequest request,Long user_id) {
 
-		final String header = request.getHeader("Authorization");
-		String requestToken = header.substring(7);
-//		//email
-		final String email = jwtTokenUtil.getUsernameFromToken(requestToken);
-//		//check on repo.
-		User user = userRepository.findByEmailContainingIgnoreCase(email);
+		System.out.println("User"+user_id);
+		userRoleRepository.findByUserById(user_id);
+		
+		List<IListAllJobsDto> list=jobRespository.findByJobAndPkUserByRecruiterId(user_id);
 
-		Long user_id = user.getUserId();
-		System.out.println("userId" + user_id);
+		return list;
+		} 
 
-		UserRole userRole = userRoleRepository.findByUserById(user_id);
-		System.out.println("userRoleEntity1111");
-
-		Long recuriterId = userRole.getPk().getRole().getRoleId();
-		System.out.println("RoleId." + recuriterId);
-
-		String roleName = userRole.getPk().getRole().getRoleName();
-		System.out.println("RoleName." + roleName);
-
-		if (roleName.equals("Recruiter")) {
-			List<IListAllJobsDto> list = jobRespository.findByJobAndPkUserByRecruiterId(user_id);
-
-			return list;
-		} else {
-			throw new ResourceNotFoundException("Only Recruiter Access..");
-		}
-
-	}
+	
 
 //List of all jobs By Specific User
 	@Override

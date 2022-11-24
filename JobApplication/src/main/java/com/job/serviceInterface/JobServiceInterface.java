@@ -11,7 +11,7 @@ import com.job.entity.Job;
 
 public interface JobServiceInterface {
 
-	Job addJob(JobDto jobDto,HttpServletRequest request);
+	Job addJob(JobDto jobDto,HttpServletRequest request,Long user_id);
 
 	void updateJob(JobDto jobDto, Long id,HttpServletRequest request);
 

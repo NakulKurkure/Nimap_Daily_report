@@ -3,6 +3,7 @@ package com.job.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.job.Interceptor.AuthLogger;
 import com.job.dto.AuthSuccessDto;
 import com.job.dto.ErrorResponseDto;
 import com.job.dto.JobDto;
@@ -37,16 +39,19 @@ public class JobController {
 	@Autowired
 	private JobServiceInterface jobServiceInterface;
 
+	@Autowired
+	private AuthLogger authLogger;
+
 	// Only Recruiter:- Post a job, with the following fields - Job Title and Job
 	// Description
 	// Sanket
 	@PreAuthorize("hasRole('jobAdd')")
 	@PostMapping
-	public ResponseEntity<?> addJobByRecuriter(@RequestBody JobDto jobDto, HttpServletRequest request) {
+	public ResponseEntity<?> addJobByRecuriter(@Valid @RequestBody JobDto jobDto, HttpServletRequest request,@RequestAttribute(AuthLogger.UserId) Long user_id) {
 
 		try {
 
-			Job job = jobServiceInterface.addJob(jobDto, request);
+			Job job = jobServiceInterface.addJob(jobDto, request,user_id);
 
 			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Added Jobs"),
 					HttpStatus.CREATED);
@@ -66,23 +71,11 @@ public class JobController {
 			HttpServletRequest request) {
 		try {
 
-			if (jobDto.getJobTitle().isBlank()) {
-				if (jobDto.getJobDescription().isEmpty()) {
-					return new ResponseEntity<>(
-							new ErrorResponseDto("Enter Valid Job Title..", "Please Enter Valid Job Title..."),
-							HttpStatus.BAD_REQUEST);
-				} else {
-					return new ResponseEntity<>(new ErrorResponseDto("Enter Valid Job Description..",
-							"Please Enter Valid Job Description..."), HttpStatus.BAD_REQUEST);
+			jobServiceInterface.updateJob(jobDto, id, request);
 
-				}
-			} else {
-				jobServiceInterface.updateJob(jobDto, id, request);
+			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Added Jobs"),
+					HttpStatus.CREATED);
 
-				return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Added Jobs"),
-						HttpStatus.CREATED);
-
-			}
 		} catch (Exception e) {
 			return new ResponseEntity<>(new ErrorResponseDto("Not Valid..", e.getMessage()), HttpStatus.BAD_REQUEST);
 
@@ -138,10 +131,11 @@ public class JobController {
 	// getAllUserJobs By RecuriterId Using Only Recuriter
 	@PreAuthorize("hasRole('jobView')")
 	@GetMapping("/Jobs/recruiter")
-	public ResponseEntity<?> getAllUserJobsByRecruiterAndCandidate(HttpServletRequest request,@RequestAttribute("userId") Long userId) {
+	public ResponseEntity<?> getAllUserJobsByRecruiterAndCandidate(HttpServletRequest request,
+			@RequestAttribute(AuthLogger.UserId) Long userId) {
 		try {
 
-			List<IListAllJobsDto> jobs = jobServiceInterface.getAllJobsByRecruiter(request,userId);
+			List<IListAllJobsDto> jobs = jobServiceInterface.getAllJobsByRecruiter(request, userId);
 			return new ResponseEntity<>(new AuthSuccessDto("Success.", "Success..", jobs), HttpStatus.ACCEPTED);
 
 		} catch (Exception e) {
@@ -150,7 +144,6 @@ public class JobController {
 		}
 
 	}
-
 
 	@GetMapping("/jobs/user")
 	public ResponseEntity<?> getAllJobsByUser(@RequestParam(defaultValue = "") String search,

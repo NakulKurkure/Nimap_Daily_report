@@ -11,9 +11,7 @@ public class UserJobRequestDto implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	@NotBlank
-	@NotNull
-	@NotEmpty
+	
 	private List<Long> jobId;
 	
 	public List<Long> getJobId() {
