@@ -54,7 +54,7 @@ public class EmailServiceImpl implements EmailServiceInterface{
 		System.out.println("mail");
 		simpleMailMessage.setFrom("nakulkurkure1998@gmail.com");
 		simpleMailMessage.setTo(email);
-		simpleMailMessage.setSubject("sucessfully Applied To Job"+job);
+		simpleMailMessage.setSubject("sucessfully Applied To Job "+job);
 		simpleMailMessage.setText(text);
 		System.out.println("Email shjkshsjsk");
 		javaMailSender.send(simpleMailMessage);

@@ -39,9 +39,6 @@ public class JobController {
 	@Autowired
 	private JobServiceInterface jobServiceInterface;
 
-	@Autowired
-	private AuthLogger authLogger;
-
 	// Only Recruiter:- Post a job, with the following fields - Job Title and Job
 	// Description
 	// Sanket

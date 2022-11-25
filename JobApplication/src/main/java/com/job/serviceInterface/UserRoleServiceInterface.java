@@ -14,5 +14,7 @@ public interface UserRoleServiceInterface {
 
 	Page<ILIstUserDto> getAllUserRole(String search, String pageNumber, String pageSize);
 
+	Page<ILIstUserDto> getAllUserRoles(String search, String pageNumber, String pageSize, String userId, String roleId);
+
 //	Page<ILIstUserDto> getAllUserRole(String search, String pageNumber, String pageSize);
 }

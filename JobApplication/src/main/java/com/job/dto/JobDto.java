@@ -51,16 +51,11 @@ public class JobDto {
 		this.dateOfJoining = dateOfJoining;
 	}
 
-
 	@NotNull(message = "Required")
 	@NotBlank(message="Required")
 	@NotEmpty(message="Required")
 	private String jobDescription;
 	
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	@NotNull(message = "Required")
-	@NotBlank(message="Required")
-	@NotEmpty(message="Required")
 	private Date dateOfJoining;
 
 	

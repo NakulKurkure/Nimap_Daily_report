@@ -21,6 +21,7 @@ import com.job.dto.AuthSuccessDto;
 import com.job.dto.ErrorResponseDto;
 import com.job.dto.SuccessResponseDto;
 import com.job.dto.UserJobRequestDto;
+import com.job.serviceInterface.IListUserJobDto;
 import com.job.serviceInterface.IListUserListDto;
 import com.job.serviceInterface.UserJobServiceInterface;
 
@@ -32,10 +33,10 @@ public class UserJobController {
 
 	@PreAuthorize("hasRole('userJobAdd')")
 	@PostMapping
-	public ResponseEntity<?> addUserJob(@Valid @RequestBody UserJobRequestDto userJobRequestDto, HttpServletRequest request,@RequestAttribute(AuthLogger.UserId) Long userId) {
+	public ResponseEntity<?> addUserJob(@Valid @RequestBody UserJobRequestDto userJobRequestDto,@RequestAttribute(AuthLogger.UserId) Long userId) {
 		try {
 
-			userJobServiceInterface.addUserJob(userJobRequestDto, request,userId);
+			userJobServiceInterface.addUserJob(userJobRequestDto,userId);
 
 			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Added UserJobs.."),
 					HttpStatus.CREATED);
@@ -47,7 +48,7 @@ public class UserJobController {
 	}
 
 	// Admin
-	@PreAuthorize("hasRole('getAlljobView')")
+//	@PreAuthorize("hasRole('getAlljobView')")
 	@GetMapping
 	public ResponseEntity<?> getAllUserJob(@RequestParam(defaultValue = "") String search,
 			@RequestParam(defaultValue = "1") String pageNumber, @RequestParam(defaultValue = "5") String pageSize,
@@ -70,4 +71,24 @@ public class UserJobController {
 		}
 
 	}
+	
+//	@PreAuthorize("hasRole('getAlljobView')")
+	@GetMapping("/getAll")
+	public ResponseEntity<?> getAllUserJobs(@RequestParam(defaultValue = "") String search,
+			@RequestParam(defaultValue = "1") String pageNumber, @RequestParam(defaultValue = "5") String pageSize,
+			HttpServletRequest request,@RequestParam(defaultValue = "") String userId,@RequestParam(defaultValue = "") String jobId) {
+		try {
+
+			Page<IListUserJobDto> page = userJobServiceInterface.getAllUserJob(search, pageNumber, pageSize, request,userId,jobId);
+			return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", page.getContent()),
+					HttpStatus.ACCEPTED);
+		}catch(Exception e)
+		{
+			return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), e.getLocalizedMessage()),
+					HttpStatus.NOT_FOUND);
+		}
+		
+	
+	}
+	
 }

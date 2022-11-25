@@ -23,94 +23,103 @@ import com.job.serviceInterface.UserRoleServiceInterface;
 import com.job.util.Pagination;
 
 @Service
-public class UserRoleServiceImpl implements UserRoleServiceInterface{
+public class UserRoleServiceImpl implements UserRoleServiceInterface {
 
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private RoleRepository roleRepository;
-	
+
 	@Autowired
 	private UserRoleRepository userRoleRepository;
-	
+
 	@Override
 	public void addUserRole(UserRoleRequestDto userRoleRequestDto) {
-		
-		try
-		{
-		
-		ArrayList<UserRole> userRoles = new ArrayList<>();
 
+		try {
 
-		User userId=this.userRepository.findById(userRoleRequestDto.getUserId()).orElseThrow(()-> new com.job.exception.ResourceNotFoundException("Not Found UserId"));
+			ArrayList<UserRole> userRoles = new ArrayList<>();
 
-		com.job.entity.Role roleId=roleRepository.findById(userRoleRequestDto.getRoleId()).orElseThrow(()-> new com.job.exception.ResourceNotFoundException("Not Found roleId"));
-		
-		UserRole userRole=new UserRole();
-		com.job.entity.UserRoleId userRoleId=new com.job.entity.UserRoleId(userId,roleId);
-		userRole.setPk(userRoleId);
+			User userId = this.userRepository.findById(userRoleRequestDto.getUserId())
+					.orElseThrow(() -> new com.job.exception.ResourceNotFoundException("Not Found UserId"));
 
-		userRoles.add(userRole);
-		//save in database
-		userRoleRepository.saveAll(userRoles);
-		
-	}catch(Exception e)
-	{
-	
-		throw new ResourceNotFoundException("Not Found UserId and RoleId"); 
-	}
+			com.job.entity.Role roleId = roleRepository.findById(userRoleRequestDto.getRoleId())
+					.orElseThrow(() -> new com.job.exception.ResourceNotFoundException("Not Found roleId"));
+
+			UserRole userRole = new UserRole();
+			com.job.entity.UserRoleId userRoleId = new com.job.entity.UserRoleId(userId, roleId);
+			userRole.setPk(userRoleId);
+
+			userRoles.add(userRole);
+			// save in database
+			userRoleRepository.saveAll(userRoles);
+
+		} catch (Exception e) {
+
+			throw new ResourceNotFoundException("Not Found UserId and RoleId");
+		}
 
 	}
 
 	@Override
 	public void updateUserRole(UserRoleRequestDto userRoleRequestDto) {
-		
+
 		ArrayList<UserRole> userRoles = new ArrayList<>();
 
+		User userId = this.userRepository.findById(userRoleRequestDto.getUserId())
+				.orElseThrow(() -> new com.job.exception.ResourceNotFoundException("Not Found UserId"));
 
-		User userId=this.userRepository.findById(userRoleRequestDto.getUserId()).orElseThrow(()-> new com.job.exception.ResourceNotFoundException("Not Found UserId"));
+		com.job.entity.Role roleId = roleRepository.findById(userRoleRequestDto.getRoleId())
+				.orElseThrow(() -> new com.job.exception.ResourceNotFoundException("Not Found roleId"));
 
-		com.job.entity.Role roleId=roleRepository.findById(userRoleRequestDto.getRoleId()).orElseThrow(()-> new com.job.exception.ResourceNotFoundException("Not Found roleId"));
-		
-		UserRole userRole=new UserRole();
-		com.job.entity.UserRoleId userRoleId=new com.job.entity.UserRoleId(userId,roleId);
+		UserRole userRole = new UserRole();
+		com.job.entity.UserRoleId userRoleId = new com.job.entity.UserRoleId(userId, roleId);
 		userRole.setPk(userRoleId);
 
 		userRoles.add(userRole);
-		
-		userRoleRepository.updateUserRole(userId,roleId);
-		
+
+		userRoleRepository.updateUserRole(userId, roleId);
+
 	}
 
 	@Override
 	public void deleteUserRole(UserRoleRequestDto userRoleRequestDto) {
-		
-		User userId=this.userRepository.findById(userRoleRequestDto.getUserId()).orElseThrow(()-> new com.job.exception.ResourceNotFoundException("Not Found UserId"));
 
-		com.job.entity.Role roleId=roleRepository.findById(userRoleRequestDto.getRoleId()).orElseThrow(()-> new com.job.exception.ResourceNotFoundException("Not Found roleId"));
-		
-		UserRole userRole=new UserRole();
-		com.job.entity.UserRoleId userRoleId=new com.job.entity.UserRoleId(userId,roleId);
+		User userId = this.userRepository.findById(userRoleRequestDto.getUserId())
+				.orElseThrow(() -> new com.job.exception.ResourceNotFoundException("Not Found UserId"));
+
+		com.job.entity.Role roleId = roleRepository.findById(userRoleRequestDto.getRoleId())
+				.orElseThrow(() -> new com.job.exception.ResourceNotFoundException("Not Found roleId"));
+
+		UserRole userRole = new UserRole();
+		com.job.entity.UserRoleId userRoleId = new com.job.entity.UserRoleId(userId, roleId);
 		userRole.setPk(userRoleId);
 
-		userRoleRepository.deleteUserRole(userId,roleId);
-		
+		userRoleRepository.deleteUserRole(userId, roleId);
+
 	}
 
 	@Override
 	public Page<ILIstUserDto> getAllUserRole(String search, String pageNumber, String pageSize) {
-			
-		Pageable pagable=new Pagination().getPagination(pageNumber, pageSize);
-		if((search=="")||(search==null)||(search.length()==0))
-		{	
+
+		Pageable pagable = new Pagination().getPagination(pageNumber, pageSize);
+		if ((search == "") || (search == null) || (search.length() == 0)) {
 			System.out.println("role");
-			return userRoleRepository.findAll(pagable,ILIstUserDto.class);
-		}				
+			return userRoleRepository.findAll(pagable, ILIstUserDto.class);
+		}
 		return null;
-	
+
 	}
 
-	
+	@Override
+	public Page<ILIstUserDto> getAllUserRoles(String search, String pageNumber, String pageSize, String userId,
+			String roleId) {
+		
+		Pageable pagable = new Pagination().getPagination(pageNumber, pageSize);
+		
+
+		return userRoleRepository.findAllListUserRole(userId,roleId,pagable, ILIstUserDto.class);
+	}
 
 }

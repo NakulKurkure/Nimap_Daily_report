@@ -13,7 +13,7 @@ public interface EmailServiceInterface {
 
 //	String sendSimpleMessage(String email, String string);
 
-	String sendMessage(String email, String string, String job);
+	String sendMessage(String email, String text, String job);
 
 //	String sendMail(String email, String string, String string2, User user, long otp);
 

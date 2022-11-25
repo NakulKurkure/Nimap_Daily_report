@@ -82,5 +82,17 @@ public class UserRoleController {
 					HttpStatus.NOT_FOUND);
 		}
 	}
+	
+	
+	@GetMapping("/getAll")
+	public ResponseEntity<?> getAlluserRoles(@RequestParam(defaultValue = "") String search,
+			@RequestParam(defaultValue = "1") String pageNumber, @RequestParam(defaultValue = "5") String pageSize,@RequestParam(defaultValue = "") String userId,@RequestParam(defaultValue ="") String roleId) 
+		{
+
+		Page<ILIstUserDto> page = userRoleServiceInterface.getAllUserRoles(search, pageNumber, pageSize,userId,roleId);
+		return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", page.getContent()),
+				HttpStatus.ACCEPTED);
+		
+	}
 
 }
