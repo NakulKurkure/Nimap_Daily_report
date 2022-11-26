@@ -2,13 +2,10 @@ package com.job.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,7 +20,6 @@ import com.job.dto.ErrorResponseDto;
 import com.job.dto.SuccessResponseDto;
 import com.job.dto.UserDataDto;
 import com.job.dto.UserDto;
-import com.job.entity.User;
 import com.job.serviceInterface.UserServiceInterface;
 
 @RestController
@@ -34,7 +30,7 @@ public class UserController {
 	private UserServiceInterface userServiceInterface;
 
 	@PutMapping("/{id}")
-	public ResponseEntity<?> updateUserByUserId( @RequestBody UserDto userDto, @PathVariable Long id) {
+	public ResponseEntity<?> updateUserByUserId(@RequestBody UserDto userDto, @PathVariable Long id) {
 		try {
 			userServiceInterface.updateUser(userDto, id);
 			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Updated User.."),
@@ -64,9 +60,9 @@ public class UserController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteByUserId(@PathVariable Long id, HttpServletRequest request) {
+	public ResponseEntity<?> deleteByUserId(@PathVariable Long id) {
 		try {
-			userServiceInterface.deleteByUserId(id, request);
+			userServiceInterface.deleteByUserId(id);
 
 			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SucessFully Deleted User..."),
 					HttpStatus.OK);
@@ -94,13 +90,12 @@ public class UserController {
 
 	}
 
-	// UserList By Candidate And Recruiter
-	
-	
+	// UserList By Candidate And Recruiter by Search
 	@GetMapping("/users/candidate")
 	public ResponseEntity<?> getUserListByCandidate(@RequestParam(defaultValue = "") String search)
 
 	{
+
 		try {
 
 			List<com.job.serviceInterface.IListUserDtos> page = userServiceInterface.getUserListByCandidate(search);

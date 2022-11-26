@@ -33,10 +33,11 @@ public class UserJobController {
 
 	@PreAuthorize("hasRole('userJobAdd')")
 	@PostMapping
-	public ResponseEntity<?> addUserJob(@Valid @RequestBody UserJobRequestDto userJobRequestDto,@RequestAttribute(AuthLogger.UserId) Long userId) {
+	public ResponseEntity<?> addUserJob(@Valid @RequestBody UserJobRequestDto userJobRequestDto,
+			@RequestAttribute(AuthLogger.UserId) Long userId) {
 		try {
 
-			userJobServiceInterface.addUserJob(userJobRequestDto,userId);
+			userJobServiceInterface.addUserJob(userJobRequestDto, userId);
 
 			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Added UserJobs.."),
 					HttpStatus.CREATED);
@@ -46,49 +47,24 @@ public class UserJobController {
 
 		}
 	}
-
-	// Admin
-//	@PreAuthorize("hasRole('getAlljobView')")
-	@GetMapping
-	public ResponseEntity<?> getAllUserJob(@RequestParam(defaultValue = "") String search,
-			@RequestParam(defaultValue = "1") String pageNumber, @RequestParam(defaultValue = "5") String pageSize,
-			HttpServletRequest request) {
-		try {
-
-			Page<IListUserListDto> page = userJobServiceInterface.getAllUserJobs(search, pageNumber, pageSize, request);
-			if (page.getTotalElements() != 0) {
-				return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", page.getContent()),
-						HttpStatus.ACCEPTED);
-			} else {
-				return new ResponseEntity<>(new ErrorResponseDto("Records Not Available..", "No Records Available..."),
-						HttpStatus.NOT_FOUND);
-			}
-
-		} catch (Exception e) {
-			return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), e.getLocalizedMessage()),
-					HttpStatus.NOT_FOUND);
-
-		}
-
-	}
-	
-//	@PreAuthorize("hasRole('getAlljobView')")
+	//Admin
+	@PreAuthorize("hasRole('getAlljobView')")
 	@GetMapping("/getAll")
 	public ResponseEntity<?> getAllUserJobs(@RequestParam(defaultValue = "") String search,
 			@RequestParam(defaultValue = "1") String pageNumber, @RequestParam(defaultValue = "5") String pageSize,
-			HttpServletRequest request,@RequestParam(defaultValue = "") String userId,@RequestParam(defaultValue = "") String jobId) {
+			HttpServletRequest request, @RequestParam(defaultValue = "") String userId,
+			@RequestParam(defaultValue = "") String jobId) {
 		try {
 
-			Page<IListUserJobDto> page = userJobServiceInterface.getAllUserJob(search, pageNumber, pageSize, request,userId,jobId);
+			Page<IListUserJobDto> page = userJobServiceInterface.getAllUserJob(search, pageNumber, pageSize, request,
+					userId, jobId);
 			return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", page.getContent()),
 					HttpStatus.ACCEPTED);
-		}catch(Exception e)
-		{
+		} catch (Exception e) {
 			return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), e.getLocalizedMessage()),
 					HttpStatus.NOT_FOUND);
 		}
-		
-	
+
 	}
-	
+
 }

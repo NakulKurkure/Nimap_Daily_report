@@ -37,70 +37,44 @@ public class UserJobServiceImpl implements UserJobServiceInterface {
 	private UserRepository userRepository;
 
 	@Autowired
-	private UserRoleRepository userRoleRepository;
-
-	@Autowired
 	private JobRespository jobRespository;
 
 	@Autowired
-	private EmailServiceInterface emailServiceInterface;
-
+	private EmailServiceImpl emailServiceImpl;
 	@Autowired
 	private UserJobRepository userJobRepository;
 
-
-///Pending.....
 	// Add UserJob @PreAuthorize
 	@Override
-	public void addUserJob(UserJobRequestDto userJobRequestDto, long user_ids) {
-		
-		
+	public void addUserJob(UserJobRequestDto userJobRequestDto, Long user_ids) {
+
 		ArrayList<Job> userJobs = new ArrayList<>();
-		
-		User user=userRepository.findById(user_ids).orElseThrow(()-> new ResourceNotFoundException("Not Found UserId"));
-		System.out.println("Email"+user.getEmail());
-		for(int i=0;i<userJobRequestDto.getJobId().size();i++)
-		{
-			
-			Long jobId=userJobRequestDto.getJobId().get(i);
-			System.out.println("Job"+jobId);
-			
-			Job job=jobRespository.findById(jobId).orElseThrow(()-> new ResourceNotFoundException("Not Found JobId"));
-			System.out.println("Job"+job.getJobTitle());
+
+		User user = userRepository.findById(user_ids)
+				.orElseThrow(() -> new ResourceNotFoundException("Not Found UserId"));
+		System.out.println("Email" + user.getEmail());
+		for (int i = 0; i < userJobRequestDto.getJobId().size(); i++) {
+
+			Long jobId = userJobRequestDto.getJobId().get(i);
+			System.out.println("Job" + jobId);
+
+			Job job = jobRespository.findById(jobId)
+					.orElseThrow(() -> new ResourceNotFoundException("Not Found JobId"));
+			System.out.println("Job" + job.getJobTitle());
 			userJobs.add(job);
-			UserJob userJob=new UserJob();
+			UserJob userJob = new UserJob();
 			userJob.setUser(user);
 			userJob.setJob(job);
 			userJobRepository.save(userJob);
-	
-			 emailServiceInterface.sendMessage(user.getEmail(), "Candidate Apply sucessfully To Job",
-						job.getJobTitle());	
 
-			List<IListDto> users= userRepository.findByUsersList(IListDto.class);
-			 System.out.println("users"+users);
-			 
-			for(int i1=0;i1<users.size();i1++)
-			{
-				String recruiterEmail= users.get(i).getEmail();
-				
-				emailServiceInterface.sendMessage(recruiterEmail, "Candidate Apply sucessfully To Job",
-						job.getJobTitle());
-			}
-		}		
-	}
+			emailServiceImpl.sendMessage(user.getEmail(), "Candidate Apply sucessfully To Job", job.getJobTitle());
 
-	
-	@Override
-	public Page<IListUserListDto> getAllUserJobs(String search, String pageNumber, String pageSize,
-			HttpServletRequest request) {
+			String email = job.getRecruiterId().getEmail();
 
-		Pageable pagable = new Pagination().getPagination(pageNumber, pageSize);
-		if ((search == "") || (search == null) || (search.length() == 0)) {
-			return userJobRepository.findByOrderById(pagable, IListUserListDto.class);
-		} else {
-			return userJobRepository.findByUserName(search, pagable, IListUserListDto.class);
+			System.out.println("recruiterEmail" + email);
+			emailServiceImpl.sendMessage(email, "Candidate Apply sucessfully To Job", job.getJobTitle());
 		}
-
+//		}
 	}
 
 	@Override

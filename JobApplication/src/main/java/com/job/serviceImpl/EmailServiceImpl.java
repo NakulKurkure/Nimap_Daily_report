@@ -10,11 +10,11 @@ import com.job.entity.User;
 import com.job.serviceInterface.EmailServiceInterface;
 
 @Service
-public class EmailServiceImpl implements EmailServiceInterface{
+public class EmailServiceImpl implements EmailServiceInterface {
 
 	@Autowired
 	private JavaMailSender javaMailSender;
-	
+
 	@Override
 	public long generateOtp() {
 		long min = 10000;
@@ -22,19 +22,19 @@ public class EmailServiceImpl implements EmailServiceInterface{
 
 		long random_int = (int) Math.floor(Math.random() * (max - min + 1) + min);
 		return random_int;
-		
+
 	}
 
-	public String sendMail(String email, String subject, String text, User user,OtpEntity otp) {
+	public String sendMail(String email, String subject, String text, User user, OtpEntity otp) {
 		SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
 		System.out.println("mail");
 		simpleMailMessage.setFrom("nakulkurkure1998@gmail.com");
 		simpleMailMessage.setTo(user.getEmail());
 		simpleMailMessage.setSubject("Send sucessfully");
-		simpleMailMessage.setText("Your forgot Password is "+otp.getOtp());
+		simpleMailMessage.setText("Your forgot Password is " + otp.getOtp());
 		javaMailSender.send(simpleMailMessage);
 		return "Email Send";
-		
+
 	}
 
 	@Override
@@ -45,33 +45,20 @@ public class EmailServiceImpl implements EmailServiceInterface{
 		message.setSubject(subject);
 		message.setText(text);
 		javaMailSender.send(message);
-		
+
 	}
 
 	@Override
-	public String sendMessage(String email, String text,String job) {
+	public String sendMessage(String email, String text, String job) {
 		SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
-		System.out.println("mail");
 		simpleMailMessage.setFrom("nakulkurkure1998@gmail.com");
 		simpleMailMessage.setTo(email);
-		simpleMailMessage.setSubject("sucessfully Applied To Job "+job);
+		simpleMailMessage.setSubject("sucessfully Applied To Job " + job);
 		simpleMailMessage.setText(text);
-		System.out.println("Email shjkshsjsk");
+
 		javaMailSender.send(simpleMailMessage);
 		return "Email Send";
-		
+
 	}
-//
-//	@Override
-//	public void sendMail(String email, String string, String string2, User user, long otp) {
-//		// TODO Auto-generated method stub
-//		
-//	}
 
-
-
-	
-	
-	
-	
 }

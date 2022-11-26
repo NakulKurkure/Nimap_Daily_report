@@ -41,14 +41,14 @@ public class JobController {
 
 	// Only Recruiter:- Post a job, with the following fields - Job Title and Job
 	// Description
-	// Sanket
 	@PreAuthorize("hasRole('jobAdd')")
 	@PostMapping
-	public ResponseEntity<?> addJobByRecuriter(@Valid @RequestBody JobDto jobDto, HttpServletRequest request,@RequestAttribute(AuthLogger.UserId) Long user_id) {
+	public ResponseEntity<?> addJobByRecuriter(@Valid @RequestBody JobDto jobDto, HttpServletRequest request,
+			@RequestAttribute(AuthLogger.UserId) Long user_id) {
 
 		try {
 
-			Job job = jobServiceInterface.addJob(jobDto, request,user_id);
+			Job job = jobServiceInterface.addJob(jobDto, request, user_id);
 
 			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Added Jobs"),
 					HttpStatus.CREATED);
@@ -83,7 +83,7 @@ public class JobController {
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getJobById(@PathVariable Long id) {
 		try {
-			System.out.println("Id" + id);
+
 			List<IListJobDto> list = jobServiceInterface.getJobById(id);
 			return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", list), HttpStatus.ACCEPTED);
 		} catch (Exception e) {
@@ -125,6 +125,7 @@ public class JobController {
 
 	}
 
+	// Filter
 	// getAllUserJobs By RecuriterId Using Only Recuriter
 	@PreAuthorize("hasRole('jobView')")
 	@GetMapping("/Jobs/recruiter")
@@ -138,21 +139,6 @@ public class JobController {
 		} catch (Exception e) {
 			return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), "Only Recruiter access.."),
 					HttpStatus.NOT_FOUND);
-		}
-
-	}
-
-	@GetMapping("/jobs/user")
-	public ResponseEntity<?> getAllJobsByUser(@RequestParam(defaultValue = "") String search,
-			HttpServletRequest request) {
-
-		try {
-			List<IListJobDtos> jobs = jobServiceInterface.getAllJobsByUser(search, request);
-			return new ResponseEntity<>(new AuthSuccessDto("Success.", "Success..", jobs), HttpStatus.ACCEPTED);
-
-		} catch (Exception e) {
-			return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), "access.."), HttpStatus.NOT_FOUND);
-
 		}
 
 	}

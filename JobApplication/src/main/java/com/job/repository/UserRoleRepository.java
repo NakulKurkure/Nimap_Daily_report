@@ -22,56 +22,39 @@ import com.job.serviceInterface.IListUserRoleDto;
 import com.job.serviceInterface.IUserListDto;
 import com.job.serviceInterface.RoleIdList;
 
-
 @Repository
-public interface UserRoleRepository extends JpaRepository<UserRole, Long>{
+public interface UserRoleRepository extends JpaRepository<UserRole, Long> {
 
 	@Transactional
 	@Modifying
-	@Query(value = "update user_role ur set role_id=:role_id where ur.user_id=:user_id",nativeQuery = true)
+	@Query(value = "update user_role ur set role_id=:role_id where ur.user_id=:user_id", nativeQuery = true)
 	void updateUserRole(User user_id, Role role_id);
-	
+
 	@Transactional
 	@Modifying
-	@Query(value = "update user_role ur set is_active=false where ur.role_id=:role_id and ur.user_id=:user_id",nativeQuery = true)
+	@Query(value = "update user_role ur set is_active=false where ur.role_id=:role_id and ur.user_id=:user_id", nativeQuery = true)
 	void deleteUserRole(User user_id, Role role_id);
 
 	@Transactional
-	//fetched from database
-	@Query(value = "SELECT * from user_role t WHERE t.user_id=:user_id",nativeQuery = true)
+	// fetched from database
+	@Query(value = "SELECT * from user_role t WHERE t.user_id=:user_id", nativeQuery = true)
 	List<UserRole> findByUserId(@Param("user_id") Long user_id);
-	
-//	@Transactional
-//	//fetched from database
-//	@Query(value = "SELECT * from user_role t WHERE t.user_id_id=:user_id_id",nativeQuery = true)
-//	List<UserRole> findByUserIdId(@Param("user_id_id") Long user_id_id);
-	
-	
-	
-	
+
 	@Transactional
-	//fetched from database
-	@Query(value = "SELECT * from user_role t WHERE t.role_id=:role_id",nativeQuery = true)
+	// fetched from database
+	@Query(value = "SELECT * from user_role t WHERE t.role_id=:role_id", nativeQuery = true)
 	List<UserRole> findRoleId(@Param("role_id") Long role_id);
 
 	@Transactional
-	//fetched from database
-	@Query(value = "SELECT * from user_role t WHERE t.user_id=:user_id",nativeQuery = true)
+	// fetched from database
+	@Query(value = "SELECT * from user_role t WHERE t.user_id=:user_id", nativeQuery = true)
 	UserRole findByUserById(@Param("user_id") Long user_id);
-
-	@Transactional
-	@Query(value="select u.user_id as userId,u.user_name as userName,u.email as email,r.role_id as roleId,r.role_name as roleName,r.description as Description from role r\r\n"
-			+ " join user_role ur on ur.role_id=r.role_id \r\n"
-			+ " join users u on ur.user_id=u.user_id",nativeQuery = true)
-	Page<ILIstUserDto> findAll(Pageable pagable, Class<ILIstUserDto> class1);
 
 	ArrayList<RoleIdList> findByPkUserUserId(Long userId, Class<RoleIdList> class1);
 
-	@Query(value="select users.user_id as UserId,users.email as Email,users.user_name as UserName,role.role_id as RoleId,role.description as ,role.role_name as RoleName from user_role inner join users on user_role.user_id=users.user_id inner join role on user_role.role_id=role.role_id AND"
-			+ "(:userId='' OR user_job.user_user_id IN (select unnest(cast(string_to_array(:userId,',') as bigint[])))) AND"
-			+ "(:roleId='' OR user_job.job_id IN (select unnest(cast(string_to_array(:roleId,',') as bigint[]))))",nativeQuery = true)
+	@Query(value = "select users.user_id as UserId,users.email as Email,users.user_name as UserName,role.role_id as RoleId,role.description as Description,role.role_name as RoleName from user_role inner join users on user_role.user_id=users.user_id inner join role on user_role.role_id=role.role_id AND\r\n"
+			+ "			(:userId='' OR user_role.user_id IN (select unnest(cast(string_to_array(:userId,',') as bigint[])))) AND\r\n"
+			+ "			(:roleId='' OR user_role.role_id IN (select unnest(cast(string_to_array(:roleId,',') as bigint[])))) AND user_role.is_active=true", nativeQuery = true)
 	Page<ILIstUserDto> findAllListUserRole(String userId, String roleId, Pageable pagable, Class<ILIstUserDto> class1);
-
-
 
 }

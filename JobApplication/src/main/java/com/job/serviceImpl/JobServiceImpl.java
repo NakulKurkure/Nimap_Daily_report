@@ -34,44 +34,37 @@ public class JobServiceImpl implements JobServiceInterface {
 	private JobRespository jobRespository;
 
 	@Autowired
-	private RoleRepository roleRepository;
-
-	@Autowired
-	private JwtTokenUtil jwtTokenUtil;
-
-	@Autowired
 	private UserRepository userRepository;
 
 	@Autowired
 	private UserRoleRepository userRoleRepository;
 
 	@Override
-	public Job addJob(JobDto jobDto, HttpServletRequest request,Long user_id) {
-		User userEntity = userRepository.findById(user_id).orElseThrow(()-> new ResourceNotFoundException("Not Found UserId"));
+	public Job addJob(JobDto jobDto, HttpServletRequest request, Long user_id) {
+		User userEntity = userRepository.findById(user_id)
+				.orElseThrow(() -> new ResourceNotFoundException("Not Found UserId"));
 
-			Job job = new Job();
-			job.setJobTitle(jobDto.getJobTitle());
-			job.setJobDescription(jobDto.getJobDescription());
-			job.setDateOfJoining(jobDto.getDateOfJoining());
-			job.setRecruiterId(userEntity);
+		Job job = new Job();
+		job.setJobTitle(jobDto.getJobTitle());
+		job.setJobDescription(jobDto.getJobDescription());
+		job.setDateOfJoining(jobDto.getDateOfJoining());
+		job.setRecruiterId(userEntity);
 
-			jobRespository.save(job);
-			return job;
-		 
+		jobRespository.save(job);
+		return job;
+
 	}
 
 	@Override
 	public void updateJob(JobDto jobDto, Long id, HttpServletRequest request) {
 
-			Job job = jobRespository.findById(id)
-					.orElseThrow(() -> new ResourceNotFoundException("Not Found JobId..."));
+		Job job = jobRespository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Not Found JobId..."));
 
-			job.setJobTitle(jobDto.getJobTitle());
-			job.setJobDescription(jobDto.getJobDescription());
-			job.setDateOfJoining(jobDto.getDateOfJoining());
+		job.setJobTitle(jobDto.getJobTitle());
+		job.setJobDescription(jobDto.getJobDescription());
+		job.setDateOfJoining(jobDto.getDateOfJoining());
 
-			jobRespository.save(job);
-		 
+		jobRespository.save(job);
 
 	}
 
@@ -87,9 +80,9 @@ public class JobServiceImpl implements JobServiceInterface {
 
 	@Override
 	public void deleteByJobId(Long id, HttpServletRequest request) {
-			jobRespository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Not Found Job Id.."));
+		jobRespository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Not Found Job Id.."));
 
-			jobRespository.deleteById(id);
+		jobRespository.deleteById(id);
 
 	}
 
@@ -105,28 +98,15 @@ public class JobServiceImpl implements JobServiceInterface {
 		}
 
 	}
-	
-	//GetAll Jobs By Candidate Id&RecruiterId
 
+	// GetAll Jobs By Candidate Id&RecruiterId
 	@Override
-	public List<IListAllJobsDto> getAllJobsByRecruiter(HttpServletRequest request,Long user_id) {
-
-		System.out.println("User"+user_id);
+	public List<IListAllJobsDto> getAllJobsByRecruiter(HttpServletRequest request, Long user_id) {
 		userRoleRepository.findByUserById(user_id);
-		
-		List<IListAllJobsDto> list=jobRespository.findByJobAndPkUserByRecruiterId(user_id);
+
+		List<IListAllJobsDto> list = jobRespository.findByJobAndPkUserByRecruiterId(user_id);
 
 		return list;
-		} 
-
-	
-
-//List of all jobs By Specific User
-	@Override
-	public List<IListJobDtos> getAllJobsByUser(String search, HttpServletRequest request) {
-
-		return jobRespository.findByJobTitleByUser(search, IListJobDtos.class);
-
 	}
 
 }

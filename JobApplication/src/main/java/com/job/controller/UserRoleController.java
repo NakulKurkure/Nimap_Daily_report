@@ -69,19 +69,7 @@ public class UserRoleController {
 		}
 	}
 
-	@GetMapping
-	public ResponseEntity<?> getAlluserRole(@RequestParam(defaultValue = "") String search,
-			@RequestParam(defaultValue = "1") String pageNumber, @RequestParam(defaultValue = "5") String pageSize) {
-
-		Page<ILIstUserDto> page = userRoleServiceInterface.getAllUserRole(search, pageNumber, pageSize);
-		if (page.getTotalElements() != 0) {
-			return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", page.getContent()),
-					HttpStatus.ACCEPTED);
-		} else {
-			return new ResponseEntity<>(new ErrorResponseDto("Records Not Available..", "No Records Available..."),
-					HttpStatus.NOT_FOUND);
-		}
-	}
+	
 	
 	
 	@GetMapping("/getAll")

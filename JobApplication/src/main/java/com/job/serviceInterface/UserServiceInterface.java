@@ -18,7 +18,7 @@ public interface UserServiceInterface {
 
 	UserDataDto getByUserId(Long id);
 
-	void deleteByUserId(Long id,HttpServletRequest request);
+	void deleteByUserId(Long id);
 
 	Page<IListUsersDto> getAllUsers(String search, String pageNumber, String pageSize);
 

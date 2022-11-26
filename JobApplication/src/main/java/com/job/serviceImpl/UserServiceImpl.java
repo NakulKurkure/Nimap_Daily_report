@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserServiceInterface {
 	}
 
 	@Override
-	public void deleteByUserId(Long id, HttpServletRequest request) {
+	public void deleteByUserId(Long id) {
 
 		userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Not Found UserId"));
 

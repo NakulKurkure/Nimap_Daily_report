@@ -20,56 +20,50 @@ import com.job.repository.OtpRepository;
 import com.job.serviceInterface.ForgotPassConfirmInterface;
 
 @Service
-public class ForgotPassConfirmServiceImpl implements ForgotPassConfirmInterface{
+public class ForgotPassConfirmServiceImpl implements ForgotPassConfirmInterface {
 
 	@Autowired
 	private ForgotPassConfRepository forgotPassConfRepository;
-	
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
+
 	@Autowired
 	private OtpRepository otpRepository;
-	
+
 	public void forgotPasswordConfirm(ForgotPasswordDto forgotPasswordDto) {
-			
-		System.out.println("In theOtp"+otpRepository.findByEmailContainingIgnoreCase(forgotPasswordDto.getEmail()));
-		List<OtpEntity> otpEntity= this.otpRepository.findByEmailContainingIgnoreCase(forgotPasswordDto.getEmail());
-		 System.out.println("Otp");
-		OtpEntity otp= otpRepository.findByOtp(forgotPasswordDto.getOtp()).orElseThrow(()-> new ResourceNotFoundException("Enter Valid OTP.. "));
-		System.out.println("OtpEntity"+otp);
-		
-		ForgotPasswordConfirm forgotPasswordConfirm=new ForgotPasswordConfirm();
-		
+
+		List<OtpEntity> otpEntity = this.otpRepository.findByEmailContainingIgnoreCase(forgotPasswordDto.getEmail());
+
+		OtpEntity otp = otpRepository.findByOtp(forgotPasswordDto.getOtp())
+				.orElseThrow(() -> new ResourceNotFoundException("Enter Valid OTP.. "));
+
+		ForgotPasswordConfirm forgotPasswordConfirm = new ForgotPasswordConfirm();
+
 		forgotPasswordConfirm.setEmail(forgotPasswordDto.getEmail());
-		
-		if(otp.getOtp().equals(forgotPasswordDto.getOtp()))
-		{
+
+		if (otp.getOtp().equals(forgotPasswordDto.getOtp())) {
 			forgotPasswordConfirm.setOtp(otp.getOtp());
-			
-			if(forgotPasswordDto.getPassword().equals(forgotPasswordDto.getConfirmPassword()))
-			{
+
+			if (forgotPasswordDto.getPassword().equals(forgotPasswordDto.getConfirmPassword())) {
 
 				forgotPasswordConfirm.setPassword(passwordEncoder.encode(forgotPasswordDto.getPassword()));
-				forgotPasswordConfirm.setConfirmPassword(passwordEncoder.encode(forgotPasswordDto.getConfirmPassword()));	
+				forgotPasswordConfirm
+						.setConfirmPassword(passwordEncoder.encode(forgotPasswordDto.getConfirmPassword()));
 				forgotPassConfRepository.save(forgotPasswordConfirm);
 			}
-			
-			else
-			{
-				throw new ResourceNotFoundException("Not Matching Password and Confirm Password");
-				
-			}
-				
-				}else
-				{
-				
+
+			else {
 				throw new ResourceNotFoundException("Not Matching Password and Confirm Password");
 
-				}
-		
-		
-		
+			}
+
+		} else {
+
+			throw new ResourceNotFoundException("Not Matching Password and Confirm Password");
+
 		}
+
+	}
 
 }

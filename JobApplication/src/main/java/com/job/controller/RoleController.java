@@ -31,114 +31,75 @@ public class RoleController {
 
 	@Autowired
 	private RoleServiceInterface roleServiceInterface;
-	
+
 	@PostMapping
-	public ResponseEntity<?> addRole(@Valid @RequestBody RoleDto roleDto)
-	{
-		
-		if(roleDto.getRoleName().isBlank())
-		{
-			if(roleDto.getDescription().isBlank())
-			{
-				return new ResponseEntity<>(new ErrorResponseDto("Enter Valid Description..", "Please Enter Valid Description..."),HttpStatus.BAD_REQUEST);
+	public ResponseEntity<?> addRole(@Valid @RequestBody RoleDto roleDto) {
 
-			}
-				return new ResponseEntity<>(new ErrorResponseDto("Enter RoleName ..", "Please Enter Valid RoleName"),HttpStatus.BAD_REQUEST);
+		roleServiceInterface.addRole(roleDto);
 
-		
-				
-		}else
-		{
-			roleServiceInterface.addRole(roleDto);
-			
-			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully added Roles..."),HttpStatus.CREATED);	
-		}
-		
+		return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully added Roles..."),
+				HttpStatus.CREATED);
 	}
-	
+
 	@PutMapping("/{id}")
-	public ResponseEntity<?> updatedRoleById(@RequestBody RoleDto roleDto,@PathVariable Long id)
-	{
-		try
-		{
+	public ResponseEntity<?> updatedRoleById(@RequestBody RoleDto roleDto, @PathVariable Long id) {
+		try {
 //			
-			if(roleDto.getRoleName().isBlank())
-			{
-				if(roleDto.getDescription().isEmpty())
-				{
-					return new ResponseEntity<>(new ErrorResponseDto("Enter Description..", "Enter Valid Description..."),HttpStatus.BAD_REQUEST);
-				}
-				else
-				{
-					return new ResponseEntity<>(new ErrorResponseDto("Enter RoleName..", "please Enter Valid RoleName..."),HttpStatus.BAD_REQUEST);
 
-				}
-			}
-			else
-			{
-				roleServiceInterface.updateRoleById(roleDto,id);
-				return new ResponseEntity<>(new SuccessResponseDto("Success..","SuccessFully Updated Roles..."),HttpStatus.ACCEPTED);		
-			}
-				
-			
-			
+			roleServiceInterface.updateRoleById(roleDto, id);
+			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Updated Roles..."),
+					HttpStatus.ACCEPTED);
+
+		} catch (Exception e) {
+			return new ResponseEntity<>(new ErrorResponseDto("Not Found RoleId.. ", "Enter Valid RoleId"),
+					HttpStatus.BAD_REQUEST);
 		}
-		catch(Exception e)
-		{
-			return new ResponseEntity<>(new ErrorResponseDto("Not Found RoleId.. ", "Enter Valid RoleId"),HttpStatus.BAD_REQUEST);
-		}
-		
-		
+
 	}
-	
+
 	@GetMapping("/{id}")
-	public ResponseEntity<?> getRoleById(@PathVariable Long id)
-	{
-		try
-		{
-			RoleDataDto role=roleServiceInterface.getRole(id);
-			return new ResponseEntity<>(new AuthSuccessDto("Success..","SuccessFully Updated Roles...",role),HttpStatus.ACCEPTED);	
+	public ResponseEntity<?> getRoleById(@PathVariable Long id) {
+		try {
+			RoleDataDto role = roleServiceInterface.getRole(id);
+			return new ResponseEntity<>(new AuthSuccessDto("Success..", "SuccessFully Updated Roles...", role),
+					HttpStatus.ACCEPTED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(new ErrorResponseDto("Not Found RoleId.. ", "Enter Valid RoleId"),
+					HttpStatus.BAD_REQUEST);
 		}
-		catch(Exception e)
-		{
-			return new ResponseEntity<>(new ErrorResponseDto("Not Found RoleId.. ", "Enter Valid RoleId"),HttpStatus.BAD_REQUEST);
-		}
-		
+
 	}
-	
+
 	@PreAuthorize("hasRole('roleDel')")
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteRoleById(@PathVariable Long id)
-	{
-		
-		try
-		{
+	public ResponseEntity<?> deleteRoleById(@PathVariable Long id) {
+
+		try {
 			roleServiceInterface.deleteRoleById(id);
-			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Deleted Roles..."),HttpStatus.ACCEPTED);
-		}catch(Exception e)
-		{
-			return new ResponseEntity<>(new ErrorResponseDto("Not Found RoleId..", "Not Found RoleId..."),HttpStatus.ACCEPTED);
+			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Deleted Roles..."),
+					HttpStatus.ACCEPTED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(new ErrorResponseDto("Not Found RoleId..", "Not Found RoleId..."),
+					HttpStatus.ACCEPTED);
 		}
-		
-		
+
 	}
-	
+
 	@GetMapping
 	public ResponseEntity<?> getAllRoles(@RequestParam(defaultValue = "") String search,
-			@RequestParam(defaultValue = "1") String pageNumber,
-			@RequestParam(defaultValue = "5") String pageSize)
+			@RequestParam(defaultValue = "1") String pageNumber, @RequestParam(defaultValue = "5") String pageSize)
 
 	{
 
-		Page<com.job.serviceInterface.IRoleListDto> page=roleServiceInterface.getAllRoles(search,pageNumber,pageSize);
-			
-		if(page.getTotalElements()!=0)
-		{
-			return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", page.getContent()),HttpStatus.OK);
+		Page<com.job.serviceInterface.IRoleListDto> page = roleServiceInterface.getAllRoles(search, pageNumber,
+				pageSize);
+
+		if (page.getTotalElements() != 0) {
+			return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", page.getContent()), HttpStatus.OK);
 		}
-		return new ResponseEntity<>(new ErrorResponseDto("No Records Avaliable..", "Not Avaliable.."),HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(new ErrorResponseDto("No Records Avaliable..", "Not Avaliable.."),
+				HttpStatus.BAD_REQUEST);
 
 	}
-	
-	
+
 }
