@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,13 +22,11 @@ import com.job.dto.AuthSuccessDto;
 import com.job.dto.ErrorResponseDto;
 import com.job.dto.ForgotPasswordDto;
 import com.job.dto.ForgotPasswordRequestDto;
-import com.job.dto.OtpDto;
 import com.job.dto.SuccessResponseDto;
 import com.job.dto.UserDto;
 import com.job.entity.Logger;
 import com.job.entity.OtpEntity;
 import com.job.entity.User;
-import com.job.exception.ResourceNotFoundException;
 import com.job.repository.OtpRepository;
 import com.job.repository.UserRepository;
 import com.job.security.JwtTokenUtil;
@@ -41,8 +38,6 @@ import com.job.serviceInterface.ForgotPassConfirmInterface;
 import com.job.serviceInterface.LoggerServiceInterface;
 import com.job.serviceInterface.UserServiceInterface;
 import com.job.validation.PasswordValidation;
-
-import net.bytebuddy.dynamic.DynamicType.Builder.MethodDefinition.ImplementationDefinition.Optional;
 
 @RestController
 @RequestMapping("/api/auth")

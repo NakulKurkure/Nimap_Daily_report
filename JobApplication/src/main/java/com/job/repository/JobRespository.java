@@ -10,8 +10,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import com.job.entity.Job;
 import com.job.serviceInterface.IListAllJobsDto;
 import com.job.serviceInterface.IListJobDto;
@@ -22,9 +20,7 @@ public interface JobRespository extends JpaRepository<Job, Long>{
 
 	List<IListJobDto> findById(Long id, Class<IListJobDto> class1);
 
-
 	Page<IListJobDto> findByJobTitle(String search, Pageable pagable, Class<IListJobDto> class1);
-
 
 	Job findByRecruiterId(Long recuriterId);
 
@@ -40,7 +36,4 @@ public interface JobRespository extends JpaRepository<Job, Long>{
 
 	Page<IListJobDto> findByOrderByIdDesc(Pageable pagable, Class<IListJobDto> class1);
 	
-	
-
-
-}
+	}

@@ -129,11 +129,12 @@ public class JobController {
 	// getAllUserJobs By RecuriterId Using Only Recuriter
 	@PreAuthorize("hasRole('jobView')")
 	@GetMapping("/Jobs/recruiter")
-	public ResponseEntity<?> getAllUserJobsByRecruiterAndCandidate(HttpServletRequest request,
+	public ResponseEntity<?> getAllUserJobsByRecruiterAndCandidate(
 			@RequestAttribute(AuthLogger.UserId) Long userId) {
 		try {
 
-			List<IListAllJobsDto> jobs = jobServiceInterface.getAllJobsByRecruiter(request, userId);
+			System.out.println("UserId"+userId);
+			List<IListAllJobsDto> jobs = jobServiceInterface.getAllJobsByRecruiter(userId);
 			return new ResponseEntity<>(new AuthSuccessDto("Success.", "Success..", jobs), HttpStatus.ACCEPTED);
 
 		} catch (Exception e) {

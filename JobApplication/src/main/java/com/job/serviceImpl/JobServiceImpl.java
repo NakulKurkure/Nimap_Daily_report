@@ -99,13 +99,12 @@ public class JobServiceImpl implements JobServiceInterface {
 
 	}
 
-	// GetAll Jobs By Candidate Id&RecruiterId
+	//GetAll Jobs By Candidate Id & RecruiterId
 	@Override
-	public List<IListAllJobsDto> getAllJobsByRecruiter(HttpServletRequest request, Long user_id) {
+	public List<IListAllJobsDto> getAllJobsByRecruiter(Long user_id) {
 		userRoleRepository.findByUserById(user_id);
 
 		List<IListAllJobsDto> list = jobRespository.findByJobAndPkUserByRecruiterId(user_id);
-
 		return list;
 	}
 
