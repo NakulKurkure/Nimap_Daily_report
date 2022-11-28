@@ -22,17 +22,18 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 import com.job.security.JwtAuthenticationEntryPoint;
 import com.job.security.JwtAuthenticationFilter;
-import com.job.security.UserDetailService;
 
 
 @Configuration
 @EnableWebSecurity
+@EnableWebMvc
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
@@ -44,6 +45,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
 	private JwtAuthenticationEntryPoint authenticationEntryPoint;
+	
+	public static final String[] SWAGGER_URLS = { "/v3/api-docs", "/v2/api-docs", "/swagger-resources/**",
+			"/swagger-ui/**", "/webjars/**", "/api/swagger-ui/index.html" };
 	
 	
 	@Override
@@ -78,6 +82,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				// dont authenticate this particular request
 				.antMatchers("/api/auth/register","/api/auth/login","/api/auth/forgot","api/auth/forgot-password-conf")
 				.permitAll().
+				antMatchers(SWAGGER_URLS).permitAll().
+
 				// all other requests need to be authenticated
 				anyRequest().authenticated().and().httpBasic().and().
 				// make sure we use stateless session; session won't be used to

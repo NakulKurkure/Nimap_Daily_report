@@ -91,13 +91,7 @@ public class UserServiceImpl implements UserServiceInterface {
 
 	}
 
-	@Override
-	public List<IListUserDtos> getUserListByCandidate(String search) {
-
-		List<IListUserDtos> list = userRepository.findByUserByCandidate(search, IListUserDtos.class);
-		return list;
-
-	}
+	
 
 	
 	

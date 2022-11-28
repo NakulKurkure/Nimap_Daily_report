@@ -1,10 +1,5 @@
 package com.job.controller;
 
-import java.io.IOException;
-import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -78,9 +73,7 @@ public class UserController {
 
 	@GetMapping
 	public ResponseEntity<?> getAllUsers(@RequestParam(defaultValue = "") String search,
-			@RequestParam(defaultValue = "1") String pageNumber, @RequestParam(defaultValue = "5") String pageSize)
-
-	{
+			@RequestParam(defaultValue = "1") String pageNumber, @RequestParam(defaultValue = "5") String pageSize) {
 
 		Page<com.job.serviceInterface.IListUsersDto> page = userServiceInterface.getAllUsers(search, pageNumber,
 				pageSize);
@@ -93,23 +86,4 @@ public class UserController {
 
 	}
 
-	// UserList By Candidate And Recruiter by Search
-	@GetMapping("/users/candidate")
-	public ResponseEntity<?> getUserListByCandidate(@RequestParam(defaultValue = "") String search)
-
-	{
-
-		try {
-
-			List<com.job.serviceInterface.IListUserDtos> page = userServiceInterface.getUserListByCandidate(search);
-
-			return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", page), HttpStatus.OK);
-		} catch (Exception e) {
-
-			return new ResponseEntity<>(new ErrorResponseDto(" No Records Avaliable..", "Not Avaliable.."),
-					HttpStatus.BAD_REQUEST);
-		}
-	}
-	
-	
 }

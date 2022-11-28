@@ -39,7 +39,6 @@ public class UserDetailService implements UserDetailsService{
 		
 		System.out.println("email"+email);
 		
-		
 		User user=userRepository.findByEmailContainingIgnoreCase(email);
 		
 		System.out.println("email"+user);

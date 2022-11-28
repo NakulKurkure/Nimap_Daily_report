@@ -104,7 +104,7 @@ public class JobServiceImpl implements JobServiceInterface {
 	public List<IListAllJobsDto> getAllJobsByRecruiter(Long user_id) {
 		userRoleRepository.findByUserById(user_id);
 
-		List<IListAllJobsDto> list = jobRespository.findByJobAndPkUserByRecruiterId(user_id);
+		List<IListAllJobsDto> list = jobRespository.findAllUserJobByRecruiterId(user_id);
 		return list;
 	}
 

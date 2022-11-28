@@ -52,9 +52,7 @@ public interface UserRoleRepository extends JpaRepository<UserRole, Long> {
 
 	ArrayList<RoleIdList> findByPkUserUserId(Long userId, Class<RoleIdList> class1);
 
-	@Query(value = "select users.user_id as UserId,users.email as Email,users.user_name as UserName,role.role_id as RoleId,role.description as Description,role.role_name as RoleName from user_role inner join users on user_role.user_id=users.user_id inner join role on user_role.role_id=role.role_id AND\r\n"
-			+ "			(:userId='' OR user_role.user_id IN (select unnest(cast(string_to_array(:userId,',') as bigint[])))) AND\r\n"
-			+ "			(:roleId='' OR user_role.role_id IN (select unnest(cast(string_to_array(:roleId,',') as bigint[])))) AND user_role.is_active=true", nativeQuery = true)
+	@Query(value = "select users.user_id as UserId,users.email as Email,users.user_name as UserName,role.role_id as RoleId,role.description as Description,role.role_name as RoleName from user_role inner join users on user_role.user_id=users.user_id inner join role on user_role.role_id=role.role_id AND (:userId='' OR user_role.user_id IN (select unnest(cast(string_to_array(:userId,',') as bigint[])))) AND (:roleId='' OR user_role.role_id IN (select unnest(cast(string_to_array(:roleId,',') as bigint[])))) AND user_role.is_active=true", nativeQuery = true)
 	Page<ILIstUserDto> findAllListUserRole(String userId, String roleId, Pageable pagable, Class<ILIstUserDto> class1);
 
 }

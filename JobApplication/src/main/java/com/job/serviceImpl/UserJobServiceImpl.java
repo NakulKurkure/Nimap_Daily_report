@@ -1,7 +1,6 @@
 package com.job.serviceImpl;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -11,21 +10,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.job.dto.UserJobRequestDto;
 import com.job.entity.Job;
-import com.job.entity.Role;
 import com.job.entity.User;
 import com.job.entity.UserJob;
-import com.job.entity.UserRole;
 import com.job.exception.ResourceNotFoundException;
 import com.job.repository.JobRespository;
-import com.job.repository.RoleRepository;
 import com.job.repository.UserJobRepository;
 import com.job.repository.UserRepository;
-import com.job.repository.UserRoleRepository;
-import com.job.security.JwtTokenUtil;
-import com.job.serviceInterface.EmailServiceInterface;
-import com.job.serviceInterface.IListDto;
+
 import com.job.serviceInterface.IListUserJobDto;
-import com.job.serviceInterface.IListUserListDto;
 
 import com.job.serviceInterface.UserJobServiceInterface;
 import com.job.util.Pagination;
@@ -74,7 +66,6 @@ public class UserJobServiceImpl implements UserJobServiceInterface {
 			System.out.println("recruiterEmail" + email);
 			emailServiceImpl.sendMessage(email, "Candidate Apply sucessfully To Job", job.getJobTitle());
 		}
-//		}
 	}
 
 	@Override

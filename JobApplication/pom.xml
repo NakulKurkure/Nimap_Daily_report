@@ -17,6 +17,12 @@
 		<java.version>11</java.version>
 	</properties>
 	<dependencies>
+	
+	<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-boot-starter</artifactId>
+			<version>3.0.0</version>
+		</dependency>
 	<dependency>
     <groupId>org.apache.poi</groupId>
     <artifactId>poi-ooxml</artifactId>

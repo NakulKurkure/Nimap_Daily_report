@@ -103,8 +103,10 @@ public class UserRoleServiceImpl implements UserRoleServiceInterface {
 	@Override
 	public Page<ILIstUserDto> getAllUserRoles(String search, String pageNumber, String pageSize, String userId,
 			String roleId) {
-
 		Pageable pagable = new Pagination().getPagination(pageNumber, pageSize);
+		System.out.println("pageNumber" + pageNumber);
+		System.out.println("pageSize" + pageSize);
+		System.out.println("pageable" + pagable);
 
 		return userRoleRepository.findAllListUserRole(userId, roleId, pagable, ILIstUserDto.class);
 	}

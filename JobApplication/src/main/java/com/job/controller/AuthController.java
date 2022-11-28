@@ -40,6 +40,7 @@ import com.job.serviceInterface.UserServiceInterface;
 import com.job.validation.PasswordValidation;
 
 @RestController
+///api/auth/forgot
 @RequestMapping("/api/auth")
 public class AuthController {
 
@@ -170,7 +171,8 @@ public class AuthController {
 			System.out.println("Email" + user.getEmail());
 			final long otp = emailServiceInterface.generateOtp();
 			System.out.println("OTP" + otp);
-			final String url = "OTP FOR FORGOT PASSWORD IS " + otp;
+			final String url = " OTP FOR FORGOT PASSWORD IS " + otp +" This OTP is valid for only 5 minutes..";
+			
 			System.out.println("URL" + url);
 
 			Calendar calender = Calendar.getInstance();
@@ -178,13 +180,11 @@ public class AuthController {
 			System.out.println("URL" + otpDto + user.getEmail());
 
 			User user2 = userRepository.findByEmailContainingIgnoreCase(otpDto.getEmail());
-			System.out.println("User" + user2.getEmail());
 
 			OtpEntity entities = new OtpEntity();
 			entities.setUserId(user);
 			entities.setEmail(otpDto.getEmail());
 			entities.setOtp(otp);
-			System.out.println("OTP" + otp);
 			entities.setExpireAt(calender.getTime());
 
 			otpServiceImpl.saveOtp(otpDto, user, entities);
@@ -192,9 +192,6 @@ public class AuthController {
 			String email = otpDto.getEmail();
 
 			OtpEntity otpEntity = otpRepository.findByOtp(otp).orElseThrow();
-
-			System.out.println("OtpEntity" + otpEntity);
-
 			emailServiceInterface.sendMail(user.getEmail(), "OTP ", "Expire within 5 Minutes..", user, otpEntity);
 
 			emailServiceInterface.sendSimpleMessage(user.getEmail(), "subject", url);
