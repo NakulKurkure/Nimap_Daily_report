@@ -16,9 +16,6 @@ import com.job.repository.RoleRepository;
 import com.job.repository.UserRepository;
 import com.job.repository.UserRoleRepository;
 import com.job.serviceInterface.ILIstUserDto;
-import com.job.serviceInterface.IListUserRoleDto;
-import com.job.serviceInterface.IUserJobListDto;
-import com.job.serviceInterface.IUserListDto;
 import com.job.serviceInterface.UserRoleServiceInterface;
 import com.job.util.Pagination;
 
@@ -38,7 +35,6 @@ public class UserRoleServiceImpl implements UserRoleServiceInterface {
 	public void addUserRole(UserRoleRequestDto userRoleRequestDto) {
 
 		try {
-
 			ArrayList<UserRole> userRoles = new ArrayList<>();
 
 			User userId = this.userRepository.findById(userRoleRequestDto.getUserId())
@@ -103,12 +99,14 @@ public class UserRoleServiceImpl implements UserRoleServiceInterface {
 	@Override
 	public Page<ILIstUserDto> getAllUserRoles(String search, String pageNumber, String pageSize, String userId,
 			String roleId) {
+		System.out.println("pagable" + pageNumber + pageSize);
+
 		Pageable pagable = new Pagination().getPagination(pageNumber, pageSize);
-		System.out.println("pageNumber" + pageNumber);
-		System.out.println("pageSize" + pageSize);
-		System.out.println("pageable" + pagable);
+
+		System.out.println("pagable" + pagable);
 
 		return userRoleRepository.findAllListUserRole(userId, roleId, pagable, ILIstUserDto.class);
+
 	}
 
 }

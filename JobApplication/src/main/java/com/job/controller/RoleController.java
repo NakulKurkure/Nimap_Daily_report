@@ -25,26 +25,34 @@ import com.job.dto.SuccessResponseDto;
 import com.job.serviceInterface.RoleServiceInterface;
 
 @RestController
-@RequestMapping("/api/role")
+@RequestMapping("/role")
 
 public class RoleController {
 
 	@Autowired
 	private RoleServiceInterface roleServiceInterface;
 
+//Admin..
+	@PreAuthorize("hasRole('RoleAdd')")
 	@PostMapping
 	public ResponseEntity<?> addRole(@Valid @RequestBody RoleDto roleDto) {
 
-		roleServiceInterface.addRole(roleDto);
+		try {
 
-		return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully added Roles..."),
-				HttpStatus.CREATED);
+			roleServiceInterface.addRole(roleDto);
+
+			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully added Roles..."),
+					HttpStatus.CREATED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(new ErrorResponseDto("Invalid", e.getLocalizedMessage()),
+					HttpStatus.BAD_REQUEST);
+		}
 	}
 
+	@PreAuthorize("hasRole('RoleUpdate')")
 	@PutMapping("/{id}")
 	public ResponseEntity<?> updatedRoleById(@RequestBody RoleDto roleDto, @PathVariable Long id) {
 		try {
-//			
 
 			roleServiceInterface.updateRoleById(roleDto, id);
 			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Updated Roles..."),
@@ -57,6 +65,7 @@ public class RoleController {
 
 	}
 
+	@PreAuthorize("hasRole('RoleByIdView')")
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getRoleById(@PathVariable Long id) {
 		try {
@@ -85,6 +94,7 @@ public class RoleController {
 
 	}
 
+	@PreAuthorize("hasRole('RoleView')")
 	@GetMapping
 	public ResponseEntity<?> getAllRoles(@RequestParam(defaultValue = "") String search,
 			@RequestParam(defaultValue = "1") String pageNumber, @RequestParam(defaultValue = "5") String pageSize)

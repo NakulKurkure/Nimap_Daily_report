@@ -15,7 +15,7 @@ import com.job.helper.ExcelHelper;
 import com.job.serviceInterface.ExcelServiceInterface;
 
 @RestController
-@RequestMapping("/api")
+//@RequestMapping("/api")
 public class ExcelController {
 
 	@Autowired

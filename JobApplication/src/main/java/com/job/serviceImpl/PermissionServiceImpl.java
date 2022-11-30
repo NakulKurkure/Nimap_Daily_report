@@ -59,7 +59,6 @@ public class PermissionServiceImpl implements PermissionServiceInterface {
 		permissionEntity.setMethod(dto.getMethod());
 		permissionEntity.setPath(dto.getPath());
 
-		//
 		permissionRepository.save(permissionEntity);
 
 	}

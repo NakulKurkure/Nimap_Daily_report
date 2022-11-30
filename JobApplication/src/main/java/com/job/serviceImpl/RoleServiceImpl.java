@@ -21,12 +21,21 @@ public class RoleServiceImpl implements RoleServiceInterface {
 
 	@Override
 	public void addRole(RoleDto roleDto) {
+		Role role = null;
+		Role roles=roleRepository.findByRoleName(roleDto.getRoleName());
+		if(roles==null)
+		{
+			role = new Role();
+			role.setRoleName(roleDto.getRoleName());
+			role.setDescription(roleDto.getDescription());	
+			roleRepository.save(role);
 
-		Role role = new Role();
-		role.setRoleName(roleDto.getRoleName());
-		role.setDescription(roleDto.getDescription());
+		}else
+		{
+			throw new ResourceNotFoundException("Alredy Exists..,Please Enter New Role...");
+		}
+		
 
-		roleRepository.save(role);
 
 	}
 

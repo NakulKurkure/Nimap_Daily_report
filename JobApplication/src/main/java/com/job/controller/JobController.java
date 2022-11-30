@@ -29,11 +29,10 @@ import com.job.dto.SuccessResponseDto;
 import com.job.entity.Job;
 import com.job.serviceInterface.IListAllJobsDto;
 import com.job.serviceInterface.IListJobDto;
-import com.job.serviceInterface.IListJobDtos;
 import com.job.serviceInterface.JobServiceInterface;
 
 @RestController
-@RequestMapping("/api/job")
+@RequestMapping("/job")
 public class JobController {
 
 	@Autowired
@@ -47,14 +46,13 @@ public class JobController {
 			@RequestAttribute(AuthLogger.UserId) Long user_id) {
 
 		try {
-
-			Job job = jobServiceInterface.addJob(jobDto, request, user_id);
+			jobServiceInterface.addJob(jobDto, request, user_id);
 
 			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Added Jobs"),
 					HttpStatus.CREATED);
 
 		} catch (Exception e) {
-			return new ResponseEntity<>(new ErrorResponseDto(e.getLocalizedMessage(), "Job Add Only By Recruiter.."),
+			return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), "Job Add Only By Recruiter.."),
 					HttpStatus.BAD_REQUEST);
 		}
 
@@ -80,6 +78,7 @@ public class JobController {
 
 	}
 
+	@PreAuthorize("hasRole('JobByIdView')")
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getJobById(@PathVariable Long id) {
 		try {
@@ -132,7 +131,6 @@ public class JobController {
 	public ResponseEntity<?> getAllUserJobsByRecruiterAndCandidate(@RequestAttribute(AuthLogger.UserId) Long userId) {
 		try {
 
-			System.out.println("UserId" + userId);
 			List<IListAllJobsDto> jobs = jobServiceInterface.getAllJobsByRecruiter(userId);
 			return new ResponseEntity<>(new AuthSuccessDto("Success.", "Success..", jobs), HttpStatus.ACCEPTED);
 

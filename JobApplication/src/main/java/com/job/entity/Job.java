@@ -49,7 +49,7 @@ public class Job implements Serializable{
 	}
 
 	public Job(Long id, User recruiterId, String jobTitle, String jobDescription, Date createdAt, Date updatedAt,
-			boolean isActive, Date dateOfJoining, List<UserJob> userJob) {
+			boolean isActive, List<UserJob> userJob) {
 		super();
 		this.id = id;
 		this.recruiterId = recruiterId;
@@ -58,7 +58,6 @@ public class Job implements Serializable{
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
 		this.isActive = isActive;
-		this.dateOfJoining = dateOfJoining;
 		this.userJob = userJob;
 	}
 
@@ -83,18 +82,6 @@ public class Job implements Serializable{
 	
 	@Column(name="job_description")
 	private String jobDescription;
-
-	public Job(Long id, String jobTitle, String jobDescription, Date createdAt, Date updatedAt, boolean isActive,
-			Date dateOfJoining) {
-		super();
-		this.id = id;
-		this.jobTitle = jobTitle;
-		this.jobDescription = jobDescription;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
-		this.isActive = isActive;
-	
-	}
 
 	@Column(name="created_at")
 	@CreationTimestamp
@@ -148,13 +135,7 @@ public class Job implements Serializable{
 		this.isActive = isActive;
 	}
 
-	public Date getDateOfJoining() {
-		return dateOfJoining;
-	}
 
-	public void setDateOfJoining(Date dateOfJoining) {
-		this.dateOfJoining = dateOfJoining;
-	}
 
 	@Column(name="updated_at")
 	@UpdateTimestamp
@@ -163,10 +144,6 @@ public class Job implements Serializable{
 	@Column(name="is_active")
 	private boolean isActive=true;
 
-	@Column(name="date_of_joining")
-	private Date dateOfJoining;
-	
-	
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "job",cascade = CascadeType.ALL)
 	@JsonBackReference
 	List<UserJob> userJob;

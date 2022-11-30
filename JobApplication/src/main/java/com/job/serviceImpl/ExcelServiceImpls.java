@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.job.entity.User;
+import com.job.entity.UserJob;
 import com.job.repository.ExcelRepo;
 import com.job.util.ExcelExportUtils;
 
@@ -18,8 +19,8 @@ public class ExcelServiceImpls {
 	@Autowired
 	private ExcelRepo excelRepo;
 	
-	 public List<User> exportCustomerToExcel(HttpServletResponse response) throws IOException {
-	        List<User> customers = excelRepo.findAll();
+	 public List<UserJob> exportUserToExcel(HttpServletResponse response) throws IOException {
+	        List<UserJob> customers = excelRepo.findAll();
 	        ExcelExportUtils exportUtils = new ExcelExportUtils(customers);
 	        exportUtils.exportDataToExcel(response);
 	        return customers;

@@ -11,21 +11,14 @@ import org.springframework.stereotype.Service;
 
 import com.job.dto.JobDto;
 import com.job.entity.Job;
-import com.job.entity.Role;
 import com.job.entity.User;
-import com.job.entity.UserRole;
 import com.job.exception.ResourceNotFoundException;
 import com.job.repository.JobRespository;
-import com.job.repository.RoleRepository;
 import com.job.repository.UserRepository;
 import com.job.repository.UserRoleRepository;
-import com.job.security.JwtTokenUtil;
 import com.job.serviceInterface.IListAllJobsDto;
 import com.job.serviceInterface.IListJobDto;
-import com.job.serviceInterface.IListJobDtos;
 import com.job.serviceInterface.JobServiceInterface;
-
-import net.bytebuddy.dynamic.DynamicType.Builder.MethodDefinition.ImplementationDefinition.Optional;
 
 @Service
 public class JobServiceImpl implements JobServiceInterface {
@@ -47,7 +40,6 @@ public class JobServiceImpl implements JobServiceInterface {
 		Job job = new Job();
 		job.setJobTitle(jobDto.getJobTitle());
 		job.setJobDescription(jobDto.getJobDescription());
-		job.setDateOfJoining(jobDto.getDateOfJoining());
 		job.setRecruiterId(userEntity);
 
 		jobRespository.save(job);
@@ -62,7 +54,6 @@ public class JobServiceImpl implements JobServiceInterface {
 
 		job.setJobTitle(jobDto.getJobTitle());
 		job.setJobDescription(jobDto.getJobDescription());
-		job.setDateOfJoining(jobDto.getDateOfJoining());
 
 		jobRespository.save(job);
 
@@ -99,7 +90,7 @@ public class JobServiceImpl implements JobServiceInterface {
 
 	}
 
-	//GetAll Jobs By Candidate Id & RecruiterId
+	// GetAll Jobs By Candidate Id & RecruiterId
 	@Override
 	public List<IListAllJobsDto> getAllJobsByRecruiter(Long user_id) {
 		userRoleRepository.findByUserById(user_id);

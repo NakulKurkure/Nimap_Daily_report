@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,12 +22,14 @@ import com.job.dto.UserDto;
 import com.job.serviceInterface.UserServiceInterface;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/user")
 public class UserController {
 
 	@Autowired
 	private UserServiceInterface userServiceInterface;
 
+	//Admin
+	@PreAuthorize("hasRole('UserUpdate')")
 	@PutMapping("/{id}")
 	public ResponseEntity<?> updateUserByUserId(@RequestBody UserDto userDto, @PathVariable Long id) {
 		try {
@@ -38,9 +41,10 @@ public class UserController {
 			return new ResponseEntity<>(new ErrorResponseDto("Enter Valid UserId..", "Please Enter Valid UserId"),
 					HttpStatus.BAD_REQUEST);
 		}
-
+		
 	}
 
+	@PreAuthorize("hasRole('UserByIdView')")
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getByUserId(@PathVariable Long id) {
 
@@ -57,6 +61,7 @@ public class UserController {
 
 	}
 
+	@PreAuthorize("hasRole('UserDel')")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> deleteByUserId(@PathVariable Long id) {
 		try {
@@ -71,6 +76,7 @@ public class UserController {
 
 	}
 
+	@PreAuthorize("hasRole('UserView')")
 	@GetMapping
 	public ResponseEntity<?> getAllUsers(@RequestParam(defaultValue = "") String search,
 			@RequestParam(defaultValue = "1") String pageNumber, @RequestParam(defaultValue = "5") String pageSize) {

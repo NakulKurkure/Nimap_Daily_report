@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,108 +24,96 @@ import com.job.dto.PermissionDto;
 import com.job.dto.SuccessResponseDto;
 import com.job.serviceInterface.IPermissionListDto;
 
-
 @RestController
-@RequestMapping("/api/permission")
+@RequestMapping("/permission")
 public class PermissionController {
 
 	@Autowired
 	private com.job.serviceInterface.PermissionServiceInterface permissionServiceInterface;
-	
+
+	@PreAuthorize("hasRole('PermissionAdd')")
 	@PostMapping
-	public ResponseEntity<?> addPermission(@Valid @RequestBody com.job.dto.PermissionDto dto){
+	public ResponseEntity<?> addPermission(@Valid @RequestBody com.job.dto.PermissionDto dto) {
 
 		try {
 
-			
-			if(dto.getActionName().isBlank())
-			{
-				
-				if(dto.getBaseUrl().isBlank())
-				{
-					return new ResponseEntity<>(new ErrorResponseDto("Enter Valid BaseUrl and ActionName..", "Please Enter Valid BaseUrl and ActionName..."),HttpStatus.BAD_REQUEST);
-				}else
-				{
-					return new ResponseEntity<>(new ErrorResponseDto("Enter Valid ActionName", "Please Enter Valid ActionName.."),HttpStatus.BAD_REQUEST);
+			this.permissionServiceInterface.addPermission(dto);
 
-				}
-				
-			}else
-			{
-				this.permissionServiceInterface.addPermission(dto);
+			return new ResponseEntity<>(new SuccessResponseDto("Permission Added Successfully", "Permission Added"),
+					HttpStatus.CREATED);
 
-				return new ResponseEntity<>(new SuccessResponseDto("Permission Added Successfully", "Permission Added"),HttpStatus.CREATED);		
-			}
-			
-		
-
-	}catch(Exception e) {
-		return new ResponseEntity<>(new ErrorResponseDto("Permission Not Added, please check agian ","not Added"),HttpStatus.BAD_REQUEST);
-	}
+		} catch (Exception e) {
+			return new ResponseEntity<>(new ErrorResponseDto("Permission Not Added, please check agian ", "not Added"),
+					HttpStatus.BAD_REQUEST);
+		}
 	}
 
+	@PreAuthorize("hasRole('GetPermissionByIdView')")
 	@GetMapping("/{id}")
-	public ResponseEntity<?> getPermissionById(@PathVariable("id") Long id){
+	public ResponseEntity<?> getPermissionById(@PathVariable("id") Long id) {
 		try {
 
-	 PermissionDto permissionDto=this.permissionServiceInterface.getPermissionById(id);
+			PermissionDto permissionDto = this.permissionServiceInterface.getPermissionById(id);
 
-		return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", permissionDto),HttpStatus.ACCEPTED);
+			return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", permissionDto), HttpStatus.ACCEPTED);
 
-	}catch(Exception e) {
+		} catch (Exception e) {
 
-		return new ResponseEntity<>(new ErrorResponseDto(e.getMessage()," User Id Not Found"),HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), " User Id Not Found"),
+					HttpStatus.NOT_FOUND);
+		}
+
 	}
 
-	}
-
+	@PreAuthorize("hasRole('PermissionUpdate')")
 	@PutMapping("/{id}")
-	public ResponseEntity<?> updatePermission(@PathVariable ("id")Long id,@RequestBody PermissionDto dto){
-		
-		
-		try
-		{
-		this.permissionServiceInterface.updatePermission(dto, id);
+	public ResponseEntity<?> updatePermission(@PathVariable("id") Long id, @RequestBody PermissionDto dto) {
 
-		return new ResponseEntity<>(new SuccessResponseDto("Permission Update Successfully","Permission Updated"),HttpStatus.OK);
-
-	}catch(Exception e) {
-
-		return new ResponseEntity<>(new ErrorResponseDto("Not Found Id..","Permission Not Found"),HttpStatus.NOT_FOUND);
-	}
-	}
-
-	@DeleteMapping("/{id}")
-	public ResponseEntity<?>deletePermission(@PathVariable(name = "id") Long id){
-			
 		try {
-		permissionServiceInterface.deletePermissionById(id);
+			this.permissionServiceInterface.updatePermission(dto, id);
 
-		return new ResponseEntity<>(new SuccessResponseDto("Permission deleted Successfully","Permission deleted"),HttpStatus.OK);
-		}
-		catch (Exception e) {
+			return new ResponseEntity<>(new SuccessResponseDto("Permission Update Successfully", "Permission Updated"),
+					HttpStatus.OK);
 
-			return new ResponseEntity<>(new ErrorResponseDto("Not Found Id..","Permission Id Not Found"),HttpStatus.NOT_FOUND);
+		} catch (Exception e) {
+
+			return new ResponseEntity<>(new ErrorResponseDto("Not Found Id..", "Permission Not Found"),
+					HttpStatus.NOT_FOUND);
 		}
 	}
 
+	@PreAuthorize("hasRole('PermissionDel')")
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> deletePermission(@PathVariable(name = "id") Long id) {
+
+		try {
+			
+			permissionServiceInterface.deletePermissionById(id);
+
+			return new ResponseEntity<>(new SuccessResponseDto("Permission deleted Successfully", "Permission deleted"),
+					HttpStatus.OK);
+		} catch (Exception e) {
+
+			return new ResponseEntity<>(new ErrorResponseDto("Not Found Id..", "Permission Id Not Found"),
+					HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@PreAuthorize("hasRole('PermissionView')")
 	@GetMapping
 	public ResponseEntity<?> getAllPermission(@RequestParam(defaultValue = "") String search,
-			@RequestParam(defaultValue = "1") String pageNumber,
-			@RequestParam(defaultValue = "5") String pageSize)
-	
-	{
-		
-		Page<IPermissionListDto> page=permissionServiceInterface.getAllpermission(search,pageNumber,pageSize);
+			@RequestParam(defaultValue = "1") String pageNumber, @RequestParam(defaultValue = "5") String pageSize)
 
-		if(page.getTotalElements()!=0)
-		{
-			return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", page.getContent()),HttpStatus.OK);
+	{
+
+		Page<IPermissionListDto> page = permissionServiceInterface.getAllpermission(search, pageNumber, pageSize);
+
+		if (page.getTotalElements() != 0) {
+			return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", page.getContent()), HttpStatus.OK);
 		}
-		return new ResponseEntity<>(new ErrorResponseDto(" No Records Avaliable..", "Not Avaliable.."),HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(new ErrorResponseDto(" No Records Avaliable..", "Not Avaliable.."),
+				HttpStatus.BAD_REQUEST);
 
 	}
-
-	
 
 }

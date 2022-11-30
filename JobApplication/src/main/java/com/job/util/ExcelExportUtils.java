@@ -16,15 +16,16 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import com.job.entity.User;
+import com.job.entity.UserJob;
 
 public class ExcelExportUtils {
 
 	private XSSFWorkbook workbook;
     private XSSFSheet sheet;
-    private List<User> customerList;
+    private List<UserJob> customerList;
 
-    public ExcelExportUtils(List<User> customerList) {
-        this.customerList = customerList;
+    public ExcelExportUtils(List<UserJob> customers) {
+        this.customerList = customers;
         workbook = new XSSFWorkbook();
     }
 
@@ -64,11 +65,12 @@ public class ExcelExportUtils {
         style.setFont(font);
         createCell(row, 0, "ID", style);
         createCell(row, 1, "Email", style);
-        createCell(row, 2, "is_active", style);
-        createCell(row, 3, "Password", style);
-        createCell(row, 4, "UserName", style);
-
-
+        createCell(row, 2, "UserName", style);
+        createCell(row, 3, "JobId", style);
+        createCell(row, 4, "JobTitle", style);
+        createCell(row, 5, "JobDescription", style);
+        createCell(row, 6, "UserId", style);
+        createCell(row, 7, "UserName", style);
 
     }
 
@@ -79,14 +81,17 @@ public class ExcelExportUtils {
         font.setFontHeight(14);
         style.setFont(font);
 
-        for (User customer : customerList){
+        for (UserJob customer : customerList){
             Row row = sheet.createRow(rowCount++);
             int columnCount = 0;
-            createCell(row, columnCount++, customer.getUserId(), style);
-            createCell(row, columnCount++, customer.getEmail(), style);
-            createCell(row, columnCount++, customer.isActive(), style);
-            createCell(row, columnCount++, customer.getPassword(), style);
-            createCell(row, columnCount++, customer.getUserName(), style);
+            createCell(row, columnCount++, customer.getUser().getUserId(), style);
+            createCell(row, columnCount++, customer.getUser().getEmail(), style);
+            createCell(row, columnCount++, customer.getUser().getUserName(), style);
+            createCell(row, columnCount++, customer.getJob().getId(), style);
+            createCell(row, columnCount++, customer.getJob().getJobTitle(), style);
+            createCell(row, columnCount++, customer.getJob().getJobDescription(), style);
+            createCell(row, columnCount++, customer.getJob().getRecruiterId().getUserId(), style);
+            createCell(row, columnCount++, customer.getJob().getRecruiterId().getUserName(), style);
 
         }
 

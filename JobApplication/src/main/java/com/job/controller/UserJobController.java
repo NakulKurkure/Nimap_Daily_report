@@ -1,5 +1,7 @@
 package com.job.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -21,15 +23,18 @@ import com.job.dto.AuthSuccessDto;
 import com.job.dto.ErrorResponseDto;
 import com.job.dto.SuccessResponseDto;
 import com.job.dto.UserJobRequestDto;
+import com.job.repository.UserJobRepository;
 import com.job.serviceInterface.IListUserJobDto;
-import com.job.serviceInterface.IListUserListDto;
 import com.job.serviceInterface.UserJobServiceInterface;
 
 @RestController
-@RequestMapping("/api/userjob")
+@RequestMapping("/userjob")
 public class UserJobController {
 	@Autowired
 	private UserJobServiceInterface userJobServiceInterface;
+
+	@Autowired
+	private UserJobRepository userJobRepository;
 
 	@PreAuthorize("hasRole('userJobAdd')")
 	@PostMapping
@@ -47,7 +52,8 @@ public class UserJobController {
 
 		}
 	}
-	//Admin
+
+	// Admin
 	@PreAuthorize("hasRole('getAlljobView')")
 	@GetMapping("/getAll")
 	public ResponseEntity<?> getAllUserJobs(@RequestParam(defaultValue = "") String search,
@@ -56,10 +62,17 @@ public class UserJobController {
 			@RequestParam(defaultValue = "") String jobId) {
 		try {
 
-			Page<IListUserJobDto> page = userJobServiceInterface.getAllUserJob(search, pageNumber, pageSize, request,
-					userId, jobId);
-			return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", page.getContent()),
-					HttpStatus.ACCEPTED);
+			if (search.isBlank() && pageNumber.isBlank() && pageSize.isBlank() || (!jobId.isBlank())
+					|| (!userId.isBlank())) {
+				Page<IListUserJobDto> page = userJobServiceInterface.getAllUserJob(search, pageNumber, pageSize,
+						request, userId, jobId);
+				return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", page.getContent()),
+						HttpStatus.ACCEPTED);
+
+			} else {
+				List<IListUserJobDto> userDto = userJobRepository.findAllList(IListUserJobDto.class);
+				return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", userDto), HttpStatus.ACCEPTED);
+			}
 		} catch (Exception e) {
 			return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), e.getLocalizedMessage()),
 					HttpStatus.NOT_FOUND);

@@ -72,9 +72,10 @@ public class UserJobServiceImpl implements UserJobServiceInterface {
 	public Page<IListUserJobDto> getAllUserJob(String search, String pageNumber, String pageSize,
 			HttpServletRequest request, String userId, String jobId) {
 
+		
 		Pageable pagable = new Pagination().getPagination(pageNumber, pageSize);
 
-		return userJobRepository.findListofUserJob(userId, jobId, pagable, IListUserJobDto.class);
+		return userJobRepository.findListofUserJob(pagable, userId,jobId,IListUserJobDto.class);
 	}
 
 }

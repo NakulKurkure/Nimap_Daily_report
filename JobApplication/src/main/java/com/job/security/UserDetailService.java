@@ -16,71 +16,69 @@ import com.job.repository.UserRepository;
 import com.job.serviceImpl.CacheOperation;
 import com.job.serviceInterface.RolePermissionServiceInterface;
 
-
 @Component
-public class UserDetailService implements UserDetailsService{
+public class UserDetailService implements UserDetailsService {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
+
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private CacheOperation cacheOperation;
-	
+
 	@Autowired
 	private RolePermissionServiceInterface rolePermissionServiceInterface;
-	
-	
-	
+
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		
-		System.out.println("email"+email);
-		
-		User user=userRepository.findByEmailContainingIgnoreCase(email);
-		
-		System.out.println("email"+user);
-		
-		return new org.springframework.security.core.userdetails.User(user.getEmail(),user.getPassword(),getAuthority1(user));
-	}
-	
 
-	
+		User user = null;
+		if (!cacheOperation.isKeyExist(email, email)) {
+
+			user = userRepository.findByEmailContainingIgnoreCase(email);
+			System.out.println("Data from Database");
+			cacheOperation.addInCache(email, email, user);
+		} else {
+			System.out.println("Data from Cache");
+			user = (User) cacheOperation.getFromCache(email, email);
+		}
+
+		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
+				getAuthority1(user));
+	}
+
 	@SuppressWarnings("unchecked")
 	private ArrayList<SimpleGrantedAuthority> getAuthority1(User user) {
 
 		ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<>();
-	System.out.println("hi");
-		
 
-			ArrayList<SimpleGrantedAuthority> authorities1 = new ArrayList<>();
-			System.out.println("authorities");
-			ArrayList<String> permissions = this.rolePermissionServiceInterface.getPermissionByUserId(user.getUserId());
-			permissions.forEach(permission -> {
-				
-				authorities1.add(new SimpleGrantedAuthority("ROLE_" + permission));
+		ArrayList<SimpleGrantedAuthority> authorities1 = new ArrayList<>();
+		ArrayList<String> permissions = this.rolePermissionServiceInterface.getPermissionByUserId(user.getUserId());
+		permissions.forEach(permission -> {
 
-			});
-			authorities = authorities1;
-			this.cacheOperation.addInCache(user.getUserId() + "permission", user.getUserId()+ "permission", authorities1);
+			authorities1.add(new SimpleGrantedAuthority("ROLE_" + permission));
 
-			authorities = (ArrayList<SimpleGrantedAuthority>) this.cacheOperation.getFromCache(user.getUserId() + "permission", user.getUserId() + "permission");
+		});
+		authorities = authorities1;
+		this.cacheOperation.addInCache(user.getUserId() + "permission", user.getUserId() + "permission", authorities1);
+
+		authorities = (ArrayList<SimpleGrantedAuthority>) this.cacheOperation
+				.getFromCache(user.getUserId() + "permission", user.getUserId() + "permission");
 
 		return authorities;
 
 	}
 
-
 	public UserDetailService() {
 		super();
-		
+
 	}
 
 	public boolean comparePassword(String password, String password2) {
 		return passwordEncoder.matches(password, password2);
-		
+
 	}
 
 }

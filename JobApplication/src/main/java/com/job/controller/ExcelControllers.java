@@ -13,19 +13,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.job.serviceImpl.ExcelServiceImpls;
 
 @RestController
-@RequestMapping("/api")
+//@RequestMapping("/api")
 public class ExcelControllers {
 
 	@Autowired
-	private ExcelServiceImpls userServiceImpl;
+	private ExcelServiceImpls excelServiceImpl;
 
 	@PreAuthorize("hasRole('ExcelView')")
 	@GetMapping("/export-to-excel")
 	public void exportToExcel(HttpServletResponse response) throws IOException {
 		response.setContentType("application/octet-stream");
 		String headerKey = "Content-Disposition";
-		String headerValue = "attachment; filename=Customers_Information.xlsx";
+		String headerValue = "attachment; filename=UserJob.xlsx";
 		response.setHeader(headerKey, headerValue);
-		userServiceImpl.exportCustomerToExcel(response);
+		excelServiceImpl.exportUserToExcel(response);
 	}
 }

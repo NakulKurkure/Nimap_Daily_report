@@ -12,10 +12,8 @@ import com.job.dto.RolePermissionRequestDto;
 import com.job.entity.Permission;
 import com.job.entity.Role;
 import com.job.entity.RolePermission;
-import com.job.repository.RolePermissionRepository;
 import com.job.repository.UserRoleRepository;
 import com.job.serviceInterface.IListRoleDto;
-import com.job.serviceInterface.IUserJobListDto;
 import com.job.serviceInterface.PermissionIdList;
 import com.job.serviceInterface.RoleIdList;
 
@@ -92,21 +90,17 @@ public class RolePermissionServiceimpl implements RolePermissionServiceInterface
 		// TODO Auto-generated method stub
 
 		ArrayList<RoleIdList> roleIds = userRoleRepository.findByPkUserUserId(userId, RoleIdList.class);
-		System.out.println("roleIds");
 		ArrayList<Long> roles = new ArrayList<>();
 		for (int i = 0; i < roleIds.size(); i++) {
 			roles.add(roleIds.get(i).getPkRoleRoleId());
 		}
-		System.out.println("roleIds" + roles);
 		List<PermissionIdList> rolePermission = this.rolePermissionRepository.findPkPermissionByPkRoleRoleIdIn(roles,
 				PermissionIdList.class);
 
-		System.out.print("Hello " + rolePermission);
 		ArrayList<String> permission = new ArrayList<>();
 
 		for (PermissionIdList element : rolePermission) {
 			permission.add(element.getPkPermissionActionName());
-			System.out.println("hello");
 		}
 		return permission;
 	}

@@ -3,7 +3,6 @@ package com.job.controller;
 import java.util.Calendar;
 
 import javax.transaction.Transactional;
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,7 +40,7 @@ import com.job.validation.PasswordValidation;
 
 @RestController
 ///api/auth/forgot
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class AuthController {
 
 	@Autowired
@@ -73,38 +72,43 @@ public class AuthController {
 
 	@PostMapping
 	@RequestMapping("/register")
-	public ResponseEntity<?> addUsers(@Valid @RequestBody UserDto userDto) {
-		String email = userDto.getEmail();
-		String password = userDto.getPassword();
+	public ResponseEntity<?> addUsers(@RequestBody UserDto userDto) {
+		try {
 
-		User user = userRepository.findByEmailContainingIgnoreCase(email);
+			String email = userDto.getEmail();
+			String password = userDto.getPassword();
 
-		if (PasswordValidation.isValidforEmail(email)) {
-			if (PasswordValidation.isValid(password)) {
+			User user = userRepository.findByEmailContainingIgnoreCase(email);
 
-				if (user == null) {
+			if (PasswordValidation.isValidforEmail(email)) {
+				if (PasswordValidation.isValid(password)) {
 
-					userServiceInterface.addUser(userDto);
+					if (user == null) {
 
-					return new ResponseEntity<>(new SuccessResponseDto("Success", "Successfully Added User"),
-							HttpStatus.CREATED);
+						userServiceInterface.addUser(userDto);
+
+						return new ResponseEntity<>(new SuccessResponseDto("Success", "Successfully Added User"),
+								HttpStatus.CREATED);
+
+					} else {
+						return new ResponseEntity<>(
+								new ErrorResponseDto("Alredy present in Database..", "Enter New Email.."),
+								HttpStatus.NOT_FOUND);
+					}
 
 				} else {
-					return new ResponseEntity<>(
-							new ErrorResponseDto("Alredy present in Database..", "Enter New Email.."),
-							HttpStatus.NOT_FOUND);
 
+					return new ResponseEntity<>(new ErrorResponseDto("Please Enter Proper format of Password..",
+							"Password should be 8 to 30 characters in One Uppercase,One lowercase,One digit and One Unique Symbol..."),
+							HttpStatus.BAD_REQUEST);
 				}
-
 			} else {
-
-				return new ResponseEntity<>(new ErrorResponseDto("Please Enter Proper format of Password..",
-						"Password should be 8 to 30 characters in One Uppercase,One lowercase,One digit and One Unique Symbol..."),
-						HttpStatus.NOT_FOUND);
+				return new ResponseEntity<>(new ErrorResponseDto("Please Enter Proper format of Email .",
+						"Email should be 8 to 30 characters in One Uppercase,One lowercase,One digit and One Unique Symbol..."),
+						HttpStatus.BAD_REQUEST);
 			}
-		} else {
-			return new ResponseEntity<>(new ErrorResponseDto("Please Enter Proper format of Email .",
-					"Email should be 8 to 30 characters in One Uppercase,One lowercase,One digit and One Unique Symbol..."),
+		} catch (Exception e) {
+			return new ResponseEntity<>(new ErrorResponseDto("Invalid Email.. ,please Enter Valid Email..", e.getLocalizedMessage()),
 					HttpStatus.BAD_REQUEST);
 		}
 
@@ -118,13 +122,11 @@ public class AuthController {
 			User user = userRepository.findByEmailContainingIgnoreCase(authRequestDto.getEmail());
 
 			if (this.userDetailService.comparePassword(authRequestDto.getPassword(), user.getPassword())) {
+				System.out.println("authRequestDto.getPassword()"+authRequestDto.getPassword());
+				System.out.println("user.getPassword()"+user.getPassword());
 				User users = this.userRepository.findByEmailContainingIgnoreCase(authRequestDto.getEmail());
-
-				System.out.println("email.." + this.userDetailService.loadUserByUsername(authRequestDto.getEmail()));
 				UserDetails userDetails = this.userDetailService.loadUserByUsername(authRequestDto.getEmail());
-				System.out.println("userDetails" + userDetails);
 				String token = this.jwtTokenUtil.generateToken(userDetails);
-				System.out.println("Token" + token);
 				AuthResponseDto authResponse = new AuthResponseDto();
 
 				Logger logger = new Logger();
@@ -145,7 +147,7 @@ public class AuthController {
 			}
 		} catch (Exception e) {
 			return new ResponseEntity<>(new ErrorResponseDto("Invalid email or Password..", "Invalid.."),
-					HttpStatus.NO_CONTENT);
+					HttpStatus.BAD_REQUEST);
 		}
 
 	}
@@ -171,13 +173,10 @@ public class AuthController {
 			System.out.println("Email" + user.getEmail());
 			final long otp = emailServiceInterface.generateOtp();
 			System.out.println("OTP" + otp);
-			final String url = " OTP FOR FORGOT PASSWORD IS " + otp +" This OTP is valid for only 5 minutes..";
-			
-			System.out.println("URL" + url);
+			final String url = " OTP FOR FORGOT PASSWORD IS " + otp + " This OTP is valid for only 5 minutes..";
 
 			Calendar calender = Calendar.getInstance();
 			calender.add(Calendar.MINUTE, 5);
-			System.out.println("URL" + otpDto + user.getEmail());
 
 			User user2 = userRepository.findByEmailContainingIgnoreCase(otpDto.getEmail());
 
