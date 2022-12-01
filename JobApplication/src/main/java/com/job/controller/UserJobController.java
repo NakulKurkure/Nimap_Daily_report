@@ -1,7 +1,5 @@
 package com.job.controller;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -57,22 +55,20 @@ public class UserJobController {
 	@PreAuthorize("hasRole('getAlljobView')")
 	@GetMapping("/getAll")
 	public ResponseEntity<?> getAllUserJobs(@RequestParam(defaultValue = "") String search,
-			@RequestParam(defaultValue = "1") String pageNumber, @RequestParam(defaultValue = "5") String pageSize,
+
 			HttpServletRequest request, @RequestParam(defaultValue = "") String userId,
-			@RequestParam(defaultValue = "") String jobId) {
+			@RequestParam(defaultValue = "") String jobId, @RequestParam(defaultValue = "1") String pageNumber,
+			@RequestParam(defaultValue = "7") String pageSize) {
 		try {
 
-			if (search.isBlank() && pageNumber.isBlank() && pageSize.isBlank() || (!jobId.isBlank())
-					|| (!userId.isBlank())) {
-				Page<IListUserJobDto> page = userJobServiceInterface.getAllUserJob(search, pageNumber, pageSize,
-						request, userId, jobId);
-				return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", page.getContent()),
-						HttpStatus.ACCEPTED);
+			System.err.println("pageSiz:: " + pageSize);
+			System.err.println("pageNumbe:: " + pageNumber);
+			Page<IListUserJobDto> page = userJobServiceInterface.getAllUserJob(search, pageNumber, pageSize, userId,
+					jobId);
 
-			} else {
-				List<IListUserJobDto> userDto = userJobRepository.findAllList(IListUserJobDto.class);
-				return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", userDto), HttpStatus.ACCEPTED);
-			}
+			return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", page.getContent()),
+					HttpStatus.ACCEPTED);
+
 		} catch (Exception e) {
 			return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), e.getLocalizedMessage()),
 					HttpStatus.NOT_FOUND);

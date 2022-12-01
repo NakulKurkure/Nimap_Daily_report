@@ -1,7 +1,5 @@
 package com.job.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -21,7 +19,6 @@ import com.job.dto.ErrorResponseDto;
 import com.job.dto.SuccessResponseDto;
 import com.job.dto.UserRoleRequestDto;
 import com.job.repository.UserRoleRepository;
-import com.job.serviceImpl.UserRoleServiceImpl;
 import com.job.serviceInterface.ILIstUserDto;
 import com.job.serviceInterface.UserRoleServiceInterface;
 
@@ -44,23 +41,6 @@ public class UserRoleController {
 
 		return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Added UserRoles.."),
 				HttpStatus.CREATED);
-	}
-
-	@PreAuthorize("hasRole('UserRoleUpdate')")
-	@PutMapping
-	public ResponseEntity<?> updateUserRole(@RequestBody UserRoleRequestDto userRoleRequestDto) {
-
-		try {
-
-			userRoleServiceInterface.updateUserRole(userRoleRequestDto);
-
-			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Updated UserRoles..."),
-					HttpStatus.ACCEPTED);
-		} catch (Exception e) {
-			return new ResponseEntity<>(new ErrorResponseDto("Invalid..", "Invalid UserId and Role Id..."),
-					HttpStatus.BAD_REQUEST);
-
-		}
 	}
 
 	@PreAuthorize("hasRole('UserRoleDel')")
@@ -86,18 +66,28 @@ public class UserRoleController {
 			@RequestParam(defaultValue = "1") String pageNumber, @RequestParam(defaultValue = "5") String pageSize,
 			@RequestParam(defaultValue = "") String userId, @RequestParam(defaultValue = "") String roleId) {
 
-		if (search.isBlank() && pageNumber.isBlank() && pageSize.isBlank() || (!roleId.isBlank())
-				|| (!userId.isBlank())) {
+		Page<ILIstUserDto> page = this.userRoleServiceInterface.getAllUserRoles(search, pageNumber, pageSize, userId,
+				roleId);
+		System.out.println("Page" + page);
+		return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", page.getContent()), HttpStatus.ACCEPTED);
 
-			Page<ILIstUserDto> page = userRoleServiceInterface.getAllUserRoles(search, pageNumber, pageSize, userId,
-					roleId);
-			return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", page.getContent()),
+	}
+
+	@PreAuthorize("hasRole('UserRoleUpdate')")
+	@PutMapping
+	public ResponseEntity<?> updateUserRole(@RequestBody UserRoleRequestDto userRoleRequestDto) {
+
+		try {
+
+			userRoleServiceInterface.updateUserRole(userRoleRequestDto);
+
+			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Updated UserRoles..."),
 					HttpStatus.ACCEPTED);
-		} else {
-			List<ILIstUserDto> userDto = userRoleRepository.findAllList(search,ILIstUserDto.class);
-			return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", userDto), HttpStatus.ACCEPTED);
-		}
+		} catch (Exception e) {
+			return new ResponseEntity<>(new ErrorResponseDto("Invalid..", "Invalid UserId and Role Id..."),
+					HttpStatus.BAD_REQUEST);
 
+		}
 	}
 
 }

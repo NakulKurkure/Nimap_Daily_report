@@ -39,12 +39,18 @@ public class RolePermissionServiceimpl implements RolePermissionServiceInterface
 	public void addRolePermission(RolePermissionRequestDto rolePermissionRequestDto) {
 
 		ArrayList<RolePermission> RolePermission = new ArrayList<>();
+		System.out.println("rolePermissionRequestDto.getRoleId()"+rolePermissionRequestDto.getRoleId());
+		System.out.println("rolePermissionRequestDto.getRoleId()"+rolePermissionRequestDto.getPermissionId());
 
 		Role roleId = this.roleRepository.findById(rolePermissionRequestDto.getRoleId())
 				.orElseThrow(() -> new com.job.exception.ResourceNotFoundException("Not Found RoleId.."));
+		
+		System.out.println("roleId"+roleId);
 
+		
 		Permission permissionId = this.permissionRepository.findById(rolePermissionRequestDto.getPermissionId())
 				.orElseThrow(() -> new com.job.exception.ResourceNotFoundException("Not Found PermissionId.."));
+		System.out.println("permissionId"+permissionId);
 
 		RolePermission rolePermissionEntity = new RolePermission();
 		com.job.entity.RolePermissionId RolePermissionId = new com.job.entity.RolePermissionId(roleId, permissionId);

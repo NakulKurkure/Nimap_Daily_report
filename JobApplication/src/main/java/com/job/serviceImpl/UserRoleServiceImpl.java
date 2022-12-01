@@ -1,7 +1,6 @@
 package com.job.serviceImpl;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -59,27 +58,6 @@ public class UserRoleServiceImpl implements UserRoleServiceInterface {
 	}
 
 	@Override
-	public void updateUserRole(UserRoleRequestDto userRoleRequestDto) {
-
-		ArrayList<UserRole> userRoles = new ArrayList<>();
-
-		User userId = this.userRepository.findById(userRoleRequestDto.getUserId())
-				.orElseThrow(() -> new com.job.exception.ResourceNotFoundException("Not Found UserId"));
-
-		com.job.entity.Role roleId = roleRepository.findById(userRoleRequestDto.getRoleId())
-				.orElseThrow(() -> new com.job.exception.ResourceNotFoundException("Not Found roleId"));
-
-		UserRole userRole = new UserRole();
-		com.job.entity.UserRoleId userRoleId = new com.job.entity.UserRoleId(userId, roleId);
-		userRole.setPk(userRoleId);
-
-		userRoles.add(userRole);
-
-		userRoleRepository.updateUserRole(userId, roleId);
-
-	}
-
-	@Override
 	public void deleteUserRole(UserRoleRequestDto userRoleRequestDto) {
 
 		User userId = this.userRepository.findById(userRoleRequestDto.getUserId())
@@ -99,13 +77,32 @@ public class UserRoleServiceImpl implements UserRoleServiceInterface {
 	@Override
 	public Page<ILIstUserDto> getAllUserRoles(String search, String pageNumber, String pageSize, String userId,
 			String roleId) {
-		System.out.println("pagable" + pageNumber + pageSize);
 
-		Pageable pagable = new Pagination().getPagination(pageNumber, pageSize);
+		Pageable paging = new Pagination().getPagination(pageNumber, pageSize);
+		Page<ILIstUserDto> listUserRoles;
 
-		System.out.println("pagable" + pagable);
+		listUserRoles = this.userRoleRepository.findAllListUserRole(userId, roleId, paging, ILIstUserDto.class);
+		return listUserRoles;
+	}
 
-		return userRoleRepository.findAllListUserRole(userId, roleId, pagable, ILIstUserDto.class);
+	@Override
+	public void updateUserRole(UserRoleRequestDto userRoleRequestDto) {
+
+		ArrayList<UserRole> userRoles = new ArrayList<>();
+
+		User userId = this.userRepository.findById(userRoleRequestDto.getUserId())
+				.orElseThrow(() -> new com.job.exception.ResourceNotFoundException("Not Found UserId"));
+
+		com.job.entity.Role roleId = roleRepository.findById(userRoleRequestDto.getRoleId())
+				.orElseThrow(() -> new com.job.exception.ResourceNotFoundException("Not Found roleId"));
+
+		UserRole userRole = new UserRole();
+		com.job.entity.UserRoleId userRoleId = new com.job.entity.UserRoleId(userId, roleId);
+		userRole.setPk(userRoleId);
+
+		userRoles.add(userRole);
+
+		userRoleRepository.updateUserRole(userId, roleId);
 
 	}
 

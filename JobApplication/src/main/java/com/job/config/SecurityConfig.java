@@ -80,7 +80,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				// all other requests need to be authenticated
 				// Add a filter to validate the tokens with every request
 				// dont authenticate this particular request
-				.antMatchers("/auth/register","/auth/login","/auth/forgot","auth/forgot-password-conf")
+				.antMatchers("/auth/register","/auth/login","/auth/forgot","/auth/forgot-password-conf")
 				.permitAll().
 				antMatchers(SWAGGER_URLS).permitAll().
 

@@ -2,16 +2,16 @@ package com.job.serviceInterface;
 
 public interface ILIstUserDto {
 
-	public Long getuserId();
+//	public String getemail();
 
-	public String getemail();
+	public long getrole_id();
 
-	public String getuserName();
+//	public String getuser_name();
 
-	public Long getroleId();
+//	public long getuser_id();
 
-	public String getroleName();
+//	public String getroleName();
 
-	public String getDescription();
+//	public String getDescription();
 
 }

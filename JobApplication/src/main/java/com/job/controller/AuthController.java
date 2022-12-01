@@ -31,7 +31,6 @@ import com.job.repository.UserRepository;
 import com.job.security.JwtTokenUtil;
 import com.job.security.UserDetailService;
 import com.job.serviceImpl.OtpServiceImpl;
-
 import com.job.serviceInterface.EmailServiceInterface;
 import com.job.serviceInterface.ForgotPassConfirmInterface;
 import com.job.serviceInterface.LoggerServiceInterface;
@@ -108,58 +107,10 @@ public class AuthController {
 						HttpStatus.BAD_REQUEST);
 			}
 		} catch (Exception e) {
-			return new ResponseEntity<>(new ErrorResponseDto("Invalid Email.. ,please Enter Valid Email..", e.getLocalizedMessage()),
+			return new ResponseEntity<>(
+					new ErrorResponseDto("Invalid Email.. ,please Enter Valid Email..", e.getLocalizedMessage()),
 					HttpStatus.BAD_REQUEST);
 		}
-
-	}
-
-	@PostMapping("/login")
-	public ResponseEntity<?> loginUser(@RequestBody AuthRequestDto authRequestDto) {
-
-		try {
-
-			User user = userRepository.findByEmailContainingIgnoreCase(authRequestDto.getEmail());
-
-			if (this.userDetailService.comparePassword(authRequestDto.getPassword(), user.getPassword())) {
-				System.out.println("authRequestDto.getPassword()"+authRequestDto.getPassword());
-				System.out.println("user.getPassword()"+user.getPassword());
-				User users = this.userRepository.findByEmailContainingIgnoreCase(authRequestDto.getEmail());
-				UserDetails userDetails = this.userDetailService.loadUserByUsername(authRequestDto.getEmail());
-				String token = this.jwtTokenUtil.generateToken(userDetails);
-				AuthResponseDto authResponse = new AuthResponseDto();
-
-				Logger logger = new Logger();
-				Calendar calendar = Calendar.getInstance();
-				calendar.add(calendar.MINUTE, 5);
-				logger.setToken(token);
-				logger.setExpireAt(calendar.getTime());
-				logger.setUserId(user);
-
-				loggerServiceInterface.createLogger(logger, user);
-
-				authResponse.setToken(token);
-
-				return new ResponseEntity<>(new AuthSuccessDto("Login Successfully", "Successfully", authResponse),
-						HttpStatus.ACCEPTED);
-			} else {
-				throw new Exception("Invalid Username and password..");
-			}
-		} catch (Exception e) {
-			return new ResponseEntity<>(new ErrorResponseDto("Invalid email or Password..", "Invalid.."),
-					HttpStatus.BAD_REQUEST);
-		}
-
-	}
-
-	@Transactional
-	@GetMapping("/logout")
-	public ResponseEntity<?> logOut(@RequestHeader("Authorization") String token) {
-
-		loggerServiceInterface.logOutUser(token);
-
-		return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully LOgout User"),
-				HttpStatus.ACCEPTED);
 
 	}
 
@@ -207,7 +158,7 @@ public class AuthController {
 
 	}
 
-	@PostMapping("forgot-password-conf")
+	@PostMapping("/forgot-password-conf")
 	public ResponseEntity<?> forgotPasswordConfirm(@RequestBody ForgotPasswordDto forgotPasswordDto) {
 
 		try {
@@ -239,6 +190,55 @@ public class AuthController {
 					HttpStatus.CREATED);
 
 		}
+	}
+
+	@PostMapping("/login")
+	public ResponseEntity<?> loginUser(@RequestBody AuthRequestDto authRequestDto) {
+
+		try {
+
+			User user = userRepository.findByEmailContainingIgnoreCase(authRequestDto.getEmail());
+
+			if (this.userDetailService.comparePassword(authRequestDto.getPassword(), user.getPassword())) {
+				System.out.println("authRequestDto.getPassword()" + authRequestDto.getPassword());
+				System.out.println("user.getPassword()" + user.getPassword());
+				User users = this.userRepository.findByEmailContainingIgnoreCase(authRequestDto.getEmail());
+				UserDetails userDetails = this.userDetailService.loadUserByUsername(authRequestDto.getEmail());
+				String token = this.jwtTokenUtil.generateToken(userDetails);
+				AuthResponseDto authResponse = new AuthResponseDto();
+
+				Logger logger = new Logger();
+				Calendar calendar = Calendar.getInstance();
+				calendar.add(calendar.MINUTE, 5);
+				logger.setToken(token);
+				logger.setExpireAt(calendar.getTime());
+				logger.setUserId(user);
+
+				loggerServiceInterface.createLogger(logger, user);
+
+				authResponse.setToken(token);
+
+				return new ResponseEntity<>(new AuthSuccessDto("Login Successfully", "Successfully", authResponse),
+						HttpStatus.ACCEPTED);
+			} else {
+				throw new Exception("Invalid Username and password..");
+			}
+		} catch (Exception e) {
+			return new ResponseEntity<>(new ErrorResponseDto("Invalid email or Password..", "Invalid.."),
+					HttpStatus.BAD_REQUEST);
+		}
+
+	}
+
+	@Transactional
+	@GetMapping("/logout")
+	public ResponseEntity<?> logOut(@RequestHeader("Authorization") String token) {
+
+		loggerServiceInterface.logOutUser(token);
+
+		return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully LOgout User"),
+				HttpStatus.ACCEPTED);
+
 	}
 
 }

@@ -2,12 +2,11 @@ package com.job.serviceImpl;
 
 import java.util.ArrayList;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 import com.job.dto.UserJobRequestDto;
 import com.job.entity.Job;
 import com.job.entity.User;
@@ -16,9 +15,7 @@ import com.job.exception.ResourceNotFoundException;
 import com.job.repository.JobRespository;
 import com.job.repository.UserJobRepository;
 import com.job.repository.UserRepository;
-
 import com.job.serviceInterface.IListUserJobDto;
-
 import com.job.serviceInterface.UserJobServiceInterface;
 import com.job.util.Pagination;
 
@@ -33,6 +30,7 @@ public class UserJobServiceImpl implements UserJobServiceInterface {
 
 	@Autowired
 	private EmailServiceImpl emailServiceImpl;
+
 	@Autowired
 	private UserJobRepository userJobRepository;
 
@@ -69,13 +67,17 @@ public class UserJobServiceImpl implements UserJobServiceInterface {
 	}
 
 	@Override
-	public Page<IListUserJobDto> getAllUserJob(String search, String pageNumber, String pageSize,
-			HttpServletRequest request, String userId, String jobId) {
+	public Page<IListUserJobDto> getAllUserJob(String search, String pageNumber, String pageSize, String userId,
+			String jobId) {
 
-		
-		Pageable pagable = new Pagination().getPagination(pageNumber, pageSize);
+		Pageable paging = new Pagination().getPagination(pageNumber, pageSize);
+		Page<IListUserJobDto> listUserJobs = null;
+		System.out.println("pageNumber" + pageNumber);
+		System.out.println("pageSize" + pageSize);
 
-		return userJobRepository.findListofUserJob(pagable, userId,jobId,IListUserJobDto.class);
+		listUserJobs = this.userJobRepository.findList1(paging, userId, jobId, IListUserJobDto.class);
+
+		return listUserJobs;
 	}
 
 }

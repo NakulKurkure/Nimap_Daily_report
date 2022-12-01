@@ -1,7 +1,5 @@
 package com.job.controller;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -35,7 +33,7 @@ public class RoleController {
 //Admin..
 	@PreAuthorize("hasRole('RoleAdd')")
 	@PostMapping
-	public ResponseEntity<?> addRole(@Valid @RequestBody RoleDto roleDto) {
+	public ResponseEntity<?> addRole(@RequestBody RoleDto roleDto) {
 
 		try {
 
@@ -44,39 +42,9 @@ public class RoleController {
 			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully added Roles..."),
 					HttpStatus.CREATED);
 		} catch (Exception e) {
-			return new ResponseEntity<>(new ErrorResponseDto("Invalid", e.getLocalizedMessage()),
+			return new ResponseEntity<>(new ErrorResponseDto("Exists..", e.getLocalizedMessage()),
 					HttpStatus.BAD_REQUEST);
 		}
-	}
-
-	@PreAuthorize("hasRole('RoleUpdate')")
-	@PutMapping("/{id}")
-	public ResponseEntity<?> updatedRoleById(@RequestBody RoleDto roleDto, @PathVariable Long id) {
-		try {
-
-			roleServiceInterface.updateRoleById(roleDto, id);
-			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Updated Roles..."),
-					HttpStatus.ACCEPTED);
-
-		} catch (Exception e) {
-			return new ResponseEntity<>(new ErrorResponseDto("Not Found RoleId.. ", "Enter Valid RoleId"),
-					HttpStatus.BAD_REQUEST);
-		}
-
-	}
-
-	@PreAuthorize("hasRole('RoleByIdView')")
-	@GetMapping("/{id}")
-	public ResponseEntity<?> getRoleById(@PathVariable Long id) {
-		try {
-			RoleDataDto role = roleServiceInterface.getRole(id);
-			return new ResponseEntity<>(new AuthSuccessDto("Success..", "SuccessFully Updated Roles...", role),
-					HttpStatus.ACCEPTED);
-		} catch (Exception e) {
-			return new ResponseEntity<>(new ErrorResponseDto("Not Found RoleId.. ", "Enter Valid RoleId"),
-					HttpStatus.BAD_REQUEST);
-		}
-
 	}
 
 	@PreAuthorize("hasRole('roleDel')")
@@ -109,6 +77,36 @@ public class RoleController {
 		}
 		return new ResponseEntity<>(new ErrorResponseDto("No Records Avaliable..", "Not Avaliable.."),
 				HttpStatus.BAD_REQUEST);
+
+	}
+
+	@PreAuthorize("hasRole('RoleByIdView')")
+	@GetMapping("/{id}")
+	public ResponseEntity<?> getRoleById(@PathVariable Long id) {
+		try {
+			RoleDataDto role = roleServiceInterface.getRole(id);
+			return new ResponseEntity<>(new AuthSuccessDto("Success..", "SuccessFully Updated Roles...", role),
+					HttpStatus.ACCEPTED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(new ErrorResponseDto("Not Found RoleId.. ", "Enter Valid RoleId"),
+					HttpStatus.BAD_REQUEST);
+		}
+
+	}
+
+	@PreAuthorize("hasRole('RoleUpdate')")
+	@PutMapping("/{id}")
+	public ResponseEntity<?> updatedRoleById(@RequestBody RoleDto roleDto, @PathVariable Long id) {
+		try {
+
+			roleServiceInterface.updateRoleById(roleDto, id);
+			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Updated Roles..."),
+					HttpStatus.ACCEPTED);
+
+		} catch (Exception e) {
+			return new ResponseEntity<>(new ErrorResponseDto("Not Found RoleId.. ", "Enter Valid RoleId"),
+					HttpStatus.BAD_REQUEST);
+		}
 
 	}
 

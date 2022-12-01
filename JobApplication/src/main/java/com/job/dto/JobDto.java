@@ -1,63 +1,46 @@
 package com.job.dto;
 
-import java.util.Date;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 public class JobDto {
 
 	@NotNull(message = "Required")
-	@NotBlank(message="Required")
-	@NotEmpty(message="Required")
+	@NotBlank(message = "Required")
+	@NotEmpty(message = "Required")
 	private String jobTitle;
-	
+
+	@NotNull(message = "Required")
+	@NotBlank(message = "Required")
+	@NotEmpty(message = "Required")
+	private String jobDescription;
+
 	public JobDto() {
 		super();
 	}
 
-	public String getJobTitle() {
-		return jobTitle;
-	}
-
-	public void setJobTitle(String jobTitle) {
-		this.jobTitle = jobTitle;
-	}
-
-	public JobDto(String jobTitle, String jobDescription, Date dateOfJoining) {
+	public JobDto(String jobTitle, String jobDescription) {
 		super();
 		this.jobTitle = jobTitle;
 		this.jobDescription = jobDescription;
-		this.dateOfJoining = dateOfJoining;
-		
+
 	}
 
 	public String getJobDescription() {
 		return jobDescription;
 	}
 
+	public String getJobTitle() {
+		return jobTitle;
+	}
+
 	public void setJobDescription(String jobDescription) {
 		this.jobDescription = jobDescription;
 	}
 
-	public Date getDateOfJoining() {
-		return dateOfJoining;
+	public void setJobTitle(String jobTitle) {
+		this.jobTitle = jobTitle;
 	}
 
-	public void setDateOfJoining(Date dateOfJoining) {
-		this.dateOfJoining = dateOfJoining;
-	}
-
-	@NotNull(message = "Required")
-	@NotBlank(message="Required")
-	@NotEmpty(message="Required")
-	private String jobDescription;
-	
-	private Date dateOfJoining;
-
-	
-	
 }

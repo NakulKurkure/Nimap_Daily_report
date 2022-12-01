@@ -2,16 +2,17 @@ package com.job.serviceInterface;
 
 public interface IListUserJobDto {
 
-	public Long getUserId();
-	
-	public String getEmail() ;
-	
-	public String getUserName();
-	
-	public Long getId();
-	
-	public String getJobTitle();
-	
-	public String getJobDescription();
-	
+//	public String getemail();
+
+	public long getid();
+
+//	public String getjobDescription();
+
+//	public String getjobTitle();
+
+//	public String getjob_title();
+
+//	public long getuser_id();
+
+//	public String getuser_name();
 }

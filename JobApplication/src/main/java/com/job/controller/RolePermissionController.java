@@ -2,11 +2,15 @@ package com.job.controller;
 
 import java.util.ArrayList;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,14 +38,11 @@ public class RolePermissionController {
 	@PreAuthorize("hasRole('RolePermissionAdd')")
 	@PostMapping
 	private ResponseEntity<?> addRolePermission(@RequestBody RolePermissionRequestDto rolePermissionRequestDto) {
-		try {
-			this.rolePermissionServiceInterface.addRolePermission(rolePermissionRequestDto);
-			return new ResponseEntity<>(
-					new SuccessResponseDto("Added Successfully.. ", "Role and Permission Added Successfully.."),
-					HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(new ErrorResponseDto("Not Added ", "Not Added.."), HttpStatus.NOT_FOUND);
-		}
+
+		this.rolePermissionServiceInterface.addRolePermission(rolePermissionRequestDto);
+		return new ResponseEntity<>(
+				new SuccessResponseDto("Added Successfully.. ", "Role and Permission Added Successfully.."),
+				HttpStatus.OK);
 
 	}
 

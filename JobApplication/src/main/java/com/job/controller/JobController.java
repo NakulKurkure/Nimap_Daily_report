@@ -26,7 +26,6 @@ import com.job.dto.AuthSuccessDto;
 import com.job.dto.ErrorResponseDto;
 import com.job.dto.JobDto;
 import com.job.dto.SuccessResponseDto;
-import com.job.entity.Job;
 import com.job.serviceInterface.IListAllJobsDto;
 import com.job.serviceInterface.IListJobDto;
 import com.job.serviceInterface.JobServiceInterface;
@@ -52,43 +51,9 @@ public class JobController {
 					HttpStatus.CREATED);
 
 		} catch (Exception e) {
-			return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), "Job Add Only By Recruiter.."),
+			return new ResponseEntity<>(
+					new ErrorResponseDto(e.getMessage(), "Please Enter Job Title and Description..."),
 					HttpStatus.BAD_REQUEST);
-		}
-
-	}
-
-	// Only Admin :-Update a job, with the following fields - Job Title and Job
-	// Description
-	@PreAuthorize("hasRole('jobUpdate')")
-	@PutMapping("/{id}")
-	public ResponseEntity<?> updateJobById(@RequestBody JobDto jobDto, @PathVariable Long id,
-			HttpServletRequest request) {
-		try {
-
-			jobServiceInterface.updateJob(jobDto, id, request);
-
-			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Added Jobs"),
-					HttpStatus.CREATED);
-
-		} catch (Exception e) {
-			return new ResponseEntity<>(new ErrorResponseDto("Not Valid..", e.getMessage()), HttpStatus.BAD_REQUEST);
-
-		}
-
-	}
-
-	@PreAuthorize("hasRole('JobByIdView')")
-	@GetMapping("/{id}")
-	public ResponseEntity<?> getJobById(@PathVariable Long id) {
-		try {
-
-			List<IListJobDto> list = jobServiceInterface.getJobById(id);
-			return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", list), HttpStatus.ACCEPTED);
-		} catch (Exception e) {
-			return new ResponseEntity<>(new ErrorResponseDto("Invalid..", "Please Enter Valid JobId.."),
-					HttpStatus.NOT_FOUND);
-
 		}
 
 	}
@@ -111,6 +76,7 @@ public class JobController {
 
 	}
 
+	@PreAuthorize("hasRole('JobsView')")
 	@GetMapping
 	public ResponseEntity<?> getAllJobs(@RequestParam(defaultValue = "") String search,
 			@RequestParam(defaultValue = "1") String pageNumber, @RequestParam(defaultValue = "5") String pageSize) {
@@ -137,6 +103,41 @@ public class JobController {
 		} catch (Exception e) {
 			return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), "Only Recruiter access.."),
 					HttpStatus.NOT_FOUND);
+		}
+
+	}
+
+	@PreAuthorize("hasRole('JobByIdView')")
+	@GetMapping("/{id}")
+	public ResponseEntity<?> getJobById(@PathVariable Long id) {
+		try {
+
+			List<IListJobDto> list = jobServiceInterface.getJobById(id);
+			return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", list), HttpStatus.ACCEPTED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(new ErrorResponseDto("Invalid..", "Please Enter Valid JobId.."),
+					HttpStatus.NOT_FOUND);
+
+		}
+
+	}
+
+	// Only Admin :-Update a job, with the following fields - Job Title and Job
+	// Description
+	@PreAuthorize("hasRole('jobUpdate')")
+	@PutMapping("/{id}")
+	public ResponseEntity<?> updateJobById(@RequestBody JobDto jobDto, @PathVariable Long id,
+			HttpServletRequest request) {
+		try {
+
+			jobServiceInterface.updateJob(jobDto, id, request);
+
+			return new ResponseEntity<>(new SuccessResponseDto("Success..", "SuccessFully Added Jobs"),
+					HttpStatus.CREATED);
+
+		} catch (Exception e) {
+			return new ResponseEntity<>(new ErrorResponseDto("Not Valid..", e.getMessage()), HttpStatus.BAD_REQUEST);
+
 		}
 
 	}
