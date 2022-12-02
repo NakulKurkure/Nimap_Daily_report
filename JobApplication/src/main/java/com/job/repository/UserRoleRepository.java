@@ -27,8 +27,9 @@ public interface UserRoleRepository extends JpaRepository<UserRole, Long> {
 	@Query(value = "update user_role ur set is_active=false where ur.role_id=:role_id and ur.user_id=:user_id", nativeQuery = true)
 	void deleteUserRole(User user_id, Role role_id);
 
-	@Query(value = "SELECT role.role_id from user_role join users on user_role.user_id=users.user_id join role on user_role.role_id=role.role_id AND (:abcd='' OR user_role.user_id IN (select unnest(cast(string_to_array(:abcd,',') as bigint[])))) AND (:roleId='' OR user_role.role_id IN (select unnest(cast(string_to_array(:roleId,',') as bigint[])))) AND user_role.is_active=true", nativeQuery = true)
-	Page<ILIstUserDto> findAllListUserRole(String abcd, String roleId, Pageable pagable, Class<ILIstUserDto> class1);
+	@Query(value = "SELECT r.role_id,r.role_name,r.description,u.user_id,u.user_name,u.email from user_role ur join users u on ur.user_id=u.user_id join role r on ur.role_id=r.role_id AND (:user_id='' OR ur.user_id IN (select unnest(cast(string_to_array(:user_id,',') as bigint[])))) AND (:role_id='' OR ur.role_id IN (select unnest(cast(string_to_array(:role_id,',') as bigint[])))) AND ur.is_active=true", nativeQuery = true)
+	Page<ILIstUserDto> findAllListUserRole(@Param("user_id") String userId, @Param("role_id") String roleId,
+			Pageable pagable, Class<ILIstUserDto> class1);
 
 	ArrayList<RoleIdList> findByPkUserUserId(Long userId, Class<RoleIdList> class1);
 

@@ -33,6 +33,7 @@ public class UserRoleController {
 	private UserRoleRepository userRoleRepository;
 
 	// Admin..
+
 	@PreAuthorize("hasRole('UserRoleAdd')")
 	@PostMapping
 	public ResponseEntity<?> addUserRole(@RequestBody UserRoleRequestDto userRoleRequestDto) {
@@ -68,7 +69,7 @@ public class UserRoleController {
 
 		Page<ILIstUserDto> page = this.userRoleServiceInterface.getAllUserRoles(search, pageNumber, pageSize, userId,
 				roleId);
-		System.out.println("Page" + page);
+		System.out.println("Page" + page.get());
 		return new ResponseEntity<>(new AuthSuccessDto("Success", "Success", page.getContent()), HttpStatus.ACCEPTED);
 
 	}

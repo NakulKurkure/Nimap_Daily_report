@@ -2,15 +2,10 @@ package com.job.controller;
 
 import java.util.ArrayList;
 
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,31 +27,23 @@ import com.job.serviceInterface.RolePermissionServiceInterface;
 @RequestMapping("/rolepermission")
 public class RolePermissionController {
 
-	@Autowired
+//	@Autowired
 	private RolePermissionServiceInterface rolePermissionServiceInterface;
 
 	@PreAuthorize("hasRole('RolePermissionAdd')")
 	@PostMapping
 	private ResponseEntity<?> addRolePermission(@RequestBody RolePermissionRequestDto rolePermissionRequestDto) {
-
-		this.rolePermissionServiceInterface.addRolePermission(rolePermissionRequestDto);
-		return new ResponseEntity<>(
-				new SuccessResponseDto("Added Successfully.. ", "Role and Permission Added Successfully.."),
-				HttpStatus.OK);
-
-	}
-
-	@PreAuthorize("hasRole('RolePermissionUpdate')")
-	@PutMapping
-	public ResponseEntity<?> update(@RequestBody RolePermissionRequestDto rolePermissionRequestDto) {
 		try {
-			this.rolePermissionServiceInterface.updateRolePermission(rolePermissionRequestDto);
+			System.out.println("rolePermissionRequestDto" + rolePermissionRequestDto.getPermissionId());
+			System.out.println("rolePermissionRequestDto" + rolePermissionRequestDto.getRoleId());
+
+			rolePermissionServiceInterface.addRolePermission1(rolePermissionRequestDto);
+
 			return new ResponseEntity<>(
-					new SuccessResponseDto("Success ", "SuccessFully Updated Roles and Permissions.."),
-					HttpStatus.ACCEPTED);
+					new SuccessResponseDto("Added Successfully.. ", "Role and Permission Added Successfully.."),
+					HttpStatus.OK);
 		} catch (Exception e) {
-			return new ResponseEntity<>(new ErrorResponseDto("Not Found RoleId..  ", "Not Found PermissionId.."),
-					HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(new ErrorResponseDto(e.getMessage(), "Not Found"), HttpStatus.NOT_FOUND);
 		}
 
 	}
@@ -99,6 +86,21 @@ public class RolePermissionController {
 		ArrayList<String> tt = this.rolePermissionServiceInterface.getPermissionByUserId(id);
 
 		return new ResponseEntity<>(tt, HttpStatus.OK);
+	}
+
+	@PreAuthorize("hasRole('RolePermissionUpdate')")
+	@PutMapping
+	public ResponseEntity<?> update(@RequestBody RolePermissionRequestDto rolePermissionRequestDto) {
+		try {
+			this.rolePermissionServiceInterface.updateRolePermission(rolePermissionRequestDto);
+			return new ResponseEntity<>(
+					new SuccessResponseDto("Success ", "SuccessFully Updated Roles and Permissions.."),
+					HttpStatus.ACCEPTED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(new ErrorResponseDto("Not Found RoleId..  ", "Not Found PermissionId.."),
+					HttpStatus.NOT_FOUND);
+		}
+
 	}
 
 }

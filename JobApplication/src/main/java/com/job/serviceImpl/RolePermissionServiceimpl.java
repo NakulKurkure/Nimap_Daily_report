@@ -12,11 +12,13 @@ import com.job.dto.RolePermissionRequestDto;
 import com.job.entity.Permission;
 import com.job.entity.Role;
 import com.job.entity.RolePermission;
+import com.job.repository.PermissionRepository;
+import com.job.repository.RolePermissionRepository;
+import com.job.repository.RoleRepository;
 import com.job.repository.UserRoleRepository;
 import com.job.serviceInterface.IListRoleDto;
 import com.job.serviceInterface.PermissionIdList;
 import com.job.serviceInterface.RoleIdList;
-
 import com.job.serviceInterface.RolePermissionServiceInterface;
 import com.job.util.Pagination;
 
@@ -24,33 +26,33 @@ import com.job.util.Pagination;
 public class RolePermissionServiceimpl implements RolePermissionServiceInterface {
 
 	@Autowired
-	private com.job.repository.RoleRepository roleRepository;
+	private RoleRepository roleRepository;
 
 	@Autowired
-	private com.job.repository.PermissionRepository permissionRepository;
+	private PermissionRepository permissionRepository;
 
 	@Autowired
 	private UserRoleRepository userRoleRepository;
 
 	@Autowired
-	private com.job.repository.RolePermissionRepository rolePermissionRepository;
+	private RolePermissionRepository rolePermissionRepository;
 
 	@Override
-	public void addRolePermission(RolePermissionRequestDto rolePermissionRequestDto) {
+	public void addRolePermission1(RolePermissionRequestDto rolePermissionRequestDto) {
+		System.out.println("Dtooo");
 
 		ArrayList<RolePermission> RolePermission = new ArrayList<>();
-		System.out.println("rolePermissionRequestDto.getRoleId()"+rolePermissionRequestDto.getRoleId());
-		System.out.println("rolePermissionRequestDto.getRoleId()"+rolePermissionRequestDto.getPermissionId());
+		System.out.println("rolePermissionRequestDto.getRoleId()" + rolePermissionRequestDto.getRoleId());
+		System.out.println("rolePermissionRequestDto.getRoleId()" + rolePermissionRequestDto.getPermissionId());
 
 		Role roleId = this.roleRepository.findById(rolePermissionRequestDto.getRoleId())
 				.orElseThrow(() -> new com.job.exception.ResourceNotFoundException("Not Found RoleId.."));
-		
-		System.out.println("roleId"+roleId);
 
-		
+		System.out.println("roleId" + roleId);
+
 		Permission permissionId = this.permissionRepository.findById(rolePermissionRequestDto.getPermissionId())
 				.orElseThrow(() -> new com.job.exception.ResourceNotFoundException("Not Found PermissionId.."));
-		System.out.println("permissionId"+permissionId);
+		System.out.println("permissionId" + permissionId);
 
 		RolePermission rolePermissionEntity = new RolePermission();
 		com.job.entity.RolePermissionId RolePermissionId = new com.job.entity.RolePermissionId(roleId, permissionId);
@@ -59,21 +61,7 @@ public class RolePermissionServiceimpl implements RolePermissionServiceInterface
 		RolePermission.add(rolePermissionEntity);
 		// save in database
 		rolePermissionRepository.saveAll(RolePermission);
-
-	}
-
-	@Override
-	public void updateRolePermission(RolePermissionRequestDto rolePermissionRequestDto) {
-		Role roleId = this.roleRepository.findById(rolePermissionRequestDto.getRoleId())
-				.orElseThrow(() -> new com.job.exception.ResourceNotFoundException("Not Found RoleId.."));
-
-		Permission permissionId = this.permissionRepository.findById(rolePermissionRequestDto.getPermissionId())
-				.orElseThrow(() -> new com.job.exception.ResourceNotFoundException("Not Found PermissionId.."));
-
-		RolePermission rolePermissionEntity = new RolePermission();
-		com.job.entity.RolePermissionId RolePermissionId = new com.job.entity.RolePermissionId(roleId, permissionId);
-		rolePermissionEntity.setPk(RolePermissionId);
-		rolePermissionRepository.updateRolePermission(roleId.getRoleId(), permissionId.getPermissionId());
+//		return rolePermissionEntity;
 
 	}
 
@@ -92,6 +80,19 @@ public class RolePermissionServiceimpl implements RolePermissionServiceInterface
 		rolePermissionRepository.deleteRolePermission(roleId.getRoleId(), permissionId.getPermissionId());
 	}
 
+	@Override
+	public Page<IListRoleDto> getAllRolePermission(String search, String pageNumber, String pageSize) {
+
+		Pageable pagable = new Pagination().getPagination(pageNumber, pageSize);
+		if ((search == "") || (search == null) || (search.length() == 0)) {
+			return rolePermissionRepository.findAll(pagable, IListRoleDto.class);
+		}
+
+		return null;
+
+	}
+
+	@Override
 	public ArrayList<String> getPermissionByUserId(Long userId) {
 		// TODO Auto-generated method stub
 
@@ -112,14 +113,17 @@ public class RolePermissionServiceimpl implements RolePermissionServiceInterface
 	}
 
 	@Override
-	public Page<IListRoleDto> getAllRolePermission(String search, String pageNumber, String pageSize) {
+	public void updateRolePermission(RolePermissionRequestDto rolePermissionRequestDto) {
+		Role roleId = this.roleRepository.findById(rolePermissionRequestDto.getRoleId())
+				.orElseThrow(() -> new com.job.exception.ResourceNotFoundException("Not Found RoleId.."));
 
-		Pageable pagable = new Pagination().getPagination(pageNumber, pageSize);
-		if ((search == "") || (search == null) || (search.length() == 0)) {
-			return rolePermissionRepository.findAll(pagable, IListRoleDto.class);
-		}
+		Permission permissionId = this.permissionRepository.findById(rolePermissionRequestDto.getPermissionId())
+				.orElseThrow(() -> new com.job.exception.ResourceNotFoundException("Not Found PermissionId.."));
 
-		return null;
+		RolePermission rolePermissionEntity = new RolePermission();
+		com.job.entity.RolePermissionId RolePermissionId = new com.job.entity.RolePermissionId(roleId, permissionId);
+		rolePermissionEntity.setPk(RolePermissionId);
+		rolePermissionRepository.updateRolePermission(roleId.getRoleId(), permissionId.getPermissionId());
 
 	}
 
