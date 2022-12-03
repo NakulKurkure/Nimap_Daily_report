@@ -38,7 +38,6 @@ import com.job.serviceInterface.UserServiceInterface;
 import com.job.validation.PasswordValidation;
 
 @RestController
-///api/auth/forgot
 @RequestMapping("/auth")
 public class AuthController {
 
@@ -129,7 +128,7 @@ public class AuthController {
 			Calendar calender = Calendar.getInstance();
 			calender.add(Calendar.MINUTE, 5);
 
-			User user2 = userRepository.findByEmailContainingIgnoreCase(otpDto.getEmail());
+			this.userRepository.findByEmailContainingIgnoreCase(otpDto.getEmail());
 
 			OtpEntity entities = new OtpEntity();
 			entities.setUserId(user);
@@ -139,8 +138,6 @@ public class AuthController {
 
 			otpServiceImpl.saveOtp(otpDto, user, entities);
 
-			String email = otpDto.getEmail();
-
 			OtpEntity otpEntity = otpRepository.findByOtp(otp).orElseThrow();
 			emailServiceInterface.sendMail(user.getEmail(), "OTP ", "Expire within 5 Minutes..", user, otpEntity);
 
@@ -149,7 +146,7 @@ public class AuthController {
 			return new ResponseEntity<>(
 					new AuthSuccessDto("OTP SEND SUCCESSFULLY...", "Otp send to user Successfully..", user.getEmail()),
 					HttpStatus.OK);
-//				}
+
 		} catch (Exception e) {
 			return new ResponseEntity<>(new ErrorResponseDto("Email Not Found!..", "Please Enter Valid Email!!"),
 					HttpStatus.BAD_REQUEST);
@@ -202,7 +199,7 @@ public class AuthController {
 			if (this.userDetailService.comparePassword(authRequestDto.getPassword(), user.getPassword())) {
 				System.out.println("authRequestDto.getPassword()" + authRequestDto.getPassword());
 				System.out.println("user.getPassword()" + user.getPassword());
-				User users = this.userRepository.findByEmailContainingIgnoreCase(authRequestDto.getEmail());
+				this.userRepository.findByEmailContainingIgnoreCase(authRequestDto.getEmail());
 				UserDetails userDetails = this.userDetailService.loadUserByUsername(authRequestDto.getEmail());
 				String token = this.jwtTokenUtil.generateToken(userDetails);
 				AuthResponseDto authResponse = new AuthResponseDto();
