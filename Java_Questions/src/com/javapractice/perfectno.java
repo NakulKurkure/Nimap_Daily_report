@@ -2,6 +2,7 @@ package com.javapractice;
 
 import java.util.Scanner;
 
+//Addition of Factors
 public class perfectno {
 
 	public static void main(String [] args)

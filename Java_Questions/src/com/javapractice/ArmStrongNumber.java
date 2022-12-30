@@ -6,10 +6,10 @@ public class ArmStrongNumber {
 
 	public static void main(String args[])
 	{
+	
 		Scanner sc=new Scanner(System.in);
 		System.out.println("Enter the number:-\n");
 		int num=sc.nextInt();//153
-		int i=0;
 		int temp=num;
 		int rem,sum=0;
 		//153
